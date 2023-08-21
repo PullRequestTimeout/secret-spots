@@ -5,7 +5,7 @@
 	let password = "";
 	let confirmPassword = "";
 	let error = false;
-	let register = true;
+	let register = false;
 	let authenticating = false;
 
 	async function handleAuth() {
@@ -62,7 +62,6 @@
 		</button>
 	</form>
 	<div class="options">
-		<p>Or</p>
 		{#if register}
 			<div>
 				<p>Already have an account?</p>

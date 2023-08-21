@@ -7,12 +7,13 @@
 	const nonAuthRoutes = ["/"];
 
 	onMount(() => {
-		console.log("Mounting");
+		// This function controls routing on auth state change, needs to be configured for more complex routing
 		const unsubscribe = auth.onAuthStateChanged(async (user) => {
 			const currentPath = window.location.pathname;
 
 			// If user is not logged in and the current path is not a non-auth route, redirect to home
 			if (!user && !nonAuthRoutes.includes(currentPath)) {
+				console.log("Firing");
 				window.location.href = "/";
 				return;
 			}
@@ -43,6 +44,7 @@
 				console.log("Fetching user data");
 				const userData = docSnap.data();
 				dataToSetToStore = userData;
+				console.log(userData);
 			}
 
 			authStore.update((curr) => {
@@ -54,6 +56,7 @@
 				};
 			});
 		});
+		return unsubscribe;
 	});
 </script>
 
