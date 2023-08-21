@@ -1,0 +1,35 @@
+/* Font Imports */
+
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&display=swap");
+
+/* Color Variables */
+
+:root {
+	--clr-black: #121212;
+	--clr-white: #eaeaea;
+	--clr-light-green: #a7c957;
+	--clr-green: #6a994e;
+	--clr-dark-green: #386641;
+	--clr-cream: #f2e8cf;
+	--clr-red: #bc4749;
+	--clr-dark-red: #a0393b;
+}
+
+/* Typography */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: "Permanent Marker", cursive;
+}
+
+p,
+a,
+li,
+input,
+textarea {
+	font-family: "Comic Neue", cursive;
+}
