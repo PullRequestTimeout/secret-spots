@@ -30,7 +30,9 @@
 			}
 
 			let dataToSetToStore;
+			// docRef is a reference to the user document in the users collection
 			const docRef = doc(db, "users", user.uid);
+			// docSnap is a snapshot of the user document
 			const docSnap = await getDoc(docRef);
 			if (!docSnap.exists()) {
 				console.log("Creating new user");
@@ -66,12 +68,7 @@
 
 <style>
 	.mainContainer {
-		background-color: var(--clr-white);
-		color: var(--clr-black);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
+		position: relative;
 		height: 100vh;
 		width: 100%;
 	}

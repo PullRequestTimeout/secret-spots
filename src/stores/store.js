@@ -18,6 +18,7 @@ export const authHandlers = {
 	logout: async () => {
 		await signOut(auth);
 	}
+	// Need to implement reset password route
 	// resetPassword: async (email) => {
 	//     await sendPasswordResetEmail(auth, email);
 	// }
