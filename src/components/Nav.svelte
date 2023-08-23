@@ -1,15 +1,23 @@
 <script>
 	import { onMount } from "svelte";
 	import { auth, db } from "../lib/firebase/firebase.js";
+
+	let menuOpen = false;
+	function handleMenu() {
+		menuOpen = !menuOpen;
+	}
 </script>
 
 <header>
 	<h1>Secret Spots</h1>
-	<button aria-label="menu" />
+	<button aria-label="menu button" on:click={handleMenu} class="btn-green">
+		<div class:active={menuOpen} />
+	</button>
 </header>
 
 <style>
 	header {
+		position: relative;
 		display: flex;
 		background-color: var(--clr-dark-green);
 		color: var(--clr-white);
@@ -23,37 +31,63 @@
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		background-color: transparent;
 		border: none;
 		border-radius: 50%;
 		width: 3rem;
-		height: 3rem;
+		aspect-ratio: 1;
 	}
 
 	header button:hover {
 		cursor: pointer;
 	}
 
-	header button:hover,
-	header button:active {
-		background-color: var(--clr-red);
+	button div {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+		width: 60%;
 	}
 
-	header button::after,
-	header button::before {
-		content: "";
-		position: absolute;
+	button div,
+	button div::after,
+	button div::before {
 		background-color: var(--clr-white);
-		width: 75%;
 		height: 3px;
 		border-radius: 2px;
+		transition-duration: 200ms;
 	}
 
-	header button::after {
-		transform: translateY(-0.4rem);
+	button div::after,
+	button div::before {
+		content: "";
+		position: absolute;
+		width: 100%;
 	}
 
-	header button::before {
-		transform: translateY(0.4rem);
+	button div::after {
+		transform: translateY(-0.5rem);
+	}
+
+	button div::before {
+		transform: translateY(0.5rem);
+	}
+
+	button div.active {
+		background-color: transparent;
+	}
+
+	button div.active::before,
+	button div.active::after {
+		background-color: var(--clr-white);
+		height: 3px;
+	}
+
+	button div.active::before {
+		transform: rotate(45deg);
+	}
+
+	button div.active::after {
+		transform: rotate(-45deg);
 	}
 </style>

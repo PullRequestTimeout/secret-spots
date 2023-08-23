@@ -10,9 +10,29 @@
 	--clr-light-green: #a7c957;
 	--clr-green: #6a994e;
 	--clr-dark-green: #386641;
+	--clr-darker-green: #315c3a;
 	--clr-cream: #f2e8cf;
 	--clr-red: #bc4749;
 	--clr-dark-red: #a0393b;
+}
+
+/* Globals */
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	transition-duration: 200ms;
+}
+
+*:focus {
+	transition-duration: 0s;
+	outline: 3px solid var(--clr-green);
+}
+
+*::selection {
+	color: var(--clr-white);
+	background-color: var(--clr-red);
 }
 
 /* Typography */
@@ -30,6 +50,35 @@ p,
 a,
 li,
 input,
-textarea {
+textarea,
+button {
 	font-family: "Comic Neue", cursive;
+}
+
+/* Utils */
+
+/* This class styles is default button style, but can be applied to a link */
+.btn {
+	display: flex;
+	gap: 0.5rem;
+	justify-content: center;
+	align-items: center;
+	padding: 0.5rem 1rem;
+	border-radius: 0.5rem;
+}
+
+.btn-green {
+	background-color: var(--clr-dark-green);
+}
+
+.btn-green:hover {
+	background-color: var(--clr-darker-green);
+}
+
+.btn-red {
+	background-color: var(--clr-red);
+}
+
+.btn-red:hover {
+	background-color: var(--clr-dark-red);
 }

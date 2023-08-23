@@ -53,7 +53,7 @@
 			</label>
 		{/if}
 
-		<button on:click={handleAuth} type="button">
+		<button on:click={handleAuth} type="submit">
 			{#if authenticating}
 				Loading...
 			{:else}

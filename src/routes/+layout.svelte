@@ -3,6 +3,8 @@
 	import { auth, db } from "../lib/firebase/firebase.js";
 	import { doc, getDoc, setDoc } from "firebase/firestore";
 	import { authStore } from "../stores/store.js";
+	import Nav from "../components/Nav.svelte";
+	import Footer from "../components/Footer.svelte";
 
 	const nonAuthRoutes = ["/"];
 
@@ -60,10 +62,17 @@
 		});
 		return unsubscribe;
 	});
+
+	// let headerOffset;
+	// let footerOffset;
+	// $: offset = headerOffset + footerOffset;
+	// $: setContext("offset", offset);
 </script>
 
 <div class="mainContainer">
+	<Nav />
 	<slot />
+	<Footer />
 </div>
 
 <style>
