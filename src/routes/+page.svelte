@@ -20,7 +20,7 @@
 			url={"/login"}
 			svg={"/icons/login_icon.svg"}
 			innerText={"Login"}
-			className={"btn btn-red"}
+			className={"btn btn-red clr-wt"}
 		/>
 		<IconLink
 			url={"/register"}

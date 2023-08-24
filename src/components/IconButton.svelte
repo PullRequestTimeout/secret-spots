@@ -1,9 +1,11 @@
 <script>
 	export let innerText = "";
 	export let svg = "";
+	export let callback = () => {};
+	export let className = "";
 </script>
 
-<button>
+<button on:click={callback} class={className}>
 	<img src={svg} alt="button icon" />
 	{innerText}
 </button>
@@ -16,6 +18,7 @@
 		align-items: center;
 		padding: 0.5rem 1rem;
 		border-radius: 0.5rem;
+		border: none;
 	}
 
 	button:hover {

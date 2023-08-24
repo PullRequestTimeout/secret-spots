@@ -57,14 +57,31 @@ button {
 
 /* Utils */
 
+.clr-wt,
+.clr-wt:visited,
+.clr-wt:disabled {
+	color: var(--clr-white);
+}
+
+.clr-dg,
+.clr-dg:visited,
+.clr-dg:disabled {
+	color: var(--clr-dark-green);
+}
+
 /* This class styles is default button style, but can be applied to a link */
 .btn {
+	user-select: none;
 	display: flex;
 	gap: 0.5rem;
 	justify-content: center;
 	align-items: center;
 	padding: 0.5rem 1rem;
 	border-radius: 0.5rem;
+}
+
+.btn:hover {
+	cursor: pointer;
 }
 
 .btn-green {

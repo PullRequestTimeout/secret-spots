@@ -13,17 +13,19 @@
 <style>
 	a {
 		text-decoration: none;
+		font-weight: bold;
 		width: fit-content;
 		display: flex;
 		gap: 0.5rem;
 		justify-content: center;
 		align-items: center;
 		padding: 0.5rem 1rem;
+		color: white;
 	}
 
 	a,
 	a:visited {
-		color: var(--clr-white);
+		color: var(--clr-white, white);
 	}
 
 	a img {

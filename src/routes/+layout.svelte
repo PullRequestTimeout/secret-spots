@@ -21,7 +21,10 @@
 			}
 
 			// If user is logged in and the current path is a non-auth route, redirect to spots
-			if (user && currentPath === "/") {
+			if (
+				user &&
+				(currentPath === "/" || currentPath === "/login" || currentPath === "/register")
+			) {
 				window.location.href = "/spots";
 				return;
 			}
@@ -39,16 +42,20 @@
 			if (!docSnap.exists()) {
 				console.log("Creating new user");
 				const userRef = doc(db, "users", user.uid);
+
+				// Schema
 				dataToSetToStore = {
 					email: user.email,
+					emailVerified: user.emailVerified,
 					spots: []
 				};
+
 				await setDoc(userRef, dataToSetToStore, { merge: true });
 			} else {
 				console.log("Fetching user data");
 				const userData = docSnap.data();
 				dataToSetToStore = userData;
-				console.log(userData);
+				// console.log(userData);
 			}
 
 			authStore.update((curr) => {
@@ -62,11 +69,6 @@
 		});
 		return unsubscribe;
 	});
-
-	// let headerOffset;
-	// let footerOffset;
-	// $: offset = headerOffset + footerOffset;
-	// $: setContext("offset", offset);
 </script>
 
 <div class="mainContainer">
