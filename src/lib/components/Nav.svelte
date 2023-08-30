@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import { auth, db } from "../lib/firebase/firebase.js";
+	import { auth, db } from "$lib/firebase/firebase.js";
 
 	let menuOpen = false;
 	function handleMenu() {
@@ -17,7 +17,9 @@
 
 <style>
 	header {
-		position: relative;
+		position: fixed;
+		z-index: 10;
+		width: 100%;
 		display: flex;
 		background-color: var(--clr-dark-green);
 		color: var(--clr-white);

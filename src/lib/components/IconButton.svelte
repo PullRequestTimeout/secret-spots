@@ -5,20 +5,14 @@
 	export let className = "";
 </script>
 
-<button on:click={callback} class={className}>
+<button on:click={callback} class={className + " btn"}>
 	<img src={svg} alt="button icon" />
 	{innerText}
 </button>
 
 <style>
 	button {
-		display: flex;
-		gap: 0.5rem;
-		justify-content: center;
-		align-items: center;
-		padding: 0.5rem 1rem;
-		border-radius: 0.5rem;
-		border: none;
+		user-select: none;
 	}
 
 	button:hover {
@@ -27,5 +21,6 @@
 
 	button img {
 		width: 2rem;
+		filter: invert(1);
 	}
 </style>

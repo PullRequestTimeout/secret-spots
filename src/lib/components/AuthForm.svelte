@@ -82,6 +82,7 @@
 		padding: 2rem;
 		border-radius: 0.5rem;
 		background-color: var(--clr-cream);
+		max-width: 20rem;
 	}
 
 	form {
