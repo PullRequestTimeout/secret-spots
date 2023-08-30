@@ -1,5 +1,7 @@
 <script>
-	import { authHandlers } from "../stores/store";
+	import { authHandlers } from "$lib/stores/store";
+	import { auth } from "../firebase/firebase";
+	import { onMount } from "svelte";
 
 	let email = "";
 	let password = "";
