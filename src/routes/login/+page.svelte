@@ -1,9 +1,9 @@
 <script>
-	import AuthForm from "$lib/components/AuthForm.svelte";
+	import LoginForm from "$lib/components/AuthForm.svelte";
 </script>
 
 <main>
-	<AuthForm />
+	<LoginForm />
 </main>
 
 <style>

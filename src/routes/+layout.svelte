@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import { auth, db } from "../lib/firebase/firebase.js";
+	import { auth, db } from "$lib/firebase/firebase.js";
 	import { doc, getDoc, setDoc } from "firebase/firestore";
 	import { authStore } from "$lib/stores/store.js";
 	import Nav from "$lib/components/Nav.svelte";
@@ -18,7 +18,6 @@
 
 			// If user is not logged in and the current path is not a non-auth route, redirect to home
 			if (!user && !nonAuthRoutes.includes(currentPath)) {
-				console.log("Firing");
 				window.location.href = "/";
 				return;
 			}
