@@ -1,13 +1,13 @@
 <script>
-	import { authHandlers } from "../../stores/store";
-	import IconButton from "../../components/IconButton.svelte";
+	import { authHandlers } from "$lib/stores/store";
+	import IconButton from "$lib/components/IconButton.svelte";
 </script>
 
 <!-- <button class="btn btn-red" on:click={authHandlers.logout}>Logout</button> -->
 
 <IconButton
-	className={"btn btn-red"}
+	className={"btn-red"}
 	callback={authHandlers.logout}
 	svg={"/icons/logout_icon.svg"}
-	innerText={"logout"}
+	innerText={"Logout"}
 />

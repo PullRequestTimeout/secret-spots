@@ -2,7 +2,7 @@
 
 <script>
 	import { getContext } from "svelte";
-	import IconLink from "../components/IconLink.svelte";
+	import IconLink from "$lib/components/IconLink.svelte";
 	function offset() {
 		if (getContext("offset") == null) {
 			return 200;
@@ -20,13 +20,13 @@
 			url={"/login"}
 			svg={"/icons/login_icon.svg"}
 			innerText={"Login"}
-			className={"btn btn-red clr-wt"}
+			className={"btn-red"}
 		/>
 		<IconLink
 			url={"/register"}
 			svg={"/icons/register_icon.svg"}
 			innerText={"Register"}
-			className="btn btn-red"
+			className="btn-red"
 		/>
 	</div>
 </div>
@@ -42,7 +42,7 @@
 		justify-content: center;
 		align-items: center;
 		gap: 1rem;
-		height: calc(100% - 7rem);
+		height: 100%;
 		overflow: hidden;
 	}
 

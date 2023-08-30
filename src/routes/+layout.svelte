@@ -2,11 +2,14 @@
 	import { onMount } from "svelte";
 	import { auth, db } from "../lib/firebase/firebase.js";
 	import { doc, getDoc, setDoc } from "firebase/firestore";
-	import { authStore } from "../stores/store.js";
-	import Nav from "../components/Nav.svelte";
-	import Footer from "../components/Footer.svelte";
+	import { authStore } from "$lib/stores/store.js";
+	import Nav from "$lib/components/Nav.svelte";
+	import Footer from "$lib/components/Footer.svelte";
+	import { fade } from "svelte/transition";
 
 	const nonAuthRoutes = ["/"];
+
+	export let data;
 
 	onMount(() => {
 		// This function controls routing on auth state change, needs to be configured for more complex routing
@@ -71,16 +74,19 @@
 	});
 </script>
 
-<div class="mainContainer">
+{#key data.url}
 	<Nav />
-	<slot />
+	<div transition:fade={{ delay: 300, duration: 200 }} class="mainContainer">
+		<slot />
+	</div>
 	<Footer />
-</div>
+{/key}
 
 <style>
 	.mainContainer {
-		position: relative;
-		height: 100vh;
+		position: fixed;
+		top: var(--spc-header-height);
+		height: calc(100vh - var(--spc-footer-height));
 		width: 100%;
 	}
 </style>
