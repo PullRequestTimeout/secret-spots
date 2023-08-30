@@ -1,12 +1,12 @@
 /* Font Imports */
-
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&display=swap");
 
-/* Color Variables */
-
+/* Vars */
 :root {
+	/* Colors */
 	--clr-black: #121212;
-	--clr-white: #eaeaea;
+	--clr-off-white: #eaeaea;
+	--clr-white: #ffffff;
 	--clr-light-green: #a7c957;
 	--clr-green: #6a994e;
 	--clr-dark-green: #386641;
@@ -14,9 +14,18 @@
 	--clr-cream: #f2e8cf;
 	--clr-red: #bc4749;
 	--clr-dark-red: #a0393b;
+
+	/* Spacing */
+	--spc-header-height: 4rem;
+	--spc-footer-height: 7rem;
+	--spc-corner-radius: 0.5rem;
 }
 
 /* Globals */
+
+html {
+	background-color: var(--clr-off-white);
+}
 
 * {
 	box-sizing: border-box;
@@ -71,13 +80,17 @@ button {
 
 /* This class styles is default button style, but can be applied to a link */
 .btn {
-	user-select: none;
+	font-weight: bold;
+	color: var(--clr-white);
+	font-size: 1rem;
 	display: flex;
 	gap: 0.5rem;
 	justify-content: center;
 	align-items: center;
-	padding: 0.5rem 1rem;
-	border-radius: 0.5rem;
+	width: fit-content;
+	padding: 0.5rem 1.25rem 0.5rem 1rem;
+	border: none;
+	border-radius: var(--spc-corner-radius);
 }
 
 .btn:hover {
