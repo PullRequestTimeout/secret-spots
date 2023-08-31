@@ -17,6 +17,15 @@ export const authHandlers = {
 	},
 	logout: async () => {
 		await signOut(auth);
+		// Removes user from store
+		authStore.update((curr) => {
+			return {
+				...curr,
+				user: null,
+				loading: true,
+				data: {}
+			};
+		});
 	}
 	// Need to implement reset password route
 	// resetPassword: async (email) => {
