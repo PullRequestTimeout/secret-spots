@@ -30,6 +30,11 @@
 							><img src="/icons/login-green_icon.svg" alt="Login icon" />Login</a
 						>
 					</li>
+					<li>
+						<a on:click={handleMenu} href="/register"
+							><img src="/icons/register-green_icon.svg" alt="Register icon" />Register</a
+						>
+					</li>
 				{:else if $authStore.user}
 					<li>
 						<a on:click={handleMenu} href="/account"
