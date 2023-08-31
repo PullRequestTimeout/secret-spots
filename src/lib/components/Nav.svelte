@@ -22,34 +22,33 @@
 		<button aria-label="menu button" on:click={handleMenu} class="btn-green">
 			<div class:active={menuOpen} />
 		</button>
-		{#if menuOpen && $authStore.user == null}
+		{#if menuOpen}
 			<ul transition:fade={{ duration: 200 }}>
-				<li>
-					<a on:click={handleMenu} href="/login"
-						><img src="/icons/login-green_icon.svg" alt="Login icon" />Login</a
-					>
-				</li>
-			</ul>
-		{:else if menuOpen && $authStore.user}
-			<ul transition:fade={{ duration: 200 }}>
-				<li>
-					<a on:click={handleMenu} href="/account"
-						><img src="/icons/person-green_icon.svg" alt="Account icon" />Account</a
-					>
-				</li>
-				<li>
-					<a on:click={handleMenu} href="/settings"
-						><img src="/icons/settings-green_icon.svg" alt="Settings icon" />Settings</a
-					>
-				</li>
-				<li>
-					<a href="/" on:click={handleMenu} on:click={authHandlers.logout}
-						><img src="/icons/logout-green_icon.svg" alt="Logout icon" />Logout</a
-					>
-				</li>
+				{#if $authStore.user == null}
+					<li>
+						<a on:click={handleMenu} href="/login"
+							><img src="/icons/login-green_icon.svg" alt="Login icon" />Login</a
+						>
+					</li>
+				{:else if $authStore.user}
+					<li>
+						<a on:click={handleMenu} href="/account"
+							><img src="/icons/person-green_icon.svg" alt="Account icon" />Account</a
+						>
+					</li>
+					<li>
+						<a on:click={handleMenu} href="/settings"
+							><img src="/icons/settings-green_icon.svg" alt="Settings icon" />Settings</a
+						>
+					</li>
+					<li>
+						<a href="/" on:click={handleMenu} on:click={authHandlers.logout}
+							><img src="/icons/logout-green_icon.svg" alt="Logout icon" />Logout</a
+						>
+					</li>
+				{/if}
 			</ul>
 		{/if}
-		<!-- {/if} -->
 	</nav>
 </header>
 
