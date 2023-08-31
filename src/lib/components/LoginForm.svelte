@@ -7,7 +7,7 @@
 	let authenticating = false;
 	let errorMessage = "";
 
-	async function handleAuth() {
+	async function handleLogin() {
 		if (authenticating) {
 			return;
 		}
@@ -53,15 +53,15 @@
 			<input bind:value={password} name="password" type="password" placeholder="Password" />
 		</label>
 
-		<button on:click={handleAuth} class="btn btn-red">
+		<button on:click={handleLogin} class="btn btn-red">
 			{#if authenticating}
 				Loading...
 			{:else}
 				Submit
 			{/if}
 		</button>
+		<p>Don't have an account? <a href="/register">Register</a></p>
 	</form>
-	<p>Don't have an account? <a href="/register">Register</a></p>
 </div>
 
 <style>
@@ -72,9 +72,7 @@
 		background-color: var(--clr-cream);
 		width: 20rem;
 		max-width: 90%;
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
+		box-shadow: var(--bx-shdw);
 	}
 
 	.authContainer p {
