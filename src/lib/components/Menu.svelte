@@ -18,8 +18,20 @@
 			</ul>
 		{:else if $authStore.user}
 			<ul>
-				<li><a href="/account">Account</a></li>
-				<li><a href="/" on:click={authHandlers.logout}>Logout</a></li>
+				<li>
+					<a href="/account"><img src="/icons/person-green_icon.svg" alt="Account icon" />Account</a
+					>
+				</li>
+				<li>
+					<a href="/settings"
+						><img src="/icons/settings-green_icon.svg" alt="Settings icon" />Settings</a
+					>
+				</li>
+				<li>
+					<a href="/" on:click={authHandlers.logout}
+						><img src="/icons/logout-green_icon.svg" alt="Logout icon" />Logout</a
+					>
+				</li>
 			</ul>
 		{/if}
 	</nav>
@@ -45,6 +57,8 @@
 		color: var(--clr-dark-green);
 		display: flex;
 		align-items: center;
+		gap: 0.5rem;
+		text-decoration: none;
 	}
 
 	nav a img {
