@@ -140,7 +140,7 @@
 		padding: 2rem 2rem 2rem 1.5rem;
 		border-radius: var(--spc-corner-radius);
 		border: 2px solid var(--clr-dark-green);
-		box-shadow: 0 2px 0.2rem rgba(0, 0, 0, 0.5);
+		box-shadow: var(--bx-shdw);
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
@@ -148,6 +148,7 @@
 
 	header nav a {
 		font-size: 1.2rem;
+		font-weight: bold;
 		color: var(--clr-dark-green);
 		display: flex;
 		align-items: center;
