@@ -57,7 +57,6 @@
 				console.log("Fetching user data");
 				const userData = docSnap.data();
 				dataToSetToStore = userData;
-				// console.log(userData);
 			}
 
 			authStore.update((curr) => {
