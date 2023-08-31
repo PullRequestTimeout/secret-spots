@@ -1,4 +1,6 @@
 <script>
-	import { authHandlers } from "$lib/stores/store";
-	import IconButton from "$lib/components/IconButton.svelte";
+	import { getAuth } from "firebase/auth";
+
+	const auth = getAuth();
+	console.log(auth.currentUser);
 </script>
