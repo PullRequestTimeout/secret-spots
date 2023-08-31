@@ -7,7 +7,7 @@
 	import Footer from "$lib/components/Footer.svelte";
 	import { fade } from "svelte/transition";
 
-	const nonAuthRoutes = ["/"];
+	const nonAuthRoutes = ["/", "/login", "/register"];
 
 	export let data;
 
