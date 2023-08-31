@@ -19,6 +19,9 @@
 	--spc-header-height: 4rem;
 	--spc-footer-height: 7rem;
 	--spc-corner-radius: 0.5rem;
+
+	/* Box shadow */
+	--bx-shdw: 0 2px 0.2rem rgba(0, 0, 0, 0.25);
 }
 
 /* Globals */
