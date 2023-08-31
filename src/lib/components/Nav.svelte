@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from "svelte";
 	import { auth, db } from "$lib/firebase/firebase.js";
+	import Menu from "$lib/components/Menu.svelte";
 
 	let menuOpen = false;
 	function handleMenu() {
@@ -13,6 +14,7 @@
 	<button aria-label="menu button" on:click={handleMenu} class="btn-green">
 		<div class:active={menuOpen} />
 	</button>
+	<Menu isOpen={menuOpen} />
 </header>
 
 <style>
