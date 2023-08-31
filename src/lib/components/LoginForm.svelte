@@ -1,61 +1,59 @@
 <script>
 	import { authHandlers } from "$lib/stores/store";
-	import { auth } from "../firebase/firebase";
-	import { onMount } from "svelte";
 
 	let email = "";
 	let password = "";
-	let confirmPassword = "";
 	let error = false;
-	let register = false;
 	let authenticating = false;
+	let errorMessage = "";
 
 	async function handleAuth() {
 		if (authenticating) {
 			return;
 		}
-		if (!email || !password || (register && !confirmPassword)) {
+		if (!email || !password) {
 			error = true;
+			errorMessage = "An email and password are required.";
 			return;
 		}
 		authenticating = true;
 
 		try {
-			if (!register) {
-				await authHandlers.login(email, password);
-			} else {
-				await authHandlers.signup(email, password);
-			}
+			await authHandlers.login(email, password);
 		} catch (err) {
-			console.log("There was an error with authentication", err);
 			error = true;
-		}
-	}
 
-	function handleRegister() {
-		register = !register;
+			let errorReason = err.toString();
+			if (errorReason.includes("auth/user-not-found")) {
+				errorMessage = "There doesn't seem to be an account associated with this email.";
+			} else if (errorReason.includes("auth/invalid-email")) {
+				errorMessage = "This doesn't seem to be a valid email.";
+			} else if (errorReason.includes("auth/wrong-password")) {
+				errorMessage = "Your password is incorrect.";
+			} else {
+				errorMessage = "Oops. Something went wrong.";
+				console.log(err.toString());
+			}
+
+			authenticating = false;
+		}
 	}
 </script>
 
 <div class="authContainer">
 	<form>
-		<h3>{register ? "Register" : "Login"}</h3>
+		<h3>Login</h3>
 		{#if error}
-			<p class="error">The information you have entered is not correct</p>
+			<p class="error">{errorMessage}</p>
 		{/if}
 		<label>
-			<input bind:value={email} type="email" placeholder="Email" />
+			<input bind:value={email} name="email" type="email" placeholder="Email" autocomplete="off" />
 		</label>
 		<label>
-			<input bind:value={password} type="password" placeholder="Password" />
+			<input bind:value={password} name="password" type="password" placeholder="Password" />
 		</label>
-		{#if register}
-			<label>
-				<input bind:value={confirmPassword} type="password" placeholder="Confirm Password" />
-			</label>
-		{/if}
 
-		<button on:click={handleAuth} type="submit">
+		<button on:click={handleAuth} class="btn btn-red">
 			{#if authenticating}
 				Loading...
 			{:else}
@@ -63,19 +61,7 @@
 			{/if}
 		</button>
 	</form>
-	<div class="options">
-		{#if register}
-			<div>
-				<p>Already have an account?</p>
-				<button on:click={handleRegister} on:keydown={() => {}}>Login</button>
-			</div>
-		{:else}
-			<div>
-				<p>Don't have an account?</p>
-				<button on:click={handleRegister} on:keydown={() => {}}>Register</button>
-			</div>
-		{/if}
-	</div>
+	<p>Don't have an account? <a href="/register">Register</a></p>
 </div>
 
 <style>
@@ -84,7 +70,15 @@
 		padding: 2rem;
 		border-radius: 0.5rem;
 		background-color: var(--clr-cream);
-		max-width: 20rem;
+		width: 20rem;
+		max-width: 90%;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.authContainer p {
+		text-align: center;
 	}
 
 	form {
@@ -98,12 +92,12 @@
 	form input {
 		width: 100%;
 		padding: 0.5rem;
-		border: 2px solid var(--clr-black);
+		border: 2px solid var(--clr-dark-green);
 		border-radius: 0.5rem;
 	}
 
 	form input:focus {
-		outline: solid var(--clr-red);
+		outline: solid var(--clr-dark-green);
 	}
 
 	form h3 {
@@ -116,24 +110,8 @@
 		font-size: 1.2rem;
 	}
 
-	form button {
-		background-color: var(--clr-red);
-		color: var(--clr-white);
-		padding: 0.5rem 2rem;
-		border-radius: 0.5rem;
-		border: none;
-	}
-
-	form button:hover {
-		cursor: pointer;
-		background-color: var(--clr-dark-red);
-	}
-
-	.options div {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
+	.authContainer a,
+	.authContainer a:visited {
+		color: var(--clr-red);
 	}
 </style>
