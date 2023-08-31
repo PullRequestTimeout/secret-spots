@@ -3,7 +3,11 @@
 </script>
 
 <footer>
-	<IconLink svg={"/icons/coffee_icon.svg"} innerText={"Donate"} url={"/spots"} />
+	<IconLink
+		svg={"/icons/coffee_icon.svg"}
+		innerText={"Donate"}
+		url={"https://ko-fi.com/pullrequesttimeout"}
+	/>
 	<IconLink
 		svg={"/icons/mail_icon.svg"}
 		innerText={"Contact"}
