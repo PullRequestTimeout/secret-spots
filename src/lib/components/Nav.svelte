@@ -1,7 +1,7 @@
 <script>
-	import { onMount } from "svelte";
-	import { auth, db } from "$lib/firebase/firebase.js";
-	import Menu from "$lib/components/Menu.svelte";
+	import { authStore, authHandlers } from "$lib/stores/store.js";
+	import { fade } from "svelte/transition";
+	import { clickOutside } from "$lib/utils/click_outside.js";
 
 	let menuOpen = false;
 	function handleMenu() {
@@ -11,10 +11,46 @@
 
 <header>
 	<h1>Secret Spots</h1>
-	<button aria-label="menu button" on:click={handleMenu} class="btn-green">
-		<div class:active={menuOpen} />
-	</button>
-	<Menu isOpen={menuOpen} />
+	<nav
+		use:clickOutside
+		on:outclick={() => {
+			if (menuOpen == true) {
+				handleMenu();
+			}
+		}}
+	>
+		<button aria-label="menu button" on:click={handleMenu} class="btn-green">
+			<div class:active={menuOpen} />
+		</button>
+		{#if menuOpen && $authStore.user == null}
+			<ul transition:fade={{ duration: 200 }}>
+				<li>
+					<a on:click={handleMenu} href="/login"
+						><img src="/icons/login-green_icon.svg" alt="Login icon" />Login</a
+					>
+				</li>
+			</ul>
+		{:else if menuOpen && $authStore.user}
+			<ul transition:fade={{ duration: 200 }}>
+				<li>
+					<a on:click={handleMenu} href="/account"
+						><img src="/icons/person-green_icon.svg" alt="Account icon" />Account</a
+					>
+				</li>
+				<li>
+					<a on:click={handleMenu} href="/settings"
+						><img src="/icons/settings-green_icon.svg" alt="Settings icon" />Settings</a
+					>
+				</li>
+				<li>
+					<a href="/" on:click={handleMenu} on:click={authHandlers.logout}
+						><img src="/icons/logout-green_icon.svg" alt="Logout icon" />Logout</a
+					>
+				</li>
+			</ul>
+		{/if}
+		<!-- {/if} -->
+	</nav>
 </header>
 
 <style>
@@ -45,7 +81,7 @@
 		cursor: pointer;
 	}
 
-	button div {
+	header nav button div {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -53,45 +89,78 @@
 		width: 60%;
 	}
 
-	button div,
-	button div::after,
-	button div::before {
+	header nav button div,
+	header nav button div::after,
+	header nav button div::before {
 		background-color: var(--clr-white);
 		height: 3px;
 		border-radius: 2px;
 		transition-duration: 200ms;
 	}
 
-	button div::after,
-	button div::before {
+	header nav button div::after,
+	header nav button div::before {
 		content: "";
 		position: absolute;
 		width: 100%;
 	}
 
-	button div::after {
+	header nav button div::after {
 		transform: translateY(-0.5rem);
 	}
 
-	button div::before {
+	header nav button div::before {
 		transform: translateY(0.5rem);
 	}
 
-	button div.active {
+	header nav button div.active {
 		background-color: transparent;
 	}
 
-	button div.active::before,
-	button div.active::after {
+	header nav button div.active::before,
+	header nav button div.active::after {
 		background-color: var(--clr-white);
 		height: 3px;
 	}
 
-	button div.active::before {
+	header nav button div.active::before {
 		transform: rotate(45deg);
 	}
 
-	button div.active::after {
+	header nav button div.active::after {
 		transform: rotate(-45deg);
+	}
+
+	header nav ul {
+		position: absolute;
+		right: 2rem;
+		top: 6rem;
+		background-color: var(--clr-cream);
+		color: var(--clr-dark-green);
+		height: fit-content;
+		padding: 2rem 2rem 2rem 1.5rem;
+		border-radius: var(--spc-corner-radius);
+		border: 2px solid var(--clr-dark-green);
+		box-shadow: 0 2px 0.2rem rgba(0, 0, 0, 0.5);
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	header nav a {
+		font-size: 1.2rem;
+		color: var(--clr-dark-green);
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		text-decoration: none;
+	}
+
+	header nav a img {
+		width: 2rem;
+	}
+
+	header nav li {
+		list-style: none;
 	}
 </style>
