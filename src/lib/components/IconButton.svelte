@@ -1,12 +1,16 @@
 <script>
+	import Icon from "$lib/components/Icon.svelte";
+
 	export let innerText = "";
 	export let svg = "";
 	export let callback = () => {};
 	export let className = "";
+	export let iconColor = "--clr-white";
+	export let iconSize = "32";
 </script>
 
 <button on:click={callback} class={className + " btn"}>
-	<img src={svg} alt="button icon" />
+	<Icon name={svg} color={iconColor} size={iconSize} />
 	{innerText}
 </button>
 
@@ -19,8 +23,8 @@
 		cursor: pointer;
 	}
 
-	button img {
+	/* button img {
 		width: 2rem;
 		filter: invert(1);
-	}
+	} */
 </style>

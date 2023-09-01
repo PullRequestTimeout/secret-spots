@@ -75,7 +75,7 @@
 			<h3>Add New Spot</h3>
 			<IconButton
 				innerText={"Get Current Location"}
-				svg={"/icons/location_icon.svg"}
+				svg={"location"}
 				callback={getLocation}
 				className={"btn-red"}
 			/>
@@ -94,7 +94,7 @@
 			{:else}
 				<div>
 					<IconButton
-						svg={"/icons/add_icon.svg"}
+						svg={"add"}
 						innerText={"Add Spot"}
 						className={"btn-green"}
 						callback={handleDetails}
@@ -119,7 +119,7 @@
 			</form>
 			<div>
 				<IconButton
-					svg={"/icons/add_icon.svg"}
+					svg={"add"}
 					innerText={"Add Spot"}
 					className={"btn-green"}
 					callback={createSpot}

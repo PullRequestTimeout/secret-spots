@@ -5,7 +5,6 @@
 	import IconButton from "$lib/components/IconButton.svelte";
 	import NewSpot from "$lib/components/NewSpot.svelte";
 	import { fade } from "svelte/transition";
-	import Icon from "../../lib/components/Icon.svelte";
 
 	// Returns new spot from the NewSpot component
 	let addSpot;
@@ -39,12 +38,7 @@
 		<div transition:fade={{ duration: 200 }}>
 			<h2>Welcome, {displayName}!</h2>
 			<p>Add a spot to get started</p>
-			<IconButton
-				svg={"/icons/add_icon.svg"}
-				innerText={"Add Spot"}
-				className={"btn-red"}
-				callback={handleOpen}
-			/>
+			<IconButton svg={"add"} innerText={"Add Spot"} className={"btn-red"} callback={handleOpen} />
 			<NewSpot bind:isOpen bind:spot={addSpot} />
 		</div>
 	{/if}
