@@ -5,11 +5,19 @@
 	import IconButton from "$lib/components/IconButton.svelte";
 	import NewSpot from "$lib/components/NewSpot.svelte";
 	import { fade } from "svelte/transition";
+	import Icon from "../../lib/components/Icon.svelte";
+
+	// Returns new spot from the NewSpot component
+	let addSpot;
+	$: if (addSpot) {
+		console.log(addSpot);
+	}
 
 	let loading = true;
 	let displayName;
 
 	onMount(() => {
+		// Gets initial auth state and then sets an observer for changes
 		auth.onAuthStateChanged(() => {
 			console.log(auth.currentUser);
 			displayName = auth.currentUser.displayName;
@@ -37,7 +45,7 @@
 				className={"btn-red"}
 				callback={handleOpen}
 			/>
-			<NewSpot bind:isOpen />
+			<NewSpot bind:isOpen bind:spot={addSpot} />
 		</div>
 	{/if}
 </main>
