@@ -24,7 +24,7 @@
 		</button>
 		{#if menuOpen}
 			<ul transition:fade={{ duration: 200 }}>
-				{#if $authStore.user == null}
+				{#if !$authStore.user || $authStore.emailVerified == false}
 					<li>
 						<a on:click={handleMenu} href="/login"
 							><img src="/icons/login-green_icon.svg" alt="Login icon" />Login</a
