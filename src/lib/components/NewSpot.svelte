@@ -5,7 +5,7 @@
 	import { clickOutside } from "$lib/utils/click_outside.js";
 
 	export let isOpen;
-	export let spot = {};
+	export let spot = null;
 
 	let lat = "";
 	let long = "";
@@ -52,12 +52,6 @@
 	}
 
 	function createSpot() {
-		console.log("createSpot:", {
-			lat: lat,
-			long: long,
-			spotName: spotName,
-			spotDetails: spotDetails
-		});
 		spot = {
 			lat: lat,
 			long: long,
