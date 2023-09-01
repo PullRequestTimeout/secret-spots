@@ -2,6 +2,7 @@
 	import { authStore, authHandlers } from "$lib/stores/store.js";
 	import { fade } from "svelte/transition";
 	import { clickOutside } from "$lib/utils/click_outside.js";
+	import Icon from "$lib/components/Icon.svelte";
 
 	let menuOpen = false;
 	function handleMenu() {
@@ -27,28 +28,28 @@
 				{#if !$authStore.user || $authStore.emailVerified == false}
 					<li>
 						<a on:click={handleMenu} href="/login"
-							><img src="/icons/login-green_icon.svg" alt="Login icon" />Login</a
+							><Icon name={"login"} color={"--clr-dark-green"} />Login</a
 						>
 					</li>
 					<li>
 						<a on:click={handleMenu} href="/register"
-							><img src="/icons/register-green_icon.svg" alt="Register icon" />Register</a
+							><Icon name={"register"} color={"--clr-dark-green"} />Register</a
 						>
 					</li>
 				{:else if $authStore.user}
 					<li>
 						<a on:click={handleMenu} href="/account"
-							><img src="/icons/person-green_icon.svg" alt="Account icon" />Account</a
+							><Icon name={"person"} color={"--clr-dark-green"} />Account</a
 						>
 					</li>
 					<li>
 						<a on:click={handleMenu} href="/settings"
-							><img src="/icons/settings-green_icon.svg" alt="Settings icon" />Settings</a
+							><Icon name={"settings"} color={"--clr-dark-green"} />Settings</a
 						>
 					</li>
 					<li>
 						<a href="/" on:click={handleMenu} on:click={authHandlers.logout}
-							><img src="/icons/logout-green_icon.svg" alt="Logout icon" />Logout</a
+							><Icon name={"logout"} color={"--clr-dark-green"} />Logout</a
 						>
 					</li>
 				{/if}
@@ -153,10 +154,6 @@
 		align-items: center;
 		gap: 0.5rem;
 		text-decoration: none;
-	}
-
-	header nav a img {
-		width: 2rem;
 	}
 
 	header nav li {

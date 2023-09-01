@@ -16,22 +16,10 @@
 	<h2>Welcome to Secret Spots!</h2>
 	<p>Log in to get started</p>
 	<div>
-		<IconLink
-			url={"/login"}
-			svg={"/icons/login_icon.svg"}
-			innerText={"Login"}
-			className={"btn-red"}
-		/>
-		<IconLink
-			url={"/register"}
-			svg={"/icons/register_icon.svg"}
-			innerText={"Register"}
-			className="btn-red"
-		/>
+		<IconLink url={"/login"} svg={"login"} innerText={"Login"} className={"btn-red"} />
+		<IconLink url={"/register"} svg={"register"} innerText={"Register"} className="btn-red" />
 	</div>
 </div>
-
-<!-- style="--title-offset: {`${titleOffset}px`} -->
 
 <style>
 	.welcomeContainer {

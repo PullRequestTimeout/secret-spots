@@ -3,16 +3,8 @@
 </script>
 
 <footer>
-	<IconLink
-		svg={"/icons/coffee_icon.svg"}
-		innerText={"Donate"}
-		url={"https://ko-fi.com/pullrequesttimeout"}
-	/>
-	<IconLink
-		svg={"/icons/mail_icon.svg"}
-		innerText={"Contact"}
-		url={"mailto:jacobedruery@gmail.com"}
-	/>
+	<IconLink svg={"coffee"} innerText={"Donate"} url={"https://ko-fi.com/pullrequesttimeout"} />
+	<IconLink svg={"mail"} innerText={"Contact"} url={"mailto:jacobedruery@gmail.com"} />
 </footer>
 
 <style>

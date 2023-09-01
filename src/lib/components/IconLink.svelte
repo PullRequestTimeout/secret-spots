@@ -1,4 +1,6 @@
 <script>
+	import Icon from "$lib/components/Icon.svelte";
+
 	export let innerText = "";
 	export let svg = "";
 	export let url = "";
@@ -6,7 +8,7 @@
 </script>
 
 <a href={url} class={className + " btn"}>
-	<img src={svg} alt="button icon" />
+	<Icon name={svg} />
 	{innerText}
 </a>
 
@@ -18,10 +20,5 @@
 	a,
 	a:visited {
 		color: var(--clr-white, white);
-	}
-
-	a img {
-		width: 2rem;
-		filter: invert(1);
 	}
 </style>
