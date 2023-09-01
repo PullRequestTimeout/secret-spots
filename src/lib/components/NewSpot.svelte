@@ -1,23 +1,70 @@
 <script>
 	import IconButton from "$lib/components/IconButton.svelte";
+	import Loading from "$lib/components/Loading.svelte";
 	import { fade } from "svelte/transition";
 	import { clickOutside } from "$lib/utils/click_outside.js";
 
 	export let isOpen;
+	export let spot = {};
 
-	let lat;
-	let long;
+	let lat = "";
+	let long = "";
+	let spotName = "";
+	let spotDetails = "";
+
+	let details = false;
+	let loadLoc = false;
 	let err = false;
+	let errorMessage = "";
+
 	function getLocation() {
 		const success = (pos) => {
 			lat = pos.coords.latitude;
 			long = pos.coords.longitude;
-			console.log(lat, long);
+			loadLoc = false;
 		};
 		const error = () => {
 			err = true;
+			errorMessage = "Location is unavailable.";
+			loadLoc = false;
 		};
+		loadLoc = true;
 		navigator.geolocation.getCurrentPosition(success, error);
+	}
+
+	function handleDetails() {
+		if (!lat || !long) {
+			err = true;
+			errorMessage = "Spots need both a latitude and longitude.";
+		} else {
+			details = true;
+		}
+	}
+
+	function handleClose() {
+		isOpen = false;
+		details = false;
+		lat = "";
+		long = "";
+		errorMessage = "";
+		spotName = "";
+		spotDetails = "";
+	}
+
+	function createSpot() {
+		console.log("createSpot:", {
+			lat: lat,
+			long: long,
+			spotName: spotName,
+			spotDetails: spotDetails
+		});
+		spot = {
+			lat: lat,
+			long: long,
+			spotName: spotName,
+			spotDetails: spotDetails
+		};
+		handleClose();
 	}
 </script>
 
@@ -30,29 +77,70 @@
 			isOpen = false;
 		}}
 	>
-		<IconButton
-			innerText={"Get Current Location"}
-			svg={"/icons/location_icon.svg"}
-			callback={getLocation}
-			className={"btn-red"}
-		/>
-		{#if err}
-			<p>Location is unavailable.</p>
+		{#if !details}
+			<h3>Add New Spot</h3>
+			<IconButton
+				innerText={"Get Current Location"}
+				svg={"/icons/location_icon.svg"}
+				callback={getLocation}
+				className={"btn-red"}
+			/>
+
+			<p>Or</p>
+			<form>
+				<label>
+					<input type="text" placeholder="Longtitude" bind:value={long} class="txt-inp" />
+				</label>
+				<label>
+					<input type="text" placeholder="Latitude" bind:value={lat} class="txt-inp" />
+				</label>
+			</form>
+			{#if loadLoc}
+				<Loading />
+			{:else}
+				<div>
+					<IconButton
+						svg={"/icons/add_icon.svg"}
+						innerText={"Add Spot"}
+						className={"btn-green"}
+						callback={handleDetails}
+					/>
+					<button on:click={handleClose}>Cancel</button>
+				</div>
+			{/if}
+		{:else if details}
+			<h3>Add Spot Details</h3>
+			<form>
+				<label>
+					<input type="text" placeholder="Spot Name" bind:value={spotName} class="txt-inp" />
+				</label>
+				<label>
+					<textarea
+						type="text"
+						placeholder="Spot Details"
+						bind:value={spotDetails}
+						class="txt-inp"
+					/>
+				</label>
+			</form>
+			<div>
+				<IconButton
+					svg={"/icons/add_icon.svg"}
+					innerText={"Add Spot"}
+					className={"btn-green"}
+					callback={createSpot}
+				/>
+				<button on:click={handleClose}>Cancel</button>
+			</div>
 		{/if}
-		<p>Or</p>
-		<form>
-			<label>
-				<input type="text" placeholder="Longtitude" bind:value={long} class="txt-inp" />
-			</label>
-			<label>
-				<input type="text" placeholder="Latitude" bind:value={lat} class="txt-inp" />
-			</label>
-		</form>
+		{#if err}
+			<p transition:fade={{ duration: 200 }} class="error">{errorMessage}</p>
+		{/if}
 	</div>
 {/if}
 
 <style>
-	div {
+	div.srfc {
 		position: absolute;
 		width: 20rem;
 		max-width: 90%;
@@ -60,18 +148,62 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		gap: 0.5rem;
+		gap: var(--spc-gap);
 	}
 
-	div p {
+	div.srfc textarea {
+		max-width: 100%;
+		max-height: 15rem;
+	}
+
+	div.srfc p,
+	div.srfc h3 {
+		text-align: center;
+	}
+
+	div.srfc p {
 		font-size: 1.2rem;
 		font-weight: bold;
 	}
 
-	div form {
+	div.srfc p.error {
+		font-size: 1rem;
+		font-weight: 400;
+		color: var(--clr-red);
+	}
+
+	div.srfc h3 {
+		font-size: 1.5rem;
+		color: var(--clr-dark-green);
+	}
+
+	div.srfc form {
 		width: 100%;
 		display: flex;
 		flex-direction: column;
 		gap: var(--spc-gap);
+	}
+
+	div.srfc div {
+		margin-top: 1.5rem;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	div.srfc div button {
+		font-size: 1rem;
+		font-weight: bold;
+		height: fit-content;
+		border: none;
+		padding: 0;
+		margin: 0;
+		background-color: transparent;
+		color: var(--clr-red);
+		text-decoration: underline;
+	}
+
+	div.srfc div button:hover {
+		cursor: pointer;
 	}
 </style>
