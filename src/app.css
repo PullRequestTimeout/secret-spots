@@ -69,19 +69,7 @@ button {
 
 /* Utils */
 
-.clr-wt,
-.clr-wt:visited,
-.clr-wt:disabled {
-	color: var(--clr-white);
-}
-
-.clr-dg,
-.clr-dg:visited,
-.clr-dg:disabled {
-	color: var(--clr-dark-green);
-}
-
-/* This class styles is default button style, but can be applied to a link */
+/* Buttons: This class styles is default button style, but can be applied to a link */
 .btn {
 	font-weight: bold;
 	color: var(--clr-white);
@@ -114,4 +102,14 @@ button {
 
 .btn-red:hover {
 	background-color: var(--clr-dark-red);
+}
+
+/* Surfaces */
+
+.srfc {
+	border: 3px solid var(--clr-dark-green);
+	padding: 2rem;
+	border-radius: var(--spc-corner-radius);
+	background-color: var(--clr-cream);
+	box-shadow: var(--bx-shdw);
 }
