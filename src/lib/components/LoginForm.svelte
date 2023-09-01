@@ -1,5 +1,7 @@
 <script>
 	import { authHandlers } from "$lib/stores/store";
+	import { goto } from "$app/navigation";
+	import { auth } from "$lib/firebase/firebase";
 
 	let email = "";
 	let password = "";
@@ -20,6 +22,17 @@
 
 		try {
 			await authHandlers.login(email, password);
+			if (auth.currentUser.emailVerified) {
+				console.log("Verified");
+				goto("/spots");
+			} else {
+				// Removes query params from url, TODO: try and figure out the SS best practice
+				window.history.pushState({}, document.title, "/login");
+				error = true;
+				authenticating = false;
+				errorMessage =
+					"Please verify your email. Be sure to check your junk folder if you can't find it in your inbox.";
+			}
 		} catch (err) {
 			error = true;
 

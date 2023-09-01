@@ -1,6 +1,8 @@
 <script>
 	import { authHandlers } from "$lib/stores/store";
 	import IconLink from "$lib/components/IconLink.svelte";
+	import { updateProfile, sendEmailVerification } from "firebase/auth";
+	import { auth } from "$lib/firebase/firebase";
 
 	let fname = "";
 	let email = "";
@@ -38,15 +40,27 @@
 		// Show loading ui and try to register user
 		authenticating = true;
 		try {
-			// await authHandlers.signup();
+			// sign up
+			await authHandlers.signup(email, password);
+			await updateProfile(auth.currentUser, { displayName: fname });
 			console.log("Sign up.");
-			emailSent = true;
-			// await authHandlers.login(email, password);
+			try {
+				// send email verification
+				await sendEmailVerification(auth.currentUser);
+				console.log("email sent to " + email);
+				emailSent = true;
+			} catch (err) {
+				error = true;
+				errorMessage = "There was a problem sending a verification email.";
+				console.log(err.toString());
+				authenticating = false;
+			}
 		} catch (err) {
 			error = true;
 
 			let errorReason = err.toString();
-			if (errorReason.includes("auth/user-not-found")) {
+			if (errorReason.includes("auth/email-already-in-use")) {
+				errorMessage = "Email already in use.";
 			} else {
 				errorMessage = "Oops. Something went wrong.";
 				console.log(err.toString());
@@ -58,7 +72,7 @@
 </script>
 
 <div class="registerContainer">
-	<form method="post">
+	<form>
 		<h3>Register</h3>
 		{#if error}
 			<p class="error">{errorMessage}</p>
@@ -114,7 +128,9 @@
 			</button>
 			<p>Already have an account? <a href="/login">Login</a></p>
 		{:else if emailSent && email}
+			<br />
 			<p>A verification email has been sent to {email}</p>
+			<br />
 			<IconLink
 				url={"/login"}
 				svg={"/icons/login_icon.svg"}
