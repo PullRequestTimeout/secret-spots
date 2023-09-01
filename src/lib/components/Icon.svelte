@@ -1,6 +1,6 @@
 <script>
 	export let name = "";
-	export let color = "";
+	export let color = "--clr-white";
 	export let size = "32";
 
 	let inputColor;
