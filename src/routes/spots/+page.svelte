@@ -37,7 +37,7 @@
 				className={"btn-red"}
 				callback={handleOpen}
 			/>
-			<NewSpot {isOpen} />
+			<NewSpot bind:isOpen />
 		</div>
 	{/if}
 </main>
