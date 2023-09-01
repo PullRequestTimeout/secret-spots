@@ -4,6 +4,7 @@ import { auth } from "$lib/firebase/firebase";
 
 export const authStore = writable({
 	user: null,
+	emailVerified: false,
 	loading: true,
 	data: {}
 });
@@ -22,6 +23,7 @@ export const authHandlers = {
 			return {
 				...curr,
 				user: null,
+				emailVerified: false,
 				loading: true,
 				data: {}
 			};
