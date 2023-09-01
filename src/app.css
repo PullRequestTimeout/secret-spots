@@ -118,6 +118,7 @@ button {
 /* Text field */
 
 .txt-inp {
+	font-size: 1.2rem;
 	width: 100%;
 	padding: 0.5rem;
 	border: 2px solid var(--clr-dark-green);
