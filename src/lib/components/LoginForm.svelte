@@ -53,14 +53,22 @@
 	}
 </script>
 
-<div class="authContainer">
+<div class="loginContainer srfc">
 	<form>
 		<h3>Login</h3>
 		{#if error}
 			<p class="error">{errorMessage}</p>
 		{/if}
 		<label>
-			<input bind:value={email} name="email" type="email" placeholder="Email" autocomplete="off" />
+			<!-- svelte-ignore a11y-autofocus -->
+			<input
+				bind:value={email}
+				name="email"
+				type="email"
+				placeholder="Email"
+				autocomplete="off"
+				autofocus
+			/>
 		</label>
 		<label>
 			<input bind:value={password} name="password" type="password" placeholder="Password" />
@@ -78,17 +86,12 @@
 </div>
 
 <style>
-	.authContainer {
-		border: 3px solid var(--clr-dark-green);
-		padding: 2rem;
-		border-radius: 0.5rem;
-		background-color: var(--clr-cream);
+	.loginContainer {
 		width: 20rem;
 		max-width: 90%;
-		box-shadow: var(--bx-shdw);
 	}
 
-	.authContainer p {
+	.loginContainer p {
 		text-align: center;
 	}
 
@@ -121,8 +124,8 @@
 		font-size: 1.2rem;
 	}
 
-	.authContainer a,
-	.authContainer a:visited {
+	.loginContainer a,
+	.loginContainer a:visited {
 		color: var(--clr-red);
 	}
 </style>

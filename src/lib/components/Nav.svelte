@@ -23,7 +23,7 @@
 			<div class:active={menuOpen} />
 		</button>
 		{#if menuOpen}
-			<ul transition:fade={{ duration: 200 }}>
+			<ul class="srfc" transition:fade={{ duration: 200 }}>
 				{#if !$authStore.user || $authStore.emailVerified == false}
 					<li>
 						<a on:click={handleMenu} href="/login"
@@ -139,13 +139,7 @@
 		position: absolute;
 		right: 2rem;
 		top: 6rem;
-		background-color: var(--clr-cream);
-		color: var(--clr-dark-green);
-		height: fit-content;
 		padding: 2rem 2rem 2rem 1.5rem;
-		border-radius: var(--spc-corner-radius);
-		border: 2px solid var(--clr-dark-green);
-		box-shadow: var(--bx-shdw);
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;

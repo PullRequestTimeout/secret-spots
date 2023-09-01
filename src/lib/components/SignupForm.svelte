@@ -71,7 +71,7 @@
 	}
 </script>
 
-<div class="registerContainer">
+<div class="registerContainer srfc">
 	<form>
 		<h3>Register</h3>
 		{#if error}
@@ -79,6 +79,7 @@
 		{/if}
 		{#if !emailSent}
 			<label>
+				<!-- svelte-ignore a11y-autofocus -->
 				<input
 					bind:value={fname}
 					name="fname"
@@ -87,6 +88,7 @@
 					maxlength="20"
 					placeholder="First Name"
 					autocomplete="off"
+					autofocus
 					required
 				/>
 			</label>
@@ -143,13 +145,8 @@
 
 <style>
 	.registerContainer {
-		border: 3px solid var(--clr-dark-green);
-		padding: 2rem;
-		border-radius: 0.5rem;
-		background-color: var(--clr-cream);
 		width: 20rem;
 		max-width: 90%;
-		box-shadow: var(--bx-shdw);
 	}
 
 	.registerContainer p {
