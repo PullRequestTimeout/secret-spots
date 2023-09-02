@@ -11,7 +11,10 @@
 </script>
 
 <header>
-	<h1>Secret Spots</h1>
+	<div class="logo">
+		<Icon name={"logo"} size={24} />
+		<h1>Secret Spots</h1>
+	</div>
 	<nav
 		use:clickOutside
 		on:outclick={() => {
@@ -69,6 +72,13 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 0.5rem 1rem;
+	}
+
+	header .logo {
+		user-select: none;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
 	}
 
 	header button {
