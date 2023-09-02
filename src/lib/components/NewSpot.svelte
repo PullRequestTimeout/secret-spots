@@ -3,6 +3,7 @@
 	import Loading from "$lib/components/Loading.svelte";
 	import { fade } from "svelte/transition";
 	import { clickOutside } from "$lib/utils/click_outside.js";
+	import IconSelector from "$lib/components/IconSelector.svelte";
 
 	export let isOpen;
 	export let spot = null;
@@ -11,6 +12,7 @@
 	let long = "";
 	let spotName = "";
 	let spotDetails = "";
+	let icon;
 
 	let details = false;
 	let loadLoc = false;
@@ -38,6 +40,7 @@
 			errorMessage = "Spots need both a latitude and longitude.";
 		} else {
 			details = true;
+			err = false;
 		}
 	}
 
@@ -52,13 +55,21 @@
 	}
 
 	function createSpot() {
-		spot = {
-			lat: lat,
-			long: long,
-			spotName: spotName,
-			spotDetails: spotDetails
-		};
-		handleClose();
+		if (!spotName || !spotDetails) {
+			err = true;
+			errorMessage = "Spots need both a name and details.";
+			return;
+		} else {
+			err = false;
+			spot = {
+				lat: lat,
+				long: long,
+				spotName: spotName,
+				icon: icon,
+				spotDetails: spotDetails
+			};
+			handleClose();
+		}
 	}
 </script>
 
@@ -108,6 +119,7 @@
 				<label>
 					<input type="text" placeholder="Spot Name" bind:value={spotName} class="txt-inp" />
 				</label>
+				<IconSelector bind:currentIcon={icon} />
 				<label>
 					<textarea
 						type="text"
@@ -167,6 +179,7 @@
 	}
 
 	div.srfc h3 {
+		margin-bottom: 1rem;
 		font-size: 1.5rem;
 		color: var(--clr-dark-green);
 	}
@@ -179,7 +192,7 @@
 	}
 
 	div.srfc div {
-		margin-top: 1.5rem;
+		margin-top: 1rem;
 		display: flex;
 		align-items: center;
 		gap: 1rem;

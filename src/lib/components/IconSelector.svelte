@@ -31,6 +31,7 @@
 
 	function handleIcon(icon) {
 		currentIcon = icon;
+		isOpen = false;
 	}
 </script>
 
@@ -65,12 +66,12 @@
 
 <style>
 	.dropdown {
-		margin: 5rem;
-		position: absolute;
+		position: relative;
 		height: fit-content;
 		width: fit-content;
 		display: flex;
 		gap: var(--spc-gap);
+		background-color: var(--clr-white);
 	}
 
 	.dropdown button {
@@ -100,7 +101,7 @@
 	div.selection {
 		position: absolute;
 		top: 4rem;
-		left: 0;
+		left: 50%;
 		display: grid;
 		gap: var(--spc-gap);
 		grid-template-columns: repeat(4, 1fr);
