@@ -12,14 +12,14 @@
 	}
 </script>
 
-<div class="welcomeContainer" style="--offset: {`${offset}px`}">
+<main class="welcomeContainer" style="--offset: {`${offset}px`}">
 	<h2>Welcome to Secret Spots!</h2>
 	<p>Log in to get started</p>
 	<div>
 		<IconLink url={"/login"} svg={"login"} innerText={"Login"} className={"btn-red"} />
 		<IconLink url={"/register"} svg={"register"} innerText={"Register"} className="btn-red" />
 	</div>
-</div>
+</main>
 
 <style>
 	.welcomeContainer {
