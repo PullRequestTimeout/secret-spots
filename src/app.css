@@ -41,7 +41,7 @@ html {
 
 *:focus {
 	transition-duration: 0s;
-	outline: 3px solid var(--clr-green);
+	outline: 2px solid #315c3abe;
 }
 
 *::selection {
