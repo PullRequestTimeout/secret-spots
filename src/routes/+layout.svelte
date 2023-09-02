@@ -29,18 +29,16 @@
 				return;
 			}
 
+			if (user && user.emailVerified && nonAuthRoutes.includes(currentPath)) {
+				goto("/spots");
+				return;
+			}
 			// // If user verification has been sent but not verified
 			// if (user && !user.emailVerified && currentPath === "/register") {
 			// 	// window.location.href = "/login";
 			// 	console.log("Check email address for verification");
 			// 	return;
 			// }
-
-			// // if (user && user.emailVerified && currentPath === "/register") {
-			// // 	window.location.href = "/spots";
-			// // 	console.log("2");
-			// // 	return;
-			// // }
 
 			// // If user is not logged in and the current path is not a non-auth route, redirect to home
 			// if (!user && !nonAuthRoutes.includes(currentPath)) {
