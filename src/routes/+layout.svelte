@@ -10,6 +10,7 @@
 
 	import Nav from "$lib/components/Nav.svelte";
 	import Footer from "$lib/components/Footer.svelte";
+	import CloudContainer from "$lib/components/CloudContainer.svelte";
 
 	export let data;
 	const nonAuthRoutes = ["/", "/login", "/register"];
@@ -94,19 +95,27 @@
 	});
 </script>
 
+<Nav />
 {#key data.url}
-	<Nav />
 	<div transition:fade={{ delay: 300, duration: 200 }} class="mainContainer">
 		<slot />
 	</div>
-	<Footer />
 {/key}
+<Footer />
+<div class="cloudContainer">
+	<CloudContainer />
+</div>
 
 <style>
-	.mainContainer {
+	.mainContainer,
+	.cloudContainer {
 		position: fixed;
 		top: var(--spc-header-height);
 		height: calc(100vh - var(--spc-footer-height));
 		width: 100%;
+	}
+
+	.cloudContainer {
+		z-index: -1;
 	}
 </style>
