@@ -127,10 +127,10 @@
 
 	@keyframes float {
 		0% {
-			transform: translate(-10px, 0px);
+			transform: translate(0px, 0px);
 		}
 		100% {
-			transform: translate(-10px, 0px);
+			transform: translate(0px, -35px);
 		}
 	}
 </style>
