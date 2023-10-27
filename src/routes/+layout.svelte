@@ -13,6 +13,7 @@
 	import CloudContainer from "$lib/components/CloudContainer.svelte";
 
 	export let data;
+	// The only routes that don't require auth, add more to array if necessary
 	const nonAuthRoutes = ["/", "/login", "/register"];
 	onMount(() => {
 		// This function controls routing on auth state change, needs to be configured for more complex routing
@@ -29,10 +30,12 @@
 				return;
 			}
 
-			if (user && user.emailVerified && nonAuthRoutes.includes(currentPath)) {
-				goto("/spots");
-				return;
-			}
+			// Reroute to main dashboard if signed in
+			// if (user && user.emailVerified && nonAuthRoutes.includes(currentPath)) {
+			// 	goto("/spots");
+			// 	return;
+			// }
+
 			// // If user verification has been sent but not verified
 			// if (user && !user.emailVerified && currentPath === "/register") {
 			// 	// window.location.href = "/login";
