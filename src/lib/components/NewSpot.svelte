@@ -214,4 +214,10 @@
 	div.srfc div button:hover {
 		cursor: pointer;
 	}
+
+	@media screen and (min-width: 768px) {
+		div.srfc {
+			translate: 10vw;
+		}
+	}
 </style>
