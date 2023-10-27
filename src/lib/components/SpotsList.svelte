@@ -5,32 +5,26 @@
 
 <div class="list-container">
 	<div class="list-slider">
-		<SpotButton spotName="Camping Spot" iconName="camping" active={true} />
-		<SpotButton spotName="Camping Spot" iconName="cabin" />
-		<SpotButton spotName="Camping Spot" iconName="paw" />
-		<SpotButton spotName="Camping Spot" iconName="mountain" />
-		<SpotButton spotName="Camping Spot" iconName="swimming" />
-		<SpotButton spotName="Camping Spot" iconName="snowshoe" />
-		<SpotButton spotName="Camping Spot" iconName="mountain" />
-		<SpotButton spotName="Camping Spot" iconName="swimming" />
-		<SpotButton spotName="Camping Spot" iconName="snowshoe" />
-		<SpotButton spotName="Camping Spot" iconName="mountain" />
-		<SpotButton spotName="Camping Spot" iconName="swimming" />
-		<SpotButton spotName="Camping Spot" iconName="snowshoe" />
-		<SpotButton spotName="Camping Spot" iconName="mountain" />
-		<SpotButton spotName="Camping Spot" iconName="swimming" />
-		<SpotButton spotName="Camping Spot" iconName="snowshoe" />
+		<SpotButton
+			spotName="That swimming hole on the way to Kelowna"
+			iconName="camping"
+			active={true}
+		/>
+		<SpotButton spotName="Chimo Cabin" iconName="cabin" />
+		<SpotButton spotName="Good Dog Walk" iconName="paw" />
+		<SpotButton spotName="Trail Up to Old Glory" iconName="mountain" />
+		<SpotButton spotName="Culvert near Patterson" iconName="swimming" />
+		<SpotButton spotName="Snowshoe Loop at WH20" iconName="snowshoe" />
 	</div>
 </div>
 
 <style>
-	/*  */
 	div.list-container {
 		position: absolute;
 		z-index: 1;
 		bottom: 0;
 		width: 100%;
-		height: 100%;
+		height: calc(5rem + 2.5rem);
 		overflow: auto;
 		overscroll-behavior-x: none;
 		touch-action: none;

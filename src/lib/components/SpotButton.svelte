@@ -3,11 +3,21 @@
 	export let iconName;
 	export let spotName;
 	export let active = false;
+
+	// Char limit of spotName to prevent overflow
+	const maxLength = 20;
+
+	function truncateString(str, maxLength) {
+		if (str.length > maxLength) {
+			return str.slice(0, maxLength - 3) + "...";
+		}
+		return str;
+	}
 </script>
 
 <button on:click={() => (active = !active)} class="spot-button" class:active>
 	<Icon name={iconName} />
-	<span>{spotName}</span>
+	<span>{truncateString(spotName, maxLength)}</span>
 </button>
 
 <style>
@@ -21,6 +31,7 @@
 		position: relative;
 		min-width: 4rem;
 		transition-duration: 200ms;
+		direction: ltr;
 	}
 
 	.spot-button:focus {
@@ -60,10 +71,14 @@
 		.spot-button {
 			min-height: 4rem;
 			height: 4rem;
+			display: grid;
+			grid-template-columns: 1fr 5fr;
+			padding-left: 2rem;
 		}
 
 		.spot-button span {
 			display: block;
+			text-align: left;
 			font-size: 1.2rem;
 			color: var(--clr-white);
 			font-weight: bold;
