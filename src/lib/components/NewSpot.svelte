@@ -148,6 +148,7 @@
 <style>
 	div.srfc {
 		position: absolute;
+		z-index: 100;
 		width: 20rem;
 		max-width: 90%;
 		display: flex;
