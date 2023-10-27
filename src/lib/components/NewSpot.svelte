@@ -148,6 +148,7 @@
 <style>
 	div.srfc {
 		position: absolute;
+		z-index: 100;
 		width: 20rem;
 		max-width: 90%;
 		display: flex;
@@ -212,5 +213,11 @@
 
 	div.srfc div button:hover {
 		cursor: pointer;
+	}
+
+	@media screen and (min-width: 768px) {
+		div.srfc {
+			translate: 10vw;
+		}
 	}
 </style>

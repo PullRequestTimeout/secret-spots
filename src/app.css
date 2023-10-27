@@ -90,6 +90,12 @@ button {
 	cursor: pointer;
 }
 
+.btn-rnd {
+	padding: 0;
+	aspect-ratio: 1;
+	border-radius: 50%;
+}
+
 .btn-green {
 	background-color: var(--clr-dark-green);
 }
