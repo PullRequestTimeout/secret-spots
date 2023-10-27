@@ -1,9 +1,10 @@
 <script>
 	import { fade } from "svelte/transition";
-	import IconButton from "$lib/components/IconButton.svelte";
 	import Icon from "./Icon.svelte";
+
 	// export let currentSpot = {};
-	let map = false;
+
+	let map = true;
 	let journals = true;
 </script>
 
@@ -68,9 +69,9 @@
 
 <style>
 	div.display-container {
-		position: relative;
-		max-height: 85%;
-		height: 85%;
+		position: absolute;
+		top: 0;
+		height: calc(100% - 5rem);
 		width: 100%;
 	}
 
@@ -81,7 +82,7 @@
 		margin-top: 0.5rem;
 		transform: translateX(-50%);
 		width: fit-content;
-		border-radius: 1rem;
+		border-radius: calc(var(--spc-corner-radius) * 2);
 		padding: var(--spc-gap);
 		display: flex;
 		gap: var(--spc-gap);
@@ -133,7 +134,8 @@
 		top: 0;
 		background-color: #eaeaeaad;
 		overflow-y: auto;
-		padding: 6rem 2rem;
+		scroll-behavior: smooth;
+		padding: 7rem 2rem 4rem 2rem;
 	}
 
 	div.display-info button.btn-rnd {
@@ -164,6 +166,15 @@
 		div.display-container {
 			height: 100%;
 			max-height: 100%;
+			width: calc(100% - 20vw);
+			translate: 20vw;
+		}
+
+		div.display-info h3 {
+			font-size: 1.4em;
+		}
+		div.display-info p {
+			font-size: 1.2em;
 		}
 	}
 </style>

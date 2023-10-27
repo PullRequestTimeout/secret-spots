@@ -1,3 +1,5 @@
+<!-- This is the whole dashboard on the spots route, minus nav and footer -->
+
 <script>
 	import SpotsList from "$lib/components/SpotsList.svelte";
 	import SpotsDisplay from "$lib/components/SpotsDisplay.svelte";
@@ -22,13 +24,14 @@
 	];
 </script>
 
-<div class="dashboardContainer">
-	<SpotsList spotsArray={dummySpots} bind:currentSpot />
-	<SpotsDisplay {currentSpot} />
+<div class="dashboard-container">
+	<SpotsList bind:currentSpot />
+	<SpotsDisplay />
+	<!-- <SpotsDisplay {currentSpot} /> -->
 </div>
 
 <style>
-	.dashboardContainer {
+	.dashboard-container {
 		display: flex;
 		flex-direction: column-reverse;
 		position: relative;
@@ -37,7 +40,7 @@
 	}
 
 	@media screen and (min-width: 768px) {
-		.dashboardContainer {
+		.dashboard-container {
 			flex-direction: row;
 		}
 	}
