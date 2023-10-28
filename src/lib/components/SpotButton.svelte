@@ -15,7 +15,7 @@
 	}
 </script>
 
-<button on:click={() => (active = !active)} class="spot-button" class:active>
+<button title={spotName} on:click={() => (active = !active)} class="spot-button" class:active>
 	<Icon name={iconName} />
 	<span>{truncateString(spotName, maxLength)}</span>
 </button>
@@ -90,6 +90,12 @@
 			top: -2px;
 			left: unset;
 			right: -32px;
+		}
+	}
+
+	@media (hover: hover) {
+		.spot-button:hover {
+			background-color: var(--clr-red);
 		}
 	}
 </style>
