@@ -1,21 +1,40 @@
 <script>
+	import { createEventDispatcher } from "svelte";
 	import Icon from "$lib/components/Icon.svelte";
 	export let iconName;
 	export let spotName;
 	export let active = false;
+	const handleActive = () => {
+		if (!active) {
+			active = true;
+		}
+	};
 
 	// Char limit of spotName to prevent overflow
 	const maxLength = 20;
-
 	function truncateString(str, maxLength) {
 		if (str.length > maxLength) {
 			return str.slice(0, maxLength - 3) + "...";
 		}
 		return str;
 	}
+
+	// Deactivate other buttons
+	const dispatch = createEventDispatcher();
+	const deactivateButtons = () => {
+		if (active) {
+			dispatch("deactivateButtons", active);
+		}
+	};
 </script>
 
-<button title={spotName} on:click={() => (active = !active)} class="spot-button" class:active>
+<button
+	title={spotName}
+	on:click={handleActive}
+	on:click={deactivateButtons}
+	class="spot-button"
+	class:active
+>
 	<Icon name={iconName} />
 	<span>{truncateString(spotName, maxLength)}</span>
 </button>

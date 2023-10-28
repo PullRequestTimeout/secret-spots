@@ -1,20 +1,32 @@
 <script>
 	import SpotButton from "$lib/components/SpotButton.svelte";
-	// export let currentSpot;
+
+	const dummyArr = [
+		{ spotName: "Chimo Cabin", iconName: "cabin" },
+		{ spotName: "Good Dog Walk", iconName: "paw" },
+		{ spotName: "Trail Up to Old Glory", iconName: "mountain" },
+		{ spotName: "Culvert near Patterson", iconName: "mountain" },
+		{ spotName: "That swimming hole on the way to Kelowna", iconName: "camping" },
+		{ spotName: "Snowshoe Loop at WH20", iconName: "snowshoe" }
+	];
+
+	// Deactivate other buttons
+	let activeSpot = Array(dummyArr.length).fill(false);
+	function handleActiveSpot(index, isOpened) {
+		activeSpot = activeSpot.map((_, i) => (i === index ? isOpened : false));
+	}
 </script>
 
 <div class="list-container">
 	<div class="list-slider">
-		<SpotButton
-			spotName="That swimming hole on the way to Kelowna"
-			iconName="camping"
-			active={true}
-		/>
-		<SpotButton spotName="Chimo Cabin" iconName="cabin" />
-		<SpotButton spotName="Good Dog Walk" iconName="paw" />
-		<SpotButton spotName="Trail Up to Old Glory" iconName="mountain" />
-		<SpotButton spotName="Culvert near Patterson" iconName="swimming" />
-		<SpotButton spotName="Snowshoe Loop at WH20" iconName="snowshoe" />
+		{#each dummyArr as spot, index}
+			<SpotButton
+				spotName={spot.spotName}
+				iconName={spot.iconName}
+				on:deactivateButtons={(event) => handleActiveSpot(index, event.detail)}
+				active={activeSpot[index]}
+			/>
+		{/each}
 	</div>
 </div>
 
