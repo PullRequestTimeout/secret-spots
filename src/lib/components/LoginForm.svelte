@@ -1,5 +1,5 @@
 <script>
-	import { authHandlers } from "$lib/stores/store";
+	import { authHandlers } from "$lib/stores/authStore.js";
 	import { goto } from "$app/navigation";
 	import { auth } from "$lib/firebase/firebase";
 

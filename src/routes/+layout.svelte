@@ -1,6 +1,6 @@
 <script>
 	import { auth, db } from "$lib/firebase/firebase.js";
-	import { authStore } from "$lib/stores/store.js";
+	import { authStore } from "$lib/stores/authStore.js";
 
 	import { doc, getDoc, setDoc } from "firebase/firestore";
 

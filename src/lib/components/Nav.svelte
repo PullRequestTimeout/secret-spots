@@ -1,5 +1,5 @@
 <script>
-	import { authStore, authHandlers } from "$lib/stores/store.js";
+	import { authStore, authHandlers } from "$lib/stores/authStore.js";
 	import { fade } from "svelte/transition";
 	import { clickOutside } from "$lib/utils/click_outside.js";
 	import Icon from "$lib/components/Icon.svelte";

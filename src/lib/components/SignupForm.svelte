@@ -1,5 +1,5 @@
 <script>
-	import { authHandlers } from "$lib/stores/store";
+	import { authHandlers } from "$lib/stores/authStore";
 	import IconLink from "$lib/components/IconLink.svelte";
 	import { updateProfile, sendEmailVerification } from "firebase/auth";
 	import { auth } from "$lib/firebase/firebase";
