@@ -8,12 +8,14 @@
 		innerText={"Donate"}
 		url={"https://ko-fi.com/pullrequesttimeout"}
 		className="btn-green"
+		responsive
 	/>
 	<IconLink
 		svg={"mail"}
 		innerText={"Contact"}
 		url={"mailto:jacobedruery@gmail.com"}
 		className="btn-green"
+		responsive
 	/>
 </footer>
 
