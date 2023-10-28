@@ -41,6 +41,11 @@
 					</li>
 				{:else if $authStore.user}
 					<li>
+						<a href="/spots" on:click={handleMenu}
+							><Icon name={"secret"} color={"--clr-dark-green"} />Spots</a
+						>
+					</li>
+					<li>
 						<a on:click={handleMenu} href="/account"
 							><Icon name={"person"} color={"--clr-dark-green"} />Account</a
 						>
