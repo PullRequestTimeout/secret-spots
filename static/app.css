@@ -86,10 +86,6 @@ button {
 	border-radius: var(--spc-corner-radius);
 }
 
-.btn:hover {
-	cursor: pointer;
-}
-
 .btn-rnd {
 	padding: 0;
 	aspect-ratio: 1;
@@ -100,16 +96,23 @@ button {
 	background-color: var(--clr-dark-green);
 }
 
-.btn-green:hover {
-	background-color: var(--clr-darker-green);
-}
-
 .btn-red {
 	background-color: var(--clr-red);
 }
 
-.btn-red:hover {
-	background-color: var(--clr-dark-red);
+@media (hover: hover) {
+	button,
+	.btn:hover {
+		cursor: pointer;
+	}
+
+	.btn-green:hover {
+		background-color: var(--clr-darker-green);
+	}
+
+	.btn-red:hover {
+		background-color: var(--clr-dark-red);
+	}
 }
 
 /* Surfaces */
