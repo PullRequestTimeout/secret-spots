@@ -1,11 +1,13 @@
 <script>
+	import { userSpots, activeSpot } from "$lib/stores/userDataStore.js";
 	import { fade } from "svelte/transition";
-	import Icon from "./Icon.svelte";
+	import Icon from "$lib/components/Icon.svelte";
+	import Loading from "$lib/components/Loading.svelte";
 
-	// export let currentSpot = {};
+	$: description = $userSpots.find((x) => x.spotName === $activeSpot).description;
+	$: journalEntries = $userSpots.find((x) => x.spotName === $activeSpot).journalEntries;
 
 	let map = true;
-	let journals = true;
 </script>
 
 <div class="display-container">
@@ -25,7 +27,7 @@
 			}}>Info</button
 		>
 	</div>
-	<h3 class="spot-name">Swimming Spot</h3>
+	<h3 class="spot-name">{$activeSpot}</h3>
 	{#if map}
 		<div transition:fade={{ duration: 200 }} class="display-map">
 			<img src="/map.jpg" alt="Map" />
@@ -37,31 +39,25 @@
 				<h3>Description</h3>
 				<button class="btn btn-rnd btn-red"><Icon name="edit" size="16" /></button>
 			</div>
-			<p>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet sapiente a ducimus
-				asperiores aperiam odio recusandae neque, in ullam magni! Impedit, mollitia cumque.
-				Asperiores saepe suscipit corporis dolorem consequuntur impedit.
-			</p>
-			{#if journals}
-				<div class="display-info__heading">
-					<h3>Journal Entries</h3>
-					<button class="btn btn-rnd btn-red"><Icon name="add" size="16" /></button>
-				</div>
-				<div>
-					<p>
-						Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi praesentium ipsam fugiat
-						quod ratione non magnam, omnis nostrum iste at.
-					</p>
-				</div>
+			{#if description === undefined || null}
+				<p>There doesn't seem to be a description for this spot. Add one with the pencil icon.</p>
+			{:else}
+				<p>{description}</p>
+			{/if}
 
-				<p>
-					Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi praesentium ipsam fugiat
-					quod ratione non magnam, omnis nostrum iste at.
-				</p>
-				<p>
-					Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi praesentium ipsam fugiat
-					quod ratione non magnam, omnis nostrum iste at.
-				</p>
+			<div class="display-info__heading">
+				<h3>Journal Entries</h3>
+				<button class="btn btn-rnd btn-red"><Icon name="add" size="16" /></button>
+			</div>
+			{#if journalEntries.length < 1}
+				<p>Add your first journal entry.</p>
+			{:else}
+				{#each journalEntries as entry}
+					<div class="journal-entry">
+						<p>— {entry.date}</p>
+						<p>{entry.text}</p>
+					</div>
+				{/each}
 			{/if}
 		</div>
 	{/if}
@@ -117,7 +113,7 @@
 		width: 100%;
 		height: 100%;
 		overflow: hidden;
-		background-color: var(--clr-cream);
+		background-color: var(--clr-off-white);
 	}
 
 	/* Test for dev */
@@ -136,6 +132,20 @@
 		overflow-y: auto;
 		scroll-behavior: smooth;
 		padding: 7rem 2rem 4rem 2rem;
+		scrollbar-width: thin;
+		scrollbar-color: var(--clr-darker-green) var(--clr-off-white);
+	}
+
+	div.display-info::-webkit-scrollbar {
+		width: 9px;
+	}
+
+	div.display-info::-webkit-scrollbar-track {
+		background-color: var(--clr-off-white);
+	}
+
+	div.display-info::-webkit-scrollbar-thumb {
+		background-color: var(--clr-darker-green);
 	}
 
 	div.display-info button.btn-rnd {
@@ -170,7 +180,8 @@
 			translate: 20vw;
 		}
 
-		div.display-info h3 {
+		div.display-info h3,
+		h3.spot-name {
 			font-size: 1.4em;
 		}
 		div.display-info p {
