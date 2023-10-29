@@ -1,30 +1,33 @@
 <script>
 	import SpotButton from "$lib/components/SpotButton.svelte";
+	import { userSpots } from "$lib/stores/userDataStore.js";
 
-	const dummyArr = [
-		{ spotName: "Chimo Cabin", iconName: "cabin" },
-		{ spotName: "Good Dog Walk", iconName: "paw" },
-		{ spotName: "Trail Up to Old Glory", iconName: "mountain" },
-		{ spotName: "Culvert near Patterson", iconName: "mountain" },
-		{ spotName: "That swimming hole on the way to Kelowna", iconName: "camping" },
-		{ spotName: "Snowshoe Loop at WH20", iconName: "snowshoe" }
-	];
+	const spotsArr = $userSpots;
+
+	// let activeButton = Array(spotsArr.length).fill(false, 1);
+	let activeButton = [];
+	for (let i = 0; i < spotsArr.length; i++) {
+		if (i == 0) {
+			activeButton.push(true);
+		} else {
+			activeButton.push(false);
+		}
+	}
 
 	// Deactivate other buttons
-	let activeSpot = Array(dummyArr.length).fill(false);
 	function handleActiveSpot(index, isOpened) {
-		activeSpot = activeSpot.map((_, i) => (i === index ? isOpened : false));
+		activeButton = activeButton.map((_, i) => (i === index ? isOpened : false));
 	}
 </script>
 
 <div class="list-container">
 	<div class="list-slider">
-		{#each dummyArr as spot, index}
+		{#each spotsArr as spot, index}
 			<SpotButton
 				spotName={spot.spotName}
 				iconName={spot.iconName}
 				on:deactivateButtons={(event) => handleActiveSpot(index, event.detail)}
-				active={activeSpot[index]}
+				active={activeButton[index]}
 			/>
 		{/each}
 	</div>
