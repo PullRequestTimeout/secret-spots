@@ -1,14 +1,21 @@
 <script>
 	import { createEventDispatcher } from "svelte";
+	import { activeSpot } from "$lib/stores/userDataStore.js";
 	import Icon from "$lib/components/Icon.svelte";
+
 	export let iconName;
 	export let spotName;
 	export let active = false;
+
 	const handleActive = () => {
 		if (!active) {
 			active = true;
 		}
 	};
+
+	$: if (active) {
+		updateCurrentSpot();
+	}
 
 	// Char limit of spotName to prevent overflow
 	const maxLength = 20;
@@ -26,12 +33,17 @@
 			dispatch("deactivateButtons", active);
 		}
 	};
+
+	function updateCurrentSpot() {
+		$activeSpot = spotName;
+	}
 </script>
 
 <button
 	title={spotName}
 	on:click={handleActive}
 	on:click={deactivateButtons}
+	on:click={updateCurrentSpot}
 	class="spot-button"
 	class:active
 >
