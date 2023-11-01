@@ -45,7 +45,7 @@
 		bottom: 0;
 		width: 100%;
 		height: calc(5rem + 2.5rem);
-		overflow: auto;
+		overflow-x: auto;
 		overscroll-behavior-x: none;
 		touch-action: none;
 	}
