@@ -1,39 +1,42 @@
 <script>
 	import SpotButton from "$lib/components/SpotButton.svelte";
-	import { userSpots } from "$lib/stores/userDataStore.js";
+	import { userSpots, activeSpot } from "$lib/stores/userDataStore.js";
 
-	// const spotsArr = $userSpots;
+	let activeButton = Array($userSpots.length).fill(false);
+	$: $activeSpot, updateActiveButton();
 
-	// let activeButton = Array(spotsArr.length).fill(false, 1);
-	let activeButton = [];
-	$: for (let i = 0; i < $userSpots.length; i++) {
-		if (i == 0) {
-			activeButton.push(true);
+	function updateActiveButton() {
+		const activeSpotObj = $userSpots.find((obj) => obj.spotName === $activeSpot);
+		if (activeSpotObj) {
+			activeButton = activeButton.map((value, index) =>
+				index === $userSpots.indexOf(activeSpotObj) ? true : false
+			);
 		} else {
-			activeButton.push(false);
+			// If no object is found, reset all boolean values to false
+			activeButton = activeButton.map((value) => false);
 		}
 	}
 
+	// TODO: This function needs to be joined with updateActiveButton,
+	// but I'm sick of working on them at the moment. Both functions are altering activeButton array.
 	// Deactivate other buttons
-	function handleActiveSpot(index, isOpened) {
-		activeButton = activeButton.map((_, i) => (i === index ? isOpened : false));
+	function handleActiveSpot(index, isActive) {
+		activeButton = activeButton.map((_, i) => (i === index ? isActive : false));
 	}
 </script>
 
-{#key userSpots}
-	<div class="list-container">
-		<div class="list-slider">
-			{#each $userSpots as spot, index}
-				<SpotButton
-					spotName={spot.spotName}
-					iconName={spot.iconName}
-					on:deactivateButtons={(event) => handleActiveSpot(index, event.detail)}
-					active={activeButton[index]}
-				/>
-			{/each}
-		</div>
+<div class="list-container">
+	<div class="list-slider">
+		{#each $userSpots as spot, index}
+			<SpotButton
+				spotName={spot.spotName}
+				iconName={spot.iconName}
+				on:deactivateButtons={(event) => handleActiveSpot(index, event.detail)}
+				active={activeButton[index]}
+			/>
+		{/each}
 	</div>
-{/key}
+</div>
 
 <style>
 	div.list-container {
