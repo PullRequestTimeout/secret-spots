@@ -26,11 +26,12 @@
 	}
 
 	function getLocation() {
+		err = false;
+		errorMessage = "";
 		const success = (pos) => {
 			lat = pos.coords.latitude;
 			long = pos.coords.longitude;
-			err = false;
-			errorMessage = "";
+			clearError();
 			loadLoc = false;
 		};
 		const error = () => {
@@ -48,19 +49,24 @@
 			errorMessage = "Spots need both a latitude and longitude.";
 		} else {
 			details = true;
-			err = false;
+			clearError();
 		}
 	}
 
 	function handleClose() {
+		clearError();
 		isOpen = false;
 		details = false;
 		lat = "";
 		long = "";
-		errorMessage = "";
 		spotName = "";
 		description = "";
 		iconName = "secret";
+	}
+
+	function clearError() {
+		errorMessage = "";
+		err = false;
 	}
 
 	function createSpot() {
@@ -69,7 +75,6 @@
 			errorMessage = "Spots need both a name and details.";
 			return;
 		} else {
-			err = false;
 			spot = {
 				lat: lat,
 				long: long,
@@ -78,6 +83,7 @@
 				description: description,
 				journalEntries: []
 			};
+			clearError();
 			updateActiveSpot();
 			addSpotToStore();
 			handleClose();
