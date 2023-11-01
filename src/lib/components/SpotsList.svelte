@@ -2,11 +2,11 @@
 	import SpotButton from "$lib/components/SpotButton.svelte";
 	import { userSpots } from "$lib/stores/userDataStore.js";
 
-	const spotsArr = $userSpots;
+	// const spotsArr = $userSpots;
 
 	// let activeButton = Array(spotsArr.length).fill(false, 1);
 	let activeButton = [];
-	for (let i = 0; i < spotsArr.length; i++) {
+	$: for (let i = 0; i < $userSpots.length; i++) {
 		if (i == 0) {
 			activeButton.push(true);
 		} else {
@@ -20,18 +20,20 @@
 	}
 </script>
 
-<div class="list-container">
-	<div class="list-slider">
-		{#each spotsArr as spot, index}
-			<SpotButton
-				spotName={spot.spotName}
-				iconName={spot.iconName}
-				on:deactivateButtons={(event) => handleActiveSpot(index, event.detail)}
-				active={activeButton[index]}
-			/>
-		{/each}
+{#key userSpots}
+	<div class="list-container">
+		<div class="list-slider">
+			{#each $userSpots as spot, index}
+				<SpotButton
+					spotName={spot.spotName}
+					iconName={spot.iconName}
+					on:deactivateButtons={(event) => handleActiveSpot(index, event.detail)}
+					active={activeButton[index]}
+				/>
+			{/each}
+		</div>
 	</div>
-</div>
+{/key}
 
 <style>
 	div.list-container {
