@@ -14,7 +14,7 @@
 	};
 
 	$: if (active) {
-		updateCurrentSpot();
+		updateActiveSpot();
 	}
 
 	// Char limit of spotName to prevent overflow
@@ -34,7 +34,7 @@
 		}
 	};
 
-	function updateCurrentSpot() {
+	function updateActiveSpot() {
 		$activeSpot = spotName;
 	}
 </script>
@@ -43,7 +43,7 @@
 	title={spotName}
 	on:click={handleActive}
 	on:click={deactivateButtons}
-	on:click={updateCurrentSpot}
+	on:click={updateActiveSpot}
 	class="spot-button"
 	class:active
 >
