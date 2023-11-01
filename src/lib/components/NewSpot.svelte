@@ -4,7 +4,7 @@
 	import { fade } from "svelte/transition";
 	import { clickOutside } from "$lib/utils/click_outside.js";
 	import IconSelector from "$lib/components/IconSelector.svelte";
-	import { userSpots } from "$lib/stores/userDataStore.js";
+	import { userSpots, activeSpot } from "$lib/stores/userDataStore.js";
 
 	export let isOpen;
 	export let spot = null;
@@ -78,6 +78,7 @@
 				description: description,
 				journalEntries: []
 			};
+			updateActiveSpot();
 			addSpotToStore();
 			handleClose();
 		}
@@ -86,6 +87,10 @@
 			userSpots.update((objects) => {
 				return [...objects, spot];
 			});
+		}
+
+		function updateActiveSpot() {
+			activeSpot.set(spotName);
 		}
 	}
 </script>
