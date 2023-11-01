@@ -4,6 +4,7 @@
 	import { fade } from "svelte/transition";
 	import { clickOutside } from "$lib/utils/click_outside.js";
 	import IconSelector from "$lib/components/IconSelector.svelte";
+	import { userSpots } from "$lib/stores/userDataStore.js";
 
 	export let isOpen;
 	export let spot = null;
@@ -11,18 +12,25 @@
 	let lat = "";
 	let long = "";
 	let spotName = "";
-	let spotDetails = "";
-	let icon;
+	let description = "";
+	let iconName;
 
 	let details = false;
 	let loadLoc = false;
 	let err = false;
 	let errorMessage = "";
 
+	let translate = false;
+	$: if ($userSpots.length > 0) {
+		translate = true;
+	}
+
 	function getLocation() {
 		const success = (pos) => {
 			lat = pos.coords.latitude;
 			long = pos.coords.longitude;
+			err = false;
+			errorMessage = "";
 			loadLoc = false;
 		};
 		const error = () => {
@@ -51,11 +59,11 @@
 		long = "";
 		errorMessage = "";
 		spotName = "";
-		spotDetails = "";
+		description = "";
 	}
 
 	function createSpot() {
-		if (!spotName || !spotDetails) {
+		if (!spotName || !description) {
 			err = true;
 			errorMessage = "Spots need both a name and details.";
 			return;
@@ -65,10 +73,18 @@
 				lat: lat,
 				long: long,
 				spotName: spotName,
-				icon: icon,
-				spotDetails: spotDetails
+				iconName: iconName,
+				description: description,
+				journalEntries: []
 			};
+			addSpotToStore();
 			handleClose();
+		}
+
+		function addSpotToStore() {
+			userSpots.update((objects) => {
+				return [...objects, spot];
+			});
 		}
 	}
 </script>
@@ -76,11 +92,10 @@
 {#if isOpen}
 	<div
 		class="srfc"
+		class:translate
 		transition:fade={{ duration: 200 }}
 		use:clickOutside
-		on:outclick={() => {
-			isOpen = false;
-		}}
+		on:outclick={handleClose}
 	>
 		{#if !details}
 			<h3>Add New Spot</h3>
@@ -119,12 +134,12 @@
 				<label>
 					<input type="text" placeholder="Spot Name" bind:value={spotName} class="txt-inp" />
 				</label>
-				<IconSelector bind:currentIcon={icon} />
+				<IconSelector bind:currentIcon={iconName} />
 				<label>
 					<textarea
 						type="text"
 						placeholder="Spot Details"
-						bind:value={spotDetails}
+						bind:value={description}
 						class="txt-inp"
 					/>
 				</label>
@@ -216,7 +231,7 @@
 	}
 
 	@media screen and (min-width: 768px) {
-		div.srfc {
+		.translate {
 			translate: 10vw;
 		}
 	}
