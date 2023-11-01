@@ -7,14 +7,13 @@
 	import { fade } from "svelte/transition";
 	import SpotsDashboard from "$lib/components/SpotsDashboard.svelte";
 	import Icon from "$lib/components/Icon.svelte";
+	import { userSpots } from "$lib/stores/userDataStore.js";
 
 	// Returns new spot from the NewSpot component
 	let addSpot;
 	$: if (addSpot) {
 		console.log(addSpot);
 	}
-
-	let spots = true;
 
 	let loading = true;
 	let displayName;
@@ -40,12 +39,12 @@
 		<Loading />
 	{:else if !loading}
 		<div transition:fade={{ duration: 200 }}>
-			{#if spots}
+			{#if $userSpots.length > 0}
 				<SpotsDashboard />
 				<button on:click={handleOpen} class="small-add-spot btn btn-rnd btn-red">
 					<Icon name="add" size="32" />
 				</button>
-			{:else if !spots}
+			{:else}
 				<h2>Welcome, {displayName}!</h2>
 				<p>Add a spot to get started</p>
 				<IconButton
