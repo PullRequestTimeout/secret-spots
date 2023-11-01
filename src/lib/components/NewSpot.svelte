@@ -60,6 +60,7 @@
 		errorMessage = "";
 		spotName = "";
 		description = "";
+		iconName = "secret";
 	}
 
 	function createSpot() {
