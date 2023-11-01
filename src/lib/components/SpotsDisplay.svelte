@@ -4,8 +4,12 @@
 	import Icon from "$lib/components/Icon.svelte";
 	import Loading from "$lib/components/Loading.svelte";
 
-	$: description = $userSpots.find((x) => x.spotName === $activeSpot).description;
-	$: journalEntries = $userSpots.find((x) => x.spotName === $activeSpot).journalEntries;
+	let description = "";
+	let journalEntries = [];
+	$: if ($userSpots.length > 0) {
+		description = $userSpots.find((x) => x.spotName === $activeSpot).description;
+		journalEntries = $userSpots.find((x) => x.spotName === $activeSpot).journalEntries;
+	}
 
 	let map = true;
 </script>
