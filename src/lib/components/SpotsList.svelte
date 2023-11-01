@@ -2,7 +2,7 @@
 	import SpotButton from "$lib/components/SpotButton.svelte";
 	import { userSpots, activeSpot } from "$lib/stores/userDataStore.js";
 
-	let activeButton = Array($userSpots.length).fill(false);
+	$: activeButton = Array($userSpots.length).fill(false);
 	$: $activeSpot, updateActiveButton();
 
 	function updateActiveButton() {
