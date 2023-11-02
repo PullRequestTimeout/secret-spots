@@ -46,7 +46,7 @@
 		width: 100%;
 		height: calc(5rem + 2.5rem);
 		overflow-x: auto;
-		overscroll-behavior-x: none;
+		overscroll-behavior: none;
 		/* touch-action: none; */
 	}
 
