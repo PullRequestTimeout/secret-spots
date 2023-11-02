@@ -75,6 +75,10 @@
 	}
 
 	@media screen and (min-width: 768px) {
+		div.backing {
+			display: none;
+		}
+
 		div.list-container {
 			height: 100%;
 			width: calc(20vw + 2.5rem);
