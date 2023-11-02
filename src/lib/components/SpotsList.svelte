@@ -46,8 +46,8 @@
 		width: 100%;
 		height: calc(5rem + 2.5rem);
 		overflow-x: auto;
-		overscroll-behavior: none;
-		/* touch-action: none; */
+		overscroll-behavior-x: none;
+		touch-action: none;
 	}
 
 	div.list-slider {
@@ -59,7 +59,7 @@
 		border-top: solid 3px var(--clr-dark-green);
 		touch-action: auto;
 		pointer-events: auto;
-		overscroll-behavior: none;
+		overscroll-behavior-x: none;
 		min-width: 100%;
 	}
 
