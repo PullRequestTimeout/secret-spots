@@ -143,10 +143,10 @@
 		{:else if details}
 			<h3>Add Spot Details</h3>
 			<form>
+				<IconSelector bind:currentIcon={iconName} />
 				<label>
 					<input type="text" placeholder="Spot Name" bind:value={spotName} class="txt-inp" />
 				</label>
-				<IconSelector bind:currentIcon={iconName} />
 				<label>
 					<textarea
 						type="text"
