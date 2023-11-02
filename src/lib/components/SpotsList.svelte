@@ -37,9 +37,20 @@
 		{/each}
 	</div>
 </div>
+<div class="backing" />
 
 <style>
+	div.backing {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 5rem;
+		background-color: var(--clr-green);
+		border-top: solid 3px var(--clr-dark-green);
+	}
+
 	div.list-container {
+		/* visibility: hidden; */
 		position: absolute;
 		z-index: 1;
 		bottom: 0;
