@@ -47,7 +47,7 @@
 		height: calc(5rem + 2.5rem);
 		overflow-x: auto;
 		overscroll-behavior-x: none;
-		touch-action: none;
+		/* touch-action: none; */
 	}
 
 	div.list-slider {
