@@ -54,6 +54,7 @@
 		display: flex;
 		height: 5rem;
 		position: absolute;
+		z-index: 2;
 		bottom: 0;
 		background-color: var(--clr-cream);
 		border-top: solid 3px var(--clr-dark-green);
