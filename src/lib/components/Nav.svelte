@@ -174,4 +174,14 @@
 	header nav li {
 		list-style: none;
 	}
+
+	header h1 {
+		font-size: 1.5rem;
+	}
+
+	@media screen and (min-width: 768px) {
+		header h1 {
+			font-size: 2rem;
+		}
+	}
 </style>
