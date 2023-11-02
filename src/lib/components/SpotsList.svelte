@@ -59,6 +59,7 @@
 		border-top: solid 3px var(--clr-dark-green);
 		touch-action: auto;
 		pointer-events: auto;
+		overscroll-behavior: none;
 		min-width: 100%;
 	}
 
