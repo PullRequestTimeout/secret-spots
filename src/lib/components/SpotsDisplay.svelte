@@ -6,7 +6,7 @@
 
 	let description = "";
 	let journalEntries = [];
-	$: if ($userSpots.length > 0) {
+	$: if ($userSpots.length > 0 && $activeSpot) {
 		description = $userSpots.find((x) => x.spotName === $activeSpot).description;
 		journalEntries = $userSpots.find((x) => x.spotName === $activeSpot).journalEntries;
 	}
