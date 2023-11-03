@@ -1,7 +1,9 @@
 <script>
 	import { userSpots, activeSpot } from "$lib/stores/userDataStore.js";
 	import { fade } from "svelte/transition";
+	import { clickOutside } from "$lib/utils/click_outside.js";
 	import Icon from "$lib/components/Icon.svelte";
+	import IconButton from "$lib/components/IconButton.svelte";
 	import Loading from "$lib/components/Loading.svelte";
 
 	let description = "";
@@ -12,6 +14,65 @@
 	}
 
 	let map = true;
+	let error = "";
+
+	let editDescriptionModal = false;
+	let newDescription = "";
+	function handleCloseDescription() {
+		editDescriptionModal = false;
+		newDescription = "";
+	}
+
+	function editDescription(spotName, newDescription) {
+		if (newDescription.length < 1) {
+			error = "Spot description cannot be blank.";
+		} else {
+			error = "";
+			userSpots.update((spotList) => {
+				// Find the spot with the activeSpot store value and update its description
+				const updatedSpotList = spotList.map((spot) => {
+					if (spot.spotName === spotName) {
+						return { ...spot, description: newDescription };
+					}
+					return spot;
+				});
+				return updatedSpotList;
+			});
+		}
+		handleCloseDescription();
+	}
+
+	let newJournalEntryModal = false;
+	let newJournalEntry = "";
+	let newJournalEntryDate = "";
+	function handleCloseJournal() {
+		error = "";
+		newJournalEntryModal = false;
+		newJournalEntry = "";
+		newJournalEntryDate = "";
+	}
+
+	function addJournalEntry(spotName, date, newJournalEntry) {
+		if (date.length < 1 || newJournalEntry.length < 1) {
+			error = "Journal entries need both a date and content.";
+		} else {
+			error = "";
+			userSpots.update((spotList) => {
+				// Find the spot with the activeSpot store value and add the new dated journal entry
+				const updatedSpotList = spotList.map((spot) => {
+					if (spot.spotName === spotName) {
+						return {
+							...spot,
+							journalEntries: [...journalEntries, { date: date, journalEntry: newJournalEntry }]
+						};
+					}
+					return spot;
+				});
+				return updatedSpotList;
+			});
+			handleCloseJournal();
+		}
+	}
 </script>
 
 <div class="display-container">
@@ -41,7 +102,9 @@
 		<div transition:fade={{ duration: 200 }} class="display-info">
 			<div class="display-info__heading">
 				<h3>Description</h3>
-				<button class="btn btn-rnd btn-red"><Icon name="edit" size="16" /></button>
+				<button class="btn btn-rnd btn-red" on:click={() => (editDescriptionModal = true)}
+					><Icon name="edit" size="16" /></button
+				>
 			</div>
 			{#if description === undefined || null}
 				<p>There doesn't seem to be a description for this spot. Add one with the pencil icon.</p>
@@ -51,7 +114,9 @@
 
 			<div class="display-info__heading">
 				<h3>Journal Entries</h3>
-				<button class="btn btn-rnd btn-red"><Icon name="add" size="16" /></button>
+				<button class="btn btn-rnd btn-red" on:click={() => (newJournalEntryModal = true)}
+					><Icon name="add" size="16" /></button
+				>
 			</div>
 			{#if journalEntries.length < 1}
 				<p>Add your first journal entry.</p>
@@ -59,12 +124,71 @@
 				{#each journalEntries as entry}
 					<div class="journal-entry">
 						<p>— {entry.date}</p>
-						<p>{entry.text}</p>
+						<p>{entry.journalEntry}</p>
 					</div>
 				{/each}
 			{/if}
 		</div>
 	{/if}
+	<div class="modal-container">
+		{#if editDescriptionModal}
+			<div
+				transition:fade={{ duration: 200 }}
+				class="srfc modal"
+				use:clickOutside
+				on:outclick={handleCloseDescription}
+			>
+				<h3>Update Description</h3>
+				<textarea
+					type="text"
+					placeholder="New Description"
+					bind:value={newDescription}
+					class="txt-inp"
+				/>
+				<div>
+					<IconButton
+						svg={"edit"}
+						innerText={"Update"}
+						className={"btn-green"}
+						callback={() => editDescription($activeSpot, newDescription)}
+					/>
+					<button on:click={handleCloseDescription}>Cancel</button>
+				</div>
+				{#if error}
+					<p class="error">{error}</p>
+				{/if}
+			</div>
+		{/if}
+		{#if newJournalEntryModal}
+			<div
+				transition:fade={{ duration: 200 }}
+				class="srfc modal"
+				use:clickOutside
+				on:outclick={handleCloseJournal}
+			>
+				<h3>New Journal Entry</h3>
+				<input type="text" placeholder="Date" bind:value={newJournalEntryDate} class="txt-inp" />
+				<textarea
+					type="text"
+					placeholder="Journal Entry"
+					bind:value={newJournalEntry}
+					class="txt-inp"
+				/>
+				<div>
+					<IconButton
+						svg={"add"}
+						innerText={"Add Entry"}
+						className={"btn-green"}
+						callback={() => addJournalEntry($activeSpot, newJournalEntryDate, newJournalEntry)}
+					/>
+					<button on:click={handleCloseJournal}>Cancel</button>
+				</div>
+				{#if error}
+					<p class="error">{error}</p>
+				{/if}
+			</div>
+		{/if}
+	</div>
 </div>
 
 <style>
@@ -174,6 +298,71 @@
 	div.display-info p {
 		margin-bottom: 0.5rem;
 		line-height: 1.3;
+	}
+
+	div.modal-container {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	div.modal {
+		position: absolute;
+		z-index: 100;
+		width: 20rem;
+		max-width: 90%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: var(--spc-gap);
+	}
+
+	div.modal h3 {
+		margin-bottom: 1rem;
+		font-size: 1.5rem;
+		color: var(--clr-dark-green);
+	}
+
+	div.modal p,
+	div.modal h3 {
+		text-align: center;
+	}
+
+	div.modal p.error {
+		font-size: 1rem;
+		font-weight: 400;
+		color: var(--clr-red);
+	}
+
+	div.modal textarea {
+		max-width: 100%;
+		max-height: 15rem;
+	}
+
+	div.modal div {
+		margin-top: 1rem;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	div.modal div button {
+		font-size: 1rem;
+		font-weight: bold;
+		height: fit-content;
+		border: none;
+		padding: 0;
+		margin: 0;
+		background-color: transparent;
+		color: var(--clr-red);
+		text-decoration: underline;
+	}
+
+	div.modal div button:hover {
+		cursor: pointer;
 	}
 
 	@media screen and (min-width: 768px) {
