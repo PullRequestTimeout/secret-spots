@@ -9,6 +9,9 @@ export const authStore = writable({
 	data: {}
 });
 
+// API reference
+// https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth
+
 export const authHandlers = {
 	signup: async (email, password) => {
 		await createUserWithEmailAndPassword(auth, email, password);
