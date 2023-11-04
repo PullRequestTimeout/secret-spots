@@ -2,38 +2,14 @@
 	import SpotButton from "$lib/components/SpotButton.svelte";
 	import { userSpots, activeSpot } from "$lib/stores/userDataStore.js";
 
-	$: activeButton = Array($userSpots.length).fill(false);
-	$: $activeSpot, updateActiveButton();
-
-	function updateActiveButton() {
-		const activeSpotObj = $userSpots.find((obj) => obj.spotName === $activeSpot);
-		if (activeSpotObj) {
-			activeButton = activeButton.map((value, index) =>
-				index === $userSpots.indexOf(activeSpotObj) ? true : false
-			);
-		} else {
-			// If no object is found, reset all boolean values to false
-			activeButton = activeButton.map((value) => false);
-		}
-	}
-
-	// TODO: This function needs to be joined with updateActiveButton,
-	// but I'm sick of working on them at the moment. Both functions are altering activeButton array.
-	// Deactivate other buttons
-	function handleActiveSpot(index, isActive) {
-		activeButton = activeButton.map((_, i) => (i === index ? isActive : false));
-	}
+	let activeButton = [];
+	$: $activeSpot, (activeButton = $userSpots.map((spot) => spot.spotName === $activeSpot));
 </script>
 
 <div class="list-container">
 	<div class="list-slider">
 		{#each $userSpots as spot, index}
-			<SpotButton
-				spotName={spot.spotName}
-				iconName={spot.iconName}
-				on:deactivateButtons={(event) => handleActiveSpot(index, event.detail)}
-				active={activeButton[index]}
-			/>
+			<SpotButton spotName={spot.spotName} iconName={spot.iconName} active={activeButton[index]} />
 		{/each}
 	</div>
 </div>
