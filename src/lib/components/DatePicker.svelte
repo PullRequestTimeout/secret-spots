@@ -245,9 +245,9 @@
 		max-height: 10rem;
 		background-color: var(--clr-white);
 		border-radius: 0 0 0.5rem 0.5rem;
-		outline: 2px solid var(--clr-dark-green);
+		/* outline: 2px solid var(--clr-dark-green); */
 		border-top: none;
-		box-shadow: var(--bx-shdw);
+		box-shadow: var(--bx-shdw), 0 0 0 2px var(--clr-dark-green);
 		display: flex;
 		flex-direction: column;
 		padding: 0.25rem;
@@ -259,6 +259,7 @@
 
 	.date-input__dropdown button {
 		font-size: 1.2rem;
+		color: #000;
 		background-color: transparent;
 		border: none;
 		text-align: left;
