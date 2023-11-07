@@ -1,10 +1,11 @@
 <script>
-	import { userSpots, activeSpot } from "$lib/stores/userDataStore.js";
+	import { userSpots, activeSpot, userPref } from "$lib/stores/userDataStore.js";
 	import { fade } from "svelte/transition";
 	import { clickOutside } from "$lib/utils/click_outside.js";
 	import Icon from "$lib/components/Icon.svelte";
 	import IconButton from "$lib/components/IconButton.svelte";
 	import Loading from "$lib/components/Loading.svelte";
+	import DatePicker from "$lib/components/DatePicker.svelte";
 
 	let description = "";
 	let journalEntries = [];
@@ -12,6 +13,13 @@
 		description = $userSpots.find((x) => x.spotName === $activeSpot).description;
 		journalEntries = $userSpots.find((x) => x.spotName === $activeSpot).journalEntries;
 	}
+
+	// Recieves the date from the DatePicker component
+	let d;
+	let m;
+	let y;
+	$: dateObj = { d, m, y };
+	// $: console.log(dateObj);
 
 	let map = true;
 	let error = "";
@@ -44,17 +52,16 @@
 
 	let newJournalEntryModal = false;
 	let newJournalEntry = "";
-	let newJournalEntryDate = "";
+	$: newJournalEntryDate = { d, m, y };
 	function handleCloseJournal() {
 		error = "";
 		newJournalEntryModal = false;
 		newJournalEntry = "";
-		newJournalEntryDate = "";
 	}
 
 	function addJournalEntry(spotName, date, newJournalEntry) {
-		if (date.length < 1 || newJournalEntry.length < 1) {
-			error = "Journal entries need both a date and content.";
+		if (newJournalEntry.length < 1) {
+			error = "Journal entries cannot be blank.";
 		} else {
 			error = "";
 			userSpots.update((spotList) => {
@@ -71,6 +78,22 @@
 				return updatedSpotList;
 			});
 			handleCloseJournal();
+		}
+	}
+
+	function displayDate(d, m, y) {
+		// Get user pref store value
+		const datePref = $userPref.date;
+
+		if (datePref === "dmy") {
+			// Display day, month, year
+			return `${d} ${m} ${y}`;
+		} else if (datePref === "mdy") {
+			// Display month, day, year
+			return `${m} ${d} ${y}`;
+		} else if (datePref === "ymd") {
+			// Display year, month, day
+			return `${y} ${m} ${d}`;
 		}
 	}
 </script>
@@ -123,7 +146,7 @@
 			{:else}
 				{#each journalEntries as entry}
 					<div class="journal-entry">
-						<p>— {entry.date}</p>
+						<p>— {displayDate(entry.date.d, entry.date.m, entry.date.y)}</p>
 						<p>{entry.journalEntry}</p>
 					</div>
 				{/each}
@@ -167,7 +190,8 @@
 				on:outclick={handleCloseJournal}
 			>
 				<h3>New Journal Entry</h3>
-				<input type="text" placeholder="Date" bind:value={newJournalEntryDate} class="txt-inp" />
+				<!-- <input type="text" placeholder="Date" bind:value={newJournalEntryDate} class="txt-inp" /> -->
+				<DatePicker bind:d bind:m bind:y />
 				<textarea
 					type="text"
 					placeholder="Journal Entry"

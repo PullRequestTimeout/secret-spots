@@ -18,9 +18,6 @@
 		y = year;
 	});
 
-	// Resets the date to 1 to prevent errors when changing to shorter months
-	$: m, (d = "1");
-
 	const months = [
 		"Jan",
 		"Feb",
@@ -152,6 +149,7 @@
 				{#each months as month}
 					<button
 						on:click={() => {
+							d = 1;
 							m = month;
 							monthIsOpen = false;
 						}}>{month}</button
@@ -176,7 +174,6 @@
 		{#if yearIsOpen}
 			<div class="date-input__dropdown" transition:fade={{ duration: 200 }}>
 				{#each yearsSinceAppLaunch as year}
-					<!-- <p>{year}</p> -->
 					<button
 						on:click={() => {
 							y = year;
@@ -195,7 +192,7 @@
 		display: flex;
 		align-items: center;
 		width: 100%;
-		gap: 0.25rem;
+		justify-content: space-between;
 	}
 
 	.date-picker .date-input {
@@ -206,6 +203,10 @@
 		padding: 0.25rem;
 		background-color: var(--clr-white);
 		gap: 0.25rem;
+	}
+
+	.date-input p {
+		min-width: 1.75rem;
 	}
 
 	.date-picker .date-input > button {
