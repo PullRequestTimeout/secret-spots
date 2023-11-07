@@ -62,13 +62,6 @@ export const userSpots = writable([
 
 export const activeSpot = writable("");
 
-// export const spotObj = {
-// 	lat: "",
-// 	long: "",
-// 	spotName: "",
-// 	iconName: "",
-// 	description: "",
-// 	journalEntries: []
-// };
-
-// export const userPreferences = writable()
+export const userPref = writable({
+	date: "ymd"
+});
