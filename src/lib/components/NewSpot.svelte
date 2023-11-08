@@ -36,7 +36,7 @@
 		};
 		const error = () => {
 			err = true;
-			errorMessage = "Location is unavailable.";
+			errorMessage = "Location unavailable, make sure privileges are enabled.";
 			loadLoc = false;
 		};
 		loadLoc = true;
