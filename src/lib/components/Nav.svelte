@@ -28,7 +28,7 @@
 		</button>
 		{#if menuOpen}
 			<ul class="srfc" transition:fade={{ duration: 200 }}>
-				{#if !$authStore.user || $authStore.emailVerified == false}
+				{#if !$authStore.uid || $authStore.emailVerified == false}
 					<li>
 						<a on:click={handleMenu} href="/login"
 							><Icon name={"login"} color={"--clr-dark-green"} />Login</a
@@ -39,15 +39,10 @@
 							><Icon name={"register"} color={"--clr-dark-green"} />Register</a
 						>
 					</li>
-				{:else if $authStore.user}
+				{:else if $authStore.uid}
 					<li>
 						<a href="/spots" on:click={handleMenu}
 							><Icon name={"secret"} color={"--clr-dark-green"} />Spots</a
-						>
-					</li>
-					<li>
-						<a on:click={handleMenu} href="/account"
-							><Icon name={"person"} color={"--clr-dark-green"} />Account</a
 						>
 					</li>
 					<li>
