@@ -16,13 +16,17 @@
 	}
 
 	let loading = true;
-	let displayName;
+	let displayName = "";
 
 	onMount(() => {
 		// Gets initial auth state and then sets an observer for changes
+		// This isn't quite true actually, onmount only runs once on component mount or in this case when the page is first loaded.
+		// Display name should actually be set from the $authstore, which needs to be set on login
+		// Auth store should be set on login, and can also go in main layout for t
 		auth.onAuthStateChanged(() => {
-			// console.log(auth.currentUser);
-			displayName = auth.currentUser.displayName;
+			if (auth.currentUser) {
+				displayName = auth.currentUser.displayName;
+			}
 			loading = false;
 		});
 	});
