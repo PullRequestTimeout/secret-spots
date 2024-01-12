@@ -70,8 +70,6 @@
 		onAuthStateChanged(auth, (user) => {
 			if (user) {
 				checkUser();
-			} else {
-				goto("/login");
 			}
 		})
 	);
