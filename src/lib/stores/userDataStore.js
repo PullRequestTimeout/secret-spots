@@ -54,14 +54,14 @@ export function sortByLowestRating(spots) {
 	console.log(sorted);
 }
 
-// **Untested**
+// **Tested**
 // Organise by icon
 export function sortByIcon(spots) {
 	// This is a CoPilot creation, but I believe the default sort function is the same? Test this.
 	const sorted = spots.sort((a, b) => {
-		if (a.icon > b.icon) {
+		if (a.iconName > b.iconName) {
 			return 1;
-		} else if (a.icon < b.icon) {
+		} else if (a.iconName < b.iconName) {
 			return -1;
 		} else {
 			return 0; // same
@@ -70,9 +70,9 @@ export function sortByIcon(spots) {
 	console.log(sorted);
 }
 
-// **Untested**
+// **Tested**
 // Alphabetical
-export function sortAlphabetical(spots) {
+export function sortByAlphabetical(spots) {
 	// This is a CoPilot creation, but I believe the default sort function is the same? Test this.
 	const sorted = spots.sort((a, b) => {
 		if (a.spotName > b.spotName) {
@@ -132,9 +132,9 @@ export function sortByClosest(spots) {
 		});
 }
 
-// **Untested**
+// **Tested**
 // Sort by recently added. Default array is from earliest added to latest added, so reverse it.
 export function sortByRecentlyAdded(spots) {
-	const reversed = spots.toReverse();
+	const reversed = spots.toReversed();
 	console.log(reversed);
 }
