@@ -1,67 +1,140 @@
 import { writable } from "svelte/store";
 
-export const userSpots = writable([
-	// {
-	// 	lat: "",
-	// 	long: "",
-	// 	spotName: "Chimo Cabin",
-	// 	iconName: "cabin",
-	// 	description:
-	// 		"In my opinion the best cabin in the Strawberry Pass network, this cabin is a quick 20-30min walk from the summit parking lot and offers a great view of Old Glory. There is a woodstove with a usually fully stocked woodshed, and plenty of space outside for an outdoor fire.",
-	// 	journalEntries: []
-	// },
-	// {
-	// 	lat: "",
-	// 	long: "",
-	// 	spotName: "Good Dog Walk",
-	// 	iconName: "paw",
-	// 	description: "I walked some dogs here sometime, it was heaps sick aye.",
-	// 	journalEntries: []
-	// },
-	// {
-	// 	lat: "",
-	// 	long: "",
-	// 	spotName: "Trail Up to Old Glory",
-	// 	iconName: "mountain",
-	// 	description:
-	// 		"The start of the Old Glory trail, just off the west side of Highway 3B between Blackjack Ski Area and Strawberry Passs summit. ",
-	// 	journalEntries: []
-	// },
-	// {
-	// 	lat: "",
-	// 	long: "",
-	// 	spotName: "Culvert near Patterson",
-	// 	iconName: "swimming",
-	// 	description:
-	// 		"Rossland kinda sucks on really hot summer days due to the lack of water in town, but this spot is a nice little locals only secret for a sneaky dip when it's blazing hot out. Just past the Seven Summits trail in Patterson, this is just off the right side of the road heading towards the US border.",
-	// 	journalEntries: [
-	// 		{
-	// 			date: "7/3/2023",
-	// 			text: "It was a lovely, balmy summer day. The tits were sweaty and the beers were cold."
-	// 		}
-	// 	]
-	// },
-	// {
-	// 	lat: "",
-	// 	long: "",
-	// 	spotName: "That swimming hole on the way to Kelowna",
-	// 	description:
-	// 		"A decomissioned rec site by the north fork of the Kettle River. Turn off the highway towards the river, follow the FSR across the bridge. Turn left onto the Kettle Valley Railgrade and the site is about 200m down on the left.",
-	// 	iconName: "camping",
-	// 	journalEntries: []
-	// },
-	// {
-	// 	lat: "",
-	// 	long: "",
-	// 	spotName: "Snowshoe Loop at WH20",
-	// 	iconName: "snowshoe",
-	// 	description: "You can snowshoe from here up to Ymir Peak, and base jump off if you wish.",
-	// 	journalEntries: []
-	// }
-]);
+// Stores ---------------------------------------
 
+// Array of spots objects that the user has saved. Every time this array changes it is synced to the userID.spots key in the database.
+// New spots are added to the end of the array via the NewSpot.svelte component, so the most recent spot is the last item in the array.
+// When the user deletes a spot via a component and function still to be written, the array is updated and the spot is removed from the database.
+// If the user deletes the last spot in the array, an intentionalDelete boolean is set to true in spots/+layout.svelte and the array is emptied and the database is updated.
+export const userSpots = writable([]);
+
+// The spot that is currently being viewed by the user.
+// This is used to give the SpotsList component a radio-like function and display the selected spot in SpotsDisplay.
 export const activeSpot = writable("");
 
+// This is used to display the spots in the SpotsList component in the preferred order that the user has set in their settings.
+export const sortedUserSpots = writable([]);
+
+// User Settings Object
 export const userPref = writable({
-	date: "ymd"
+	date: "ymd", // Can be "ymd", "dmy", or "mdy". Although why anyone would use mdy is beyond me.
+	sort: "default" // Can be "default", "recent", "alphabetical", "icon", "closest", "highRating", or "lowRating".
 });
+
+// Sorting options for spots --------------------
+// These need to be thoroughly tested.
+
+// **Untested**
+// Star rating highest to lowest
+export function sortByHighestRating(spots) {
+	const sorted = spots.sort((a, b) => {
+		if (Number(a.starRating) > Number(b.starRating)) {
+			return -1;
+		} else if (Number(a.starRating) < Number(b.starRating)) {
+			return 1;
+		} else {
+			return 0; // same
+		}
+	});
+	console.log(sorted);
+}
+
+// **Untested**
+// Star rating lowest to high
+export function sortByLowestRating(spots) {
+	const sorted = spots.sort((a, b) => {
+		if (Number(a.starRating) > Number(b.starRating)) {
+			return 1;
+		} else if (Number(a.starRating) < Number(b.starRating)) {
+			return -1;
+		} else {
+			return 0; // same
+		}
+	});
+	console.log(sorted);
+}
+
+// **Untested**
+// Organise by icon
+export function sortByIcon(spots) {
+	// This is a CoPilot creation, but I believe the default sort function is the same? Test this.
+	const sorted = spots.sort((a, b) => {
+		if (a.icon > b.icon) {
+			return 1;
+		} else if (a.icon < b.icon) {
+			return -1;
+		} else {
+			return 0; // same
+		}
+	});
+	console.log(sorted);
+}
+
+// **Untested**
+// Alphabetical
+export function sortAlphabetical(spots) {
+	// This is a CoPilot creation, but I believe the default sort function is the same? Test this.
+	const sorted = spots.sort((a, b) => {
+		if (a.spotName > b.spotName) {
+			return 1;
+		} else if (a.spotName < b.spotName) {
+			return -1;
+		} else {
+			return 0; // same
+		}
+	});
+	console.log(sorted);
+}
+
+// **Tested**
+// Search by name. Pass in the array of spots and the search bar value, reactive to the search bar component.
+export function searchByName(spots, name) {
+	const lowerCaseName = name.toLowerCase();
+	const filtered = spots.filter((spot) => spot.spotName.toLowerCase().startsWith(lowerCaseName));
+	console.log(filtered);
+}
+
+// **Tested**
+// Sort by closest to current location
+export function sortByClosest(spots) {
+	// This is a promise that gets the current location of the user. Maybe needs to set a loading state in the UI?
+	const getLocationPromise = new Promise((resolve, reject) => {
+		const success = (pos) => {
+			resolve({ lat: pos.coords.latitude, long: pos.coords.longitude });
+		};
+		const error = () => {
+			reject("Error getting location");
+		};
+		navigator.geolocation.getCurrentPosition(success, error);
+	});
+
+	// Needs to be a promise so that the current location can be resolved before the spots are sorted.
+	getLocationPromise
+		.then((currentLocation) => {
+			// This is a custom sort function that sorts by ascending distance from the current location.
+			const sortedSpots = spots.toSorted((a, b) => {
+				const diffA = Number(a.lat) - currentLocation.lat + (Number(a.long) - currentLocation.long);
+				const diffB = Number(b.lat) - currentLocation.lat + (Number(b.long) - currentLocation.long);
+				if (diffA > diffB) {
+					return 1;
+				} else if (diffA < diffB) {
+					return -1;
+				} else {
+					return 0; // same
+				}
+			});
+
+			console.log(sortedSpots);
+			return sortedSpots;
+		})
+		.catch((error) => {
+			console.log(error);
+		});
+}
+
+// **Untested**
+// Sort by recently added. Default array is from earliest added to latest added, so reverse it.
+export function sortByRecentlyAdded(spots) {
+	const reversed = spots.toReverse();
+	console.log(reversed);
+}
