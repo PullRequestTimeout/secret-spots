@@ -62,6 +62,16 @@
 
 	// Every time spots store changes, update the DB
 	// This be an issue when deleting spots and you remove the last one
+	// This could be resolved with something like;
+
+	// let intentionalDelete = false
+	// $: if ($userSpots.length > 0 || intentionalDelete === true) {
+	// 	updateSpotsInDatabase()
+	// 	intentionalDelete = false
+	// }
+
+	// Then change intentionalDelete to true when $userSpots.length == 1 and a remove spot function is triggered
+
 	$: if ($userSpots.length > 0) {
 		updateSpotsInDatabase();
 	}
