@@ -16,7 +16,7 @@
 		display: inline-block;
 		width: 4rem;
 		height: 2rem;
-		background-color: var(--clr-white);
+		background-color: #ffffff3d;
 		border: 3px solid var(--clr-dark-green);
 		border-radius: 1rem;
 		position: relative;
@@ -36,7 +36,7 @@
 	}
 
 	label.checked {
-		background-color: var(--clr-red);
+		background-color: #3866413d;
 	}
 
 	label.checked::after {
