@@ -111,7 +111,7 @@ export function sortByClosest(spots) {
 	// Needs to be a promise so that the current location can be resolved before the spots are sorted.
 	getLocationPromise
 		.then((currentLocation) => {
-			// This is a custom sort function that sorts by ascending distance from the current location.
+			// Sorts by ascending distance from the current location.
 			const sortedSpots = spots.toSorted((a, b) => {
 				const diffA = Number(a.lat) - currentLocation.lat + (Number(a.long) - currentLocation.long);
 				const diffB = Number(b.lat) - currentLocation.lat + (Number(b.long) - currentLocation.long);
