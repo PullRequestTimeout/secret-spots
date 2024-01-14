@@ -6,7 +6,8 @@
 		searchByName,
 		sortByAlphabetical,
 		sortByRecentlyAdded,
-		sortByIcon
+		sortByIcon,
+		sortByHighestRating
 	} from "$lib/stores/userDataStore.js";
 	import { userSpots } from "$lib/stores/userDataStore.js";
 
@@ -19,13 +20,12 @@
 	}
 
 	function sortSpots() {
-		sortByIcon($userSpots);
+		sortByHighestRating($userSpots);
 	}
 </script>
 
 <h2>Currently a component playground</h2>
 <Toggle />
-<StarRating />
 <button on:click={sortSpots}>Icon</button>
 <input type="text" bind:value={searchTerm} placeholder="Search..." />
 

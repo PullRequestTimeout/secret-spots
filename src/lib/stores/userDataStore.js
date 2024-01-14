@@ -24,7 +24,7 @@ export const userPref = writable({
 // Sorting options for spots --------------------
 // These need to be thoroughly tested.
 
-// **Untested**
+// **Tested**
 // Star rating highest to lowest
 export function sortByHighestRating(spots) {
 	const sorted = spots.sort((a, b) => {
@@ -39,7 +39,7 @@ export function sortByHighestRating(spots) {
 	console.log(sorted);
 }
 
-// **Untested**
+// **Tested**
 // Star rating lowest to high
 export function sortByLowestRating(spots) {
 	const sorted = spots.sort((a, b) => {
