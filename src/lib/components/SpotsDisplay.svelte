@@ -6,12 +6,15 @@
 	import IconButton from "$lib/components/IconButton.svelte";
 	import Loading from "$lib/components/Loading.svelte";
 	import DatePicker from "$lib/components/DatePicker.svelte";
+	import StarRating from "$lib/components/StarRating.svelte";
 
+	let rating;
 	let description = "";
 	let journalEntries = [];
 	$: if ($userSpots.length > 0 && $activeSpot) {
 		description = $userSpots.find((x) => x.spotName === $activeSpot).description;
 		journalEntries = $userSpots.find((x) => x.spotName === $activeSpot).journalEntries;
+		rating = $userSpots.find((x) => x.spotName === $activeSpot).starRating;
 	}
 
 	// Recieves the date from the DatePicker component
@@ -123,6 +126,9 @@
 	{/if}
 	{#if !map}
 		<div transition:fade={{ duration: 200 }} class="display-info">
+			<div class="display-info__star-rating">
+				<StarRating bind:rating />
+			</div>
 			<div class="display-info__heading">
 				<h3>Description</h3>
 				<button class="btn btn-rnd btn-red" on:click={() => (editDescriptionModal = true)}
@@ -303,6 +309,11 @@
 	div.display-info button.btn-rnd {
 		padding: 0.25rem;
 		height: 1.5rem;
+	}
+
+	div.display-info .display-info__star-rating {
+		transform: translateX(-0.25rem);
+		margin-bottom: 1rem;
 	}
 
 	div.display-info .display-info__heading {

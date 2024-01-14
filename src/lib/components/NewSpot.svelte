@@ -14,6 +14,7 @@
 	let spotName = "";
 	let description = "";
 	let iconName;
+	let starRating = 0;
 
 	let details = false;
 	let loadLoc = false;
@@ -75,11 +76,13 @@
 			errorMessage = "Spots need both a name and details.";
 			return;
 		} else {
+			// Schema for spot in the DB
 			spot = {
 				lat: lat,
 				long: long,
 				spotName: spotName,
 				iconName: iconName,
+				starRating: starRating,
 				description: description,
 				journalEntries: []
 			};
@@ -95,6 +98,7 @@
 			});
 		}
 
+		// Updates active spot store so the most recently added spot is active after adding.
 		function updateActiveSpot() {
 			activeSpot.set(spotName);
 		}
