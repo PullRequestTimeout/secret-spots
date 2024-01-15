@@ -21,8 +21,6 @@
 	let d;
 	let m;
 	let y;
-	$: dateObj = { d, m, y };
-	// $: console.log(dateObj);
 
 	let map = true;
 	let error = "";
@@ -93,11 +91,26 @@
 			return `${d} ${m} ${y}`;
 		} else if (datePref === "mdy") {
 			// Display month, day, year
-			return `${m} ${d} ${y}`;
+			return `${m} ${d}, ${y}`;
 		} else if (datePref === "ymd") {
 			// Display year, month, day
-			return `${y} ${m} ${d}`;
+			return `${y}, ${m} ${d}`;
 		}
+	}
+
+	let confirmDeleteSpotModal = false;
+	function handleCloseDeleteSpot() {
+		confirmDeleteSpotModal = false;
+	}
+
+	// Find the spot with the activeSpot store value and delete it
+	function deleteSpot(spotName) {
+		userSpots.update((spotList) => {
+			const updatedSpotList = spotList.filter((spot) => spot.spotName !== spotName);
+			return updatedSpotList;
+		});
+		handleCloseDeleteSpot();
+		activeSpot.set($userSpots[0].spotName);
 	}
 </script>
 
@@ -157,6 +170,15 @@
 					</div>
 				{/each}
 			{/if}
+			<div class="button-wrapper">
+				<IconButton
+					svg={"trash"}
+					innerText={"Delete"}
+					className={"btn-red"}
+					shadow={true}
+					callback={() => (confirmDeleteSpotModal = true)}
+				/>
+			</div>
 		</div>
 	{/if}
 	<div class="modal-container">
@@ -218,6 +240,28 @@
 				{/if}
 			</div>
 		{/if}
+		{#if confirmDeleteSpotModal}
+			<div
+				transition:fade={{ duration: 200 }}
+				class="srfc modal"
+				use:clickOutside
+				on:outclick={handleCloseDeleteSpot}
+			>
+				<h2>Are you sure you want to delete spot?</h2>
+				<p>This cannot be undone.</p>
+				<div>
+					<IconButton
+						svg={"trash"}
+						innerText={"Delete"}
+						className={"btn-red"}
+						callback={() => deleteSpot($activeSpot)}
+					/>
+					<button on:click={handleCloseDeleteSpot}>Cancel</button>
+				</div>
+				{#if error}
+					<p class="error">{error}</p>
+				{/if}
+			</div>{/if}
 	</div>
 </div>
 
@@ -311,6 +355,12 @@
 		height: 1.5rem;
 	}
 
+	div.display-info .button-wrapper {
+		display: flex;
+		justify-content: center;
+		margin-top: 2rem;
+	}
+
 	div.display-info .display-info__star-rating {
 		transform: translateX(-0.25rem);
 		margin-bottom: 1rem;
@@ -362,8 +412,14 @@
 	}
 
 	div.modal p,
-	div.modal h3 {
+	div.modal h3,
+	div.modal h2 {
 		text-align: center;
+	}
+
+	div.modal h2 {
+		font-size: 1.2rem;
+		color: var(--clr-dark-green);
 	}
 
 	div.modal p.error {
@@ -414,6 +470,12 @@
 		}
 		div.display-info p {
 			font-size: 1.2em;
+		}
+
+		div.display-info .button-wrapper {
+			position: fixed;
+			right: 1.25rem;
+			bottom: 1.25rem;
 		}
 	}
 </style>
