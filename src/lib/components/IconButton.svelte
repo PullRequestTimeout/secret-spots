@@ -7,9 +7,10 @@
 	export let className = "";
 	export let iconColor = "--clr-white";
 	export let iconSize = "32";
+	export let shadow = false;
 </script>
 
-<button on:click={callback} class={className + " btn"}>
+<button on:click={callback} class={className + " btn"} class:shadow>
 	<Icon name={svg} color={iconColor} size={iconSize} />
 	{innerText}
 </button>
@@ -21,6 +22,10 @@
 
 	button:hover {
 		cursor: pointer;
+	}
+
+	button.shadow {
+		box-shadow: var(--bx-shdw);
 	}
 
 	/* button img {
