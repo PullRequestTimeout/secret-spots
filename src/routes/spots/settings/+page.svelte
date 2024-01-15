@@ -1,6 +1,7 @@
 <script>
 	import Toggle from "$lib/components/Toggle.svelte";
 	import StarRating from "$lib/components/StarRating.svelte";
+	import DropDown from "$lib/components/DropDown.svelte";
 	import {
 		sortByClosest,
 		searchByName,
@@ -26,8 +27,11 @@
 
 <h2>Currently a component playground</h2>
 <Toggle />
+<DropDown />
 <button on:click={sortSpots}>Icon</button>
-<input type="text" bind:value={searchTerm} placeholder="Search..." />
+
+<!-- Move to search bar component -->
+<input class="txt-inp" type="text" bind:value={searchTerm} placeholder="Search..." />
 
 <style>
 	h2 {
