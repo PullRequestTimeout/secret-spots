@@ -76,6 +76,11 @@
 			errorMessage = "Spots need both a name and details.";
 			return;
 		} else {
+			if (isSpotNameInUse(spotName)) {
+				err = true;
+				errorMessage = "Spot name already in use.";
+				return;
+			}
 			// Schema for spot in the DB
 			spot = {
 				lat: lat,
@@ -102,6 +107,16 @@
 		function updateActiveSpot() {
 			activeSpot.set(spotName);
 		}
+	}
+
+	function isSpotNameInUse(desiredName) {
+		let inUse = false;
+		$userSpots.forEach((spot) => {
+			if (spot.spotName.toLowerCase() === desiredName.toLowerCase()) {
+				inUse = true;
+			}
+		});
+		return inUse;
 	}
 </script>
 
