@@ -2,6 +2,8 @@
 	import { fade } from "svelte/transition";
 	import { clickOutside } from "$lib/utils/click_outside.js";
 	import Icon from "$lib/components/Icon.svelte";
+	import { userPref } from "$lib/stores/userDataStore.js";
+
 	let menuOpen = false;
 	let sortOptions = false;
 	let searchBar = false;
@@ -25,6 +27,13 @@
 		{ display: "Highest Rated", sort: "highest" },
 		{ display: "Lowest Rated", sort: "lowest" }
 	];
+
+	// Sort type button updates userPref "sort" value to the sort type
+	function sortTypeButton(sortType) {
+		userPref.update((pref) => {
+			return { ...pref, sort: sortType };
+		});
+	}
 </script>
 
 <div use:clickOutside on:outclick={closeAll}>
@@ -60,7 +69,13 @@
 	</div>
 	<div class="srfc sort-options" class:open={sortOptions} transition:fade={{ duration: 200 }}>
 		{#each sortTypes as sortType}
-			<button class="btn btn-green" on:click={closeAll}>{sortType.display}</button>
+			<button
+				class="btn btn-green"
+				on:click={() => {
+					closeAll();
+					sortTypeButton(sortType.sort);
+				}}>{sortType.display}</button
+			>
 		{/each}
 	</div>
 	<div class="srfc search-bar" class:open={searchBar} transition:fade={{ duration: 200 }}>
@@ -162,7 +177,7 @@
 		padding: 1rem;
 		border-left: none;
 		border-radius: 0 0.75rem 0.75rem 0;
-		transition: 0.25s;
+		transition: 0.5s;
 	}
 
 	.sort-options.open,
