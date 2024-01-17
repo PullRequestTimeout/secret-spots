@@ -3,6 +3,7 @@
 <script>
 	import SpotsList from "$lib/components/SpotsList.svelte";
 	import SpotsDisplay from "$lib/components/SpotsDisplay.svelte";
+	import SortMenu from "$lib/components/SortMenu.svelte";
 
 	let currentSpot;
 </script>
@@ -10,6 +11,7 @@
 <div class="dashboard-container">
 	<SpotsList bind:currentSpot />
 	<SpotsDisplay />
+	<SortMenu />
 </div>
 
 <style>
