@@ -63,8 +63,12 @@
 	async function updateUserPrefInDatabase() {
 		const user = auth.currentUser;
 		// docRef is a reference to the user document in the users collection
-		const docRef = doc(db, "users", user.uid);
-		await updateDoc(docRef, { settings: $userPref });
+		if (user) {
+			const docRef = doc(db, "users", user.uid);
+			await updateDoc(docRef, { settings: $userPref });
+		} else {
+			console.log("No user signed in");
+		}
 	}
 
 	// Every time userPref store changes, update the DB
