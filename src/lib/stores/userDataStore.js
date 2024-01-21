@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable, derived } from "svelte/store";
 
 // Stores ---------------------------------------
 
@@ -12,22 +12,52 @@ export const userSpots = writable([]);
 // This is used to give the SpotsList component a radio-like function and display the selected spot in SpotsDisplay.
 export const activeSpot = writable("");
 
-// This is used to display the spots in the SpotsList component in the preferred order that the user has set in their settings.
-export const sortedUserSpots = writable([]);
-
 // User Settings Object
 export const userPref = writable({
 	date: "ymd", // Can be "ymd", "dmy", or "mdy". Although why anyone would use mdy is beyond me.
 	sort: "default" // Can be "default", "recent", "alphabetical", "icon", "closest", "highRating", or "lowRating".
 });
 
+// This is used to display the spots in the SpotsList component in the preferred order that the user has set in their settings.
+// export const sortedUserSpots = writable([]);
+export const sortedUserSpots = derived([userSpots, userPref], ([$userSpots, $userPref]) => {
+	const currentSortedSpots = getCurrentSortingFunction($userSpots, $userPref.sort);
+	return currentSortedSpots;
+});
+
+export function getCurrentSortingFunction(spotsStore, currentSortMethod) {
+	switch (currentSortMethod) {
+		default:
+		case "default":
+			return dontSort(spotsStore);
+		case "recent":
+			return sortByRecentlyAdded(spotsStore);
+		case "alphabetical":
+			return sortByAlphabetical(spotsStore);
+		case "icon":
+			return sortByIcon(spotsStore);
+		case "closest":
+			return sortByClosest(spotsStore);
+		case "highRating":
+			return sortByHighestRating(spotsStore);
+		case "lowRating":
+			return sortByLowestRating(spotsStore);
+	}
+}
+
 // Sorting options for spots --------------------
 // These need to be thoroughly tested.
+// Using the slice method to make a copy is a bit of a hack, toSorted is a better option, consider changing.
+
+function dontSort(spots) {
+	return spots;
+}
 
 // **Tested**
 // Star rating highest to lowest
-export function sortByHighestRating(spots) {
-	const sorted = spots.sort((a, b) => {
+function sortByHighestRating(spots) {
+	const spotsCopy = spots.slice();
+	const sorted = spotsCopy.sort((a, b) => {
 		if (Number(a.starRating) > Number(b.starRating)) {
 			return -1;
 		} else if (Number(a.starRating) < Number(b.starRating)) {
@@ -36,13 +66,14 @@ export function sortByHighestRating(spots) {
 			return 0; // same
 		}
 	});
-	console.log(sorted);
+	return sorted;
 }
 
 // **Tested**
 // Star rating lowest to high
-export function sortByLowestRating(spots) {
-	const sorted = spots.sort((a, b) => {
+function sortByLowestRating(spots) {
+	const spotsCopy = spots.slice();
+	const sorted = spotsCopy.sort((a, b) => {
 		if (Number(a.starRating) > Number(b.starRating)) {
 			return 1;
 		} else if (Number(a.starRating) < Number(b.starRating)) {
@@ -51,14 +82,15 @@ export function sortByLowestRating(spots) {
 			return 0; // same
 		}
 	});
-	console.log(sorted);
+	return sorted;
 }
 
 // **Tested**
 // Organise by icon
-export function sortByIcon(spots) {
+function sortByIcon(spots) {
+	const spotsCopy = spots.slice();
 	// This is a CoPilot creation, but I believe the default sort function is the same? Test this.
-	const sorted = spots.sort((a, b) => {
+	const sorted = spotsCopy.sort((a, b) => {
 		if (a.iconName > b.iconName) {
 			return 1;
 		} else if (a.iconName < b.iconName) {
@@ -67,14 +99,15 @@ export function sortByIcon(spots) {
 			return 0; // same
 		}
 	});
-	console.log(sorted);
+	return sorted;
 }
 
 // **Tested**
 // Alphabetical
-export function sortByAlphabetical(spots) {
+function sortByAlphabetical(spots) {
+	const spotsCopy = spots.slice();
 	// This is a CoPilot creation, but I believe the default sort function is the same? Test this.
-	const sorted = spots.sort((a, b) => {
+	const sorted = spotsCopy.sort((a, b) => {
 		if (a.spotName > b.spotName) {
 			return 1;
 		} else if (a.spotName < b.spotName) {
@@ -83,20 +116,21 @@ export function sortByAlphabetical(spots) {
 			return 0; // same
 		}
 	});
-	console.log(sorted);
+	return sorted;
 }
 
 // **Tested**
 // Search by name. Pass in the array of spots and the search bar value, reactive to the search bar component.
-export function searchByName(spots, name) {
+function searchByName(spots, name) {
 	const lowerCaseName = name.toLowerCase();
 	const filtered = spots.filter((spot) => spot.spotName.toLowerCase().startsWith(lowerCaseName));
 	console.log(filtered);
+	return filtered;
 }
 
 // **Tested**
 // Sort by closest to current location
-export function sortByClosest(spots) {
+function sortByClosest(spots) {
 	// This is a promise that gets the current location of the user. Maybe needs to set a loading state in the UI?
 	const getLocationPromise = new Promise((resolve, reject) => {
 		const success = (pos) => {
@@ -134,7 +168,7 @@ export function sortByClosest(spots) {
 
 // **Tested**
 // Sort by recently added. Default array is from earliest added to latest added, so reverse it.
-export function sortByRecentlyAdded(spots) {
+function sortByRecentlyAdded(spots) {
 	const reversed = spots.toReversed();
-	console.log(reversed);
+	return reversed;
 }
