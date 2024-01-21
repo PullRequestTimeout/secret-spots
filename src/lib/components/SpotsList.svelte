@@ -1,18 +1,25 @@
 <script>
 	import SpotButton from "$lib/components/SpotButton.svelte";
-	import { userSpots, activeSpot } from "$lib/stores/userDataStore.js";
+	import { sortedUserSpots, activeSpot } from "$lib/stores/userDataStore.js";
 
 	let activeButton = [];
-	$: $activeSpot, (activeButton = $userSpots.map((spot) => spot.spotName === $activeSpot));
+	$: $activeSpot, (activeButton = $sortedUserSpots.map((spot) => spot.spotName === $activeSpot));
 </script>
 
-<div class="list-container">
-	<div class="list-slider">
-		{#each $userSpots as spot, index}
-			<SpotButton spotName={spot.spotName} iconName={spot.iconName} active={activeButton[index]} />
-		{/each}
+{#key $sortedUserSpots}
+	<div class="list-container">
+		<div class="list-slider">
+			{#each $sortedUserSpots as spot, index}
+				<SpotButton
+					spotName={spot.spotName}
+					iconName={spot.iconName}
+					active={activeButton[index]}
+				/>
+			{/each}
+		</div>
 	</div>
-</div>
+{/key}
+
 <div class="backing" />
 
 <style>
