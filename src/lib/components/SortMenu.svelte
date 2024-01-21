@@ -62,6 +62,9 @@
 			class="btn btn-red more-button"
 			on:click={() => {
 				menuOpen = !menuOpen;
+				if (sortOptions || searchBar) {
+					closeAll();
+				}
 			}}
 		>
 			<div class="more-menu__dots" />
@@ -79,7 +82,7 @@
 		{/each}
 	</div>
 	<div class="srfc search-bar" class:open={searchBar} transition:fade={{ duration: 200 }}>
-		<input type="text" class="txt-inp" bind:this={searchInput} />
+		<input type="text" class="txt-inp" bind:this={searchInput} placeholder="Search..." />
 	</div>
 </div>
 
@@ -183,5 +186,16 @@
 	.sort-options.open,
 	.search-bar.open {
 		left: 0;
+	}
+
+	@media screen and (max-width: 768px) {
+		.more-menu {
+			bottom: 11rem;
+		}
+
+		.sort-options,
+		.search-bar {
+			bottom: 13.5rem;
+		}
 	}
 </style>
