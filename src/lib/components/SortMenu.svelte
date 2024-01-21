@@ -24,8 +24,8 @@
 		{ display: "Alphabetical", sort: "alphabetical" },
 		{ display: "Icon", sort: "icon" },
 		{ display: "Closest To Me", sort: "closest" },
-		{ display: "Highest Rated", sort: "highest" },
-		{ display: "Lowest Rated", sort: "lowest" }
+		{ display: "Highest Rated", sort: "highRating" },
+		{ display: "Lowest Rated", sort: "lowRating" }
 	];
 
 	// Sort type button updates userPref "sort" value to the sort type
