@@ -1,21 +1,41 @@
 <script>
 	import SpotButton from "$lib/components/SpotButton.svelte";
-	import { sortedUserSpots, activeSpot } from "$lib/stores/userDataStore.js";
+	import {
+		sortedUserSpots,
+		activeSpot,
+		searchTerm,
+		searchResults
+	} from "$lib/stores/userDataStore.js";
 
+	// Makes sure the active button works when searching
 	let activeButton = [];
-	$: $activeSpot, (activeButton = $sortedUserSpots.map((spot) => spot.spotName === $activeSpot));
+	$: if ($searchTerm.length > 0) {
+		activeButton = $searchResults.map((spot) => spot.spotName === $activeSpot);
+	} else {
+		activeButton = $sortedUserSpots.map((spot) => spot.spotName === $activeSpot);
+	}
 </script>
 
 {#key $sortedUserSpots}
 	<div class="list-container">
 		<div class="list-slider">
-			{#each $sortedUserSpots as spot, index}
-				<SpotButton
-					spotName={spot.spotName}
-					iconName={spot.iconName}
-					active={activeButton[index]}
-				/>
-			{/each}
+			{#if $searchTerm.length > 0}
+				{#each $searchResults as spot, index}
+					<SpotButton
+						spotName={spot.spotName}
+						iconName={spot.iconName}
+						active={activeButton[index]}
+					/>
+				{/each}
+			{:else}
+				{#each $sortedUserSpots as spot, index}
+					<SpotButton
+						spotName={spot.spotName}
+						iconName={spot.iconName}
+						active={activeButton[index]}
+					/>
+				{/each}
+			{/if}
 		</div>
 	</div>
 {/key}

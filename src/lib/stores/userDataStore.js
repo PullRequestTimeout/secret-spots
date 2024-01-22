@@ -25,7 +25,7 @@ export const sortedUserSpots = derived([userSpots, userPref], ([$userSpots, $use
 	return currentSortedSpots;
 });
 
-export function getCurrentSortingFunction(spotsStore, currentSortMethod) {
+function getCurrentSortingFunction(spotsStore, currentSortMethod) {
 	switch (currentSortMethod) {
 		default:
 		case "default":
@@ -36,14 +36,22 @@ export function getCurrentSortingFunction(spotsStore, currentSortMethod) {
 			return sortByAlphabetical(spotsStore);
 		case "icon":
 			return sortByIcon(spotsStore);
-		case "closest":
-			return sortByClosest(spotsStore);
+		// case "closest":
+		// return sortByClosest(spotsStore);
 		case "highRating":
 			return sortByHighestRating(spotsStore);
 		case "lowRating":
 			return sortByLowestRating(spotsStore);
 	}
 }
+
+// Search bar -----------------------------------
+
+export const searchTerm = writable("");
+export const searchResults = derived([userSpots, searchTerm], ([$userSpots, $searchTerm]) => {
+	const results = searchByName($userSpots, $searchTerm);
+	return results;
+});
 
 // Sorting options for spots --------------------
 // These need to be thoroughly tested.
@@ -121,9 +129,9 @@ function sortByAlphabetical(spots) {
 
 // **Tested**
 // Search by name. Pass in the array of spots and the search bar value, reactive to the search bar component.
-function searchByName(spots, name) {
+export function searchByName(spots, name) {
 	const lowerCaseName = name.toLowerCase();
-	const filtered = spots.filter((spot) => spot.spotName.toLowerCase().startsWith(lowerCaseName));
+	const filtered = spots.filter((spot) => spot.spotName.toLowerCase().includes(lowerCaseName));
 	console.log(filtered);
 	return filtered;
 }

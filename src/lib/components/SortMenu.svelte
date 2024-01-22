@@ -2,7 +2,7 @@
 	import { fade } from "svelte/transition";
 	import { clickOutside } from "$lib/utils/click_outside.js";
 	import Icon from "$lib/components/Icon.svelte";
-	import { userPref } from "$lib/stores/userDataStore.js";
+	import { userPref, searchTerm } from "$lib/stores/userDataStore.js";
 
 	let menuOpen = false;
 	let sortOptions = false;
@@ -13,6 +13,7 @@
 		searchBar = false;
 	};
 
+	// Focuses on the search input when the search bar is opened
 	let searchInput;
 	$: if (searchBar) {
 		searchInput.focus();
@@ -23,7 +24,7 @@
 		{ display: "Recent", sort: "recent" },
 		{ display: "Alphabetical", sort: "alphabetical" },
 		{ display: "Icon", sort: "icon" },
-		{ display: "Closest To Me", sort: "closest" },
+		// { display: "Closest To Me", sort: "closest" },
 		{ display: "Highest Rated", sort: "highRating" },
 		{ display: "Lowest Rated", sort: "lowRating" }
 	];
@@ -82,7 +83,13 @@
 		{/each}
 	</div>
 	<div class="srfc search-bar" class:open={searchBar} transition:fade={{ duration: 200 }}>
-		<input type="text" class="txt-inp" bind:this={searchInput} placeholder="Search..." />
+		<input
+			type="text"
+			class="txt-inp"
+			bind:this={searchInput}
+			bind:value={$searchTerm}
+			placeholder="Search..."
+		/>
 	</div>
 </div>
 
