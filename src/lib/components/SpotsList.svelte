@@ -16,10 +16,10 @@
 	}
 </script>
 
-{#key $sortedUserSpots}
-	<div class="list-container">
-		<div class="list-slider">
-			{#if $searchTerm.length > 0}
+<div class="list-container">
+	<div class="list-slider">
+		{#if $searchTerm.length > 0}
+			{#key $searchResults}
 				{#each $searchResults as spot, index}
 					<SpotButton
 						spotName={spot.spotName}
@@ -27,7 +27,9 @@
 						active={activeButton[index]}
 					/>
 				{/each}
-			{:else}
+			{/key}
+		{:else}
+			{#key $sortedUserSpots}
 				{#each $sortedUserSpots as spot, index}
 					<SpotButton
 						spotName={spot.spotName}
@@ -35,10 +37,10 @@
 						active={activeButton[index]}
 					/>
 				{/each}
-			{/if}
-		</div>
+			{/key}
+		{/if}
 	</div>
-{/key}
+</div>
 
 <div class="backing" />
 
