@@ -13,6 +13,12 @@
 		searchBar = false;
 	};
 
+	$: if (searchBar === false) {
+		setTimeout(() => {
+			searchTerm.set("");
+		}, 200);
+	}
+
 	// Focuses on the search input when the search bar is opened
 	let searchInput;
 	$: if (searchBar) {
