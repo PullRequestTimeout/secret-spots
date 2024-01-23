@@ -46,7 +46,7 @@
 						>
 					</li>
 					<li>
-						<a on:click={handleMenu} href="/spots/settings"
+						<a on:click={handleMenu} href="/settings"
 							><Icon name={"settings"} color={"--clr-dark-green"} />Settings</a
 						>
 					</li>
