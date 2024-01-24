@@ -87,13 +87,10 @@
 		const datePref = $userPref.date;
 
 		if (datePref === "dmy") {
-			// Display day, month, year
 			return `${d} ${m} ${y}`;
 		} else if (datePref === "mdy") {
-			// Display month, day, year
 			return `${m} ${d}, ${y}`;
 		} else if (datePref === "ymd") {
-			// Display year, month, day
 			return `${y}, ${m} ${d}`;
 		}
 	}
