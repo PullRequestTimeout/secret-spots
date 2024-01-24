@@ -3,53 +3,54 @@
 	import { fade } from "svelte/transition";
 	import Icon from "./Icon.svelte";
 
-	export let values = ["DMY", "YMD", "MDY"];
-	export let currentVal = values[0];
+	// export let values = ["DMY", "YMD", "MDY"];
+	// export let currentVal = values[0];
 	let dropdownOpen = false;
+
+	export let inputs = [{ display: "", value: "" }];
+	let currentDisplay = inputs[0].display;
+	export let currentVal = inputs[0].value;
 
 	function handleDropdownOpen() {
 		dropdownOpen = !dropdownOpen;
 	}
 </script>
 
-<div class="dropdown-wrapper">
-	<div
-		class="dropdown-input txt-inp"
-		class:open={dropdownOpen}
-		use:clickOutside
-		on:outclick={() => {
-			dropdownOpen = false;
-		}}
+<div
+	class="dropdown-input txt-inp"
+	class:open={dropdownOpen}
+	use:clickOutside
+	on:outclick={() => {
+		dropdownOpen = false;
+	}}
+>
+	<p>{currentDisplay}</p>
+	<button class:open={dropdownOpen} on:click={handleDropdownOpen}
+		><Icon name={"dropdown"} color={"--clr-dark-green"} /></button
 	>
-		<p>{currentVal}</p>
-		<button class:open={dropdownOpen} on:click={handleDropdownOpen}
-			><Icon name={"dropdown"} color={"--clr-dark-green"} /></button
-		>
-		{#if dropdownOpen}
-			<div class="dropdown" transition:fade={{ duration: 200 }}>
-				{#each values as value}
-					<button
-						on:click={() => {
-							currentVal = value;
-							dropdownOpen = false;
-						}}>{value}</button
-					>
-				{/each}
-			</div>
-		{/if}
-	</div>
+	{#if dropdownOpen}
+		<div class="dropdown" transition:fade={{ duration: 200 }}>
+			{#each inputs as input}
+				<button
+					on:click={() => {
+						currentVal = input.value;
+						currentDisplay = input.display;
+						dropdownOpen = false;
+					}}>{input.display}</button
+				>
+			{/each}
+		</div>
+	{/if}
 </div>
 
 <style>
-	.dropdown-wrapper {
-		margin: 2rem;
-	}
-
 	.dropdown-input {
 		width: fit-content;
+		min-width: 10rem;
 		position: relative;
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 		padding: 0.25rem;
 		background-color: var(--clr-white);
 		gap: 0.25rem;
@@ -72,15 +73,15 @@
 		transition-duration: 200ms;
 	}
 
-	.dropdown-wrapper button:hover,
-	.dropdown-wrapper button:focus,
-	.dropdown-wrapper button:active {
+	button:hover,
+	button:focus,
+	button:active {
 		cursor: pointer;
 		background-color: #38664134;
 		outline: none;
 	}
 
-	.dropdown-wrapper button.open {
+	button.open {
 		transform: rotate(180deg);
 	}
 
