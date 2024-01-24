@@ -63,7 +63,7 @@
 		height: calc(5rem + 2.5rem);
 		overflow-x: auto;
 		overscroll-behavior: none;
-		pointer-events: none;
+		/* pointer-events: none; */
 	}
 
 	div.list-slider {
