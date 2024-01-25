@@ -1,6 +1,11 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+	signOut,
+	updateProfile
+} from "firebase/auth";
 import { writable } from "svelte/store";
-import { auth } from "$lib/firebase/firebase";
+import { auth, db } from "$lib/firebase/firebase";
 
 export const authStore = writable({
 	uid: null,
@@ -23,10 +28,20 @@ export const authHandlers = {
 
 	logout: async () => {
 		await signOut(auth);
-	}
+	},
 
 	// Need to implement reset password route
 	// resetPassword: async (email) => {
 	//     await sendPasswordResetEmail(auth, email);
 	// }
+
+	updateDisplayName: async (displayName) => {
+		const user = auth.currentUser;
+		await updateProfile(user, { displayName: displayName });
+		// Update the authStore?
+		authStore.update((store) => {
+			store.displayName = displayName;
+			return store;
+		});
+	}
 };

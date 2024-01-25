@@ -3,8 +3,10 @@
 	import DropDown from "$lib/components/DropDown.svelte";
 	import IconButton from "$lib/components/IconButton.svelte";
 	import Chalk from "./Chalk.svelte";
+	import { authHandlers } from "$lib/stores/authStore.js";
 	import { userPref } from "$lib/stores/userDataStore.js";
 	import { getUserData, updateUserPrefInDatabase } from "$lib/firebase/db.js";
+	import { auth } from "$lib/firebase/firebase.js";
 	import { onMount } from "svelte";
 
 	// On mount, set the sort type and date format to the user's preferences in the db
@@ -14,13 +16,14 @@
 		getUserData();
 	});
 
+	let newDisplayName = "Jacob";
 	function clearAllSpots() {
 		// userSpots.set([]);
 		console.log("clearing all spots");
 	}
 
-	function updateDisplayName() {
-		console.log("updating display name");
+	function updateDisplayName(newName) {
+		authHandlers.updateDisplayName(newName);
 	}
 
 	function updatePassword() {
@@ -33,6 +36,7 @@
 </script>
 
 <main>
+	<h2>Welcome {auth.currentUser.displayName}</h2>
 	<section>
 		<div class="settings-heading">
 			<h2>Settings</h2>
@@ -93,7 +97,7 @@
 				svg={"edit"}
 				innerText={"Update"}
 				className={"btn-green"}
-				callback={updateDisplayName}
+				callback={() => updateDisplayName(newDisplayName)}
 			/>
 		</div>
 		<div class="settings-item">
