@@ -103,6 +103,7 @@
 	.more-menu,
 	.more-menu__slider {
 		position: fixed;
+		z-index: 50;
 		left: 0;
 		bottom: 4rem;
 	}
