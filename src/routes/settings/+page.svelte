@@ -3,7 +3,16 @@
 	import DropDown from "$lib/components/DropDown.svelte";
 	import IconButton from "$lib/components/IconButton.svelte";
 	import Chalk from "./Chalk.svelte";
-	import { userSpots } from "$lib/stores/userDataStore.js";
+	import { userPref } from "$lib/stores/userDataStore.js";
+	import { getUserData, updateUserPrefInDatabase } from "$lib/firebase/db.js";
+	import { onMount } from "svelte";
+
+	// On mount, set the sort type and date format to the user's preferences in the db
+	$: startingSort = $userPref.sort;
+	$: startingDate = $userPref.date;
+	onMount(() => {
+		getUserData();
+	});
 
 	function clearAllSpots() {
 		// userSpots.set([]);
@@ -38,10 +47,14 @@
 					{ display: "Recent", value: "recent" },
 					{ display: "Alphabetical", value: "alphabetical" },
 					{ display: "Icon", value: "icon" },
-					// { display: "Closest To Me", sort: "closest" },
 					{ display: "Highest Rated", value: "highRating" },
 					{ display: "Lowest Rated", value: "lowRating" }
 				]}
+				startingValue={startingSort}
+				callback={(val) => {
+					userPref.update((prev) => ({ ...prev, sort: val }));
+					updateUserPrefInDatabase();
+				}}
 			/>
 		</div>
 		<div class="settings-item">
@@ -52,6 +65,11 @@
 					{ display: "YMD", value: "ymd" },
 					{ display: "MDY", value: "mdy" }
 				]}
+				startingValue={startingDate}
+				callback={(val) => {
+					userPref.update((prev) => ({ ...prev, date: val }));
+					updateUserPrefInDatabase();
+				}}
 			/>
 		</div>
 		<div class="settings-item">

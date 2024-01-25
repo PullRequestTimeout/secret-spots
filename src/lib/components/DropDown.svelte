@@ -3,14 +3,14 @@
 	import { fade } from "svelte/transition";
 	import Icon from "./Icon.svelte";
 
-	// export let values = ["DMY", "YMD", "MDY"];
-	// export let currentVal = values[0];
-	let dropdownOpen = false;
-
+	export let startingValue = "";
 	export let inputs = [{ display: "", value: "" }];
-	let currentDisplay = inputs[0].display;
-	export let currentVal = inputs[0].value;
+	export let callback = () => {};
 
+	let currentVal = !!startingValue ? startingValue : inputs[0].value;
+	let currentDisplay = inputs.find((input) => input.value === currentVal).display;
+
+	let dropdownOpen = false;
 	function handleDropdownOpen() {
 		dropdownOpen = !dropdownOpen;
 	}
@@ -33,6 +33,7 @@
 			{#each inputs as input}
 				<button
 					on:click={() => {
+						callback(input.value);
 						currentVal = input.value;
 						currentDisplay = input.display;
 						dropdownOpen = false;
@@ -74,6 +75,7 @@
 	}
 
 	button:hover,
+	.dropdown button:hover,
 	button:focus,
 	button:active {
 		cursor: pointer;
