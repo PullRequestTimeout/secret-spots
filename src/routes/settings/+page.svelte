@@ -1,13 +1,14 @@
 <script>
-	import Toggle from "$lib/components/Toggle.svelte";
+	// import Toggle from "$lib/components/Toggle.svelte";
 	import DropDown from "$lib/components/DropDown.svelte";
 	import IconButton from "$lib/components/IconButton.svelte";
 	import Chalk from "./Chalk.svelte";
-	import { authHandlers } from "$lib/stores/authStore.js";
+	import { authHandlers, authStore } from "$lib/stores/authStore.js";
 	import { userPref } from "$lib/stores/userDataStore.js";
 	import { getUserData, updateUserPrefInDatabase } from "$lib/firebase/db.js";
-	import { auth } from "$lib/firebase/firebase.js";
 	import { onMount } from "svelte";
+	import { clickOutside } from "$lib/utils/click_outside.js";
+	import { fade } from "svelte/transition";
 
 	// On mount, set the sort type and date format to the user's preferences in the db
 	$: startingSort = $userPref.sort;
@@ -16,27 +17,60 @@
 		getUserData();
 	});
 
-	let newDisplayName = "Jacob";
+	// Modal error message
+	let errorMessage = "";
+
+	// Clear all spots
+	let clearSpotsModal = false;
 	function clearAllSpots() {
 		// userSpots.set([]);
+		// updateUserSpotsInDatabase();
 		console.log("clearing all spots");
 	}
 
+	// Update display name
+	let displayNameModal = false;
+	let newDisplayName = "";
 	function updateDisplayName(newName) {
 		authHandlers.updateDisplayName(newName);
+		handleCloseModals();
 	}
 
-	function updatePassword() {
+	// Update password
+	let updatePasswordModal = false;
+	let newPassword1 = "";
+	let newPassword2 = "";
+	function updatePassword(pass1, pass2) {
+		if (newPassword1 !== newPassword2) {
+			console.log("Passwords do not match");
+			return;
+		} else if (newPassword1.length < 6) {
+			console.log("password too short");
+			return;
+		} else {
+			authHandlers.updatePassword(newPassword1);
+			handleCloseModals();
+		}
+
 		console.log("updating password");
 	}
 
+	// Delete account
+	let deleteAccountModal = false;
 	function deleteAccount() {
 		console.log("deleting account");
+	}
+
+	function handleCloseModals() {
+		clearSpotsModal = false;
+		displayNameModal = false;
+		updatePasswordModal = false;
+		deleteAccountModal = false;
 	}
 </script>
 
 <main>
-	<h2>Welcome {auth.currentUser.displayName}</h2>
+	<h2 class="main-title">Welcome, {$authStore.displayName}</h2>
 	<section>
 		<div class="settings-heading">
 			<h2>Settings</h2>
@@ -82,7 +116,7 @@
 				svg={"trash"}
 				innerText={"Clear"}
 				className={"btn-red"}
-				callback={clearAllSpots}
+				callback={() => (clearSpotsModal = true)}
 			/>
 		</div>
 	</section>
@@ -97,7 +131,7 @@
 				svg={"edit"}
 				innerText={"Update"}
 				className={"btn-green"}
-				callback={() => updateDisplayName(newDisplayName)}
+				callback={() => (displayNameModal = true)}
 			/>
 		</div>
 		<div class="settings-item">
@@ -106,7 +140,7 @@
 				svg={"edit"}
 				innerText={"Update"}
 				className={"btn-green"}
-				callback={updatePassword}
+				callback={() => (updatePasswordModal = true)}
 			/>
 		</div>
 		<div class="settings-item">
@@ -115,14 +149,95 @@
 				svg={"trash"}
 				innerText={"Delete"}
 				className={"btn-red"}
-				callback={deleteAccount}
+				callback={() => (deleteAccountModal = true)}
 			/>
 		</div>
 	</section>
+	{#if clearSpotsModal || displayNameModal || updatePasswordModal || deleteAccountModal}
+		<div class="modal-container">
+			<div
+				class="modal srfc"
+				use:clickOutside
+				on:outclick={handleCloseModals}
+				transition:fade={{ duration: 200 }}
+			>
+				{#if clearSpotsModal}
+					<h3>Clear All Spots?</h3>
+					<p>This action cannot be undone.</p>
+					<div>
+						<IconButton
+							svg={"trash"}
+							innerText={"Clear"}
+							className={"btn-red"}
+							callback={clearAllSpots}
+						/>
+						<button on:click={handleCloseModals}>Cancel</button>
+					</div>
+				{/if}
+				{#if displayNameModal}
+					<h3>Update Display Name</h3>
+					<p>Enter a new display name:</p>
+					<input
+						type="text"
+						class="txt-inp"
+						bind:value={newDisplayName}
+						placeholder="New Display Name"
+					/>
+					<div>
+						<IconButton
+							svg={"edit"}
+							innerText={"Update"}
+							className={"btn-green"}
+							callback={() => updateDisplayName(newDisplayName)}
+						/>
+						<button on:click={handleCloseModals}>Cancel</button>
+					</div>
+				{/if}
+				{#if updatePasswordModal}
+					<h3>Update Password</h3>
+					<p>Enter a new password:</p>
+					<input
+						type="password"
+						placeholder="New Password"
+						bind:value={newPassword1}
+						class="txt-inp"
+					/>
+					<input bind:value={newPassword2} placeholder="Confirm New Password" class="txt-inp" />
+					<div>
+						<IconButton
+							svg={"edit"}
+							innerText={"Update"}
+							className={"btn-green"}
+							callback={updatePassword}
+						/>
+						<button on:click={handleCloseModals}>Cancel</button>
+					</div>
+				{/if}
+				{#if deleteAccountModal}
+					<h3>Delete Account</h3>
+					<p>Are you sure you want to delete your account?</p>
+					<p>This action cannot be undone.</p>
+					<div>
+						<IconButton
+							svg={"trash"}
+							innerText={"Delete"}
+							className={"btn-red"}
+							callback={deleteAccount}
+						/>
+						<button on:click={handleCloseModals}>Cancel</button>
+					</div>
+				{/if}
+				{#if errorMessage}
+					<p class="error">{errorMessage}</p>
+				{/if}
+			</div>
+		</div>
+	{/if}
 </main>
 
 <style>
 	main {
+		background-color: #eaeaeaad;
 		height: calc(100vh - var(--spc-footer-height));
 		overflow: auto;
 		scrollbar-width: thin;
@@ -141,9 +256,14 @@
 		background-color: var(--clr-darker-green);
 	}
 
+	main .main-title {
+		margin-top: 2rem;
+		text-align: center;
+	}
+
 	section {
 		position: relative;
-		padding: 2rem;
+		padding: 1rem 2rem;
 		min-width: 50%;
 		display: flex;
 		flex-direction: column;
@@ -176,6 +296,76 @@
 		align-items: center;
 	}
 
+	/* Modal */
+
+	div.modal-container {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	div.modal {
+		position: absolute;
+		z-index: 100;
+		width: 20rem;
+		max-width: 90%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: var(--spc-gap);
+	}
+
+	div.modal h3 {
+		margin-bottom: 1rem;
+		font-size: 1.5rem;
+		color: var(--clr-dark-green);
+	}
+
+	div.modal p,
+	div.modal h3 {
+		text-align: center;
+	}
+	/* 
+	div.modal h2 {
+		font-size: 1.2rem;
+		color: var(--clr-dark-green);
+	} */
+
+	div.modal p.error {
+		font-size: 1rem;
+		font-weight: 400;
+		color: var(--clr-red);
+	}
+
+	div.modal div {
+		margin-top: 1rem;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	div.modal div button {
+		font-size: 1rem;
+		font-weight: bold;
+		height: fit-content;
+		border: none;
+		padding: 0;
+		margin: 0;
+		background-color: transparent;
+		color: var(--clr-red);
+		text-decoration: underline;
+	}
+
+	div.modal div button:hover {
+		cursor: pointer;
+	}
+
 	@media screen and (min-width: 768px) {
 		main {
 			display: flex;
@@ -185,6 +375,7 @@
 
 		section {
 			max-width: 50%;
+			padding: 2rem;
 		}
 
 		.settings-heading {
