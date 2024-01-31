@@ -77,6 +77,7 @@
 	button:hover,
 	.dropdown button:hover,
 	button:focus,
+	.dropdown button:focus,
 	button:active {
 		cursor: pointer;
 		background-color: #38664134;
