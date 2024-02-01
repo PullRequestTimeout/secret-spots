@@ -5,6 +5,7 @@
 	import Chalk from "./Chalk.svelte";
 	import { authHandlers, authStore } from "$lib/stores/authStore.js";
 	import { userPref, userSpots } from "$lib/stores/userDataStore.js";
+	import { setAlertMessage, alertMessage } from "$lib/stores/uiStore.js";
 	import {
 		getUserData,
 		updateUserPrefInDatabase,
@@ -13,7 +14,7 @@
 	} from "$lib/firebase/db.js";
 	import { onMount } from "svelte";
 	import { clickOutside } from "$lib/utils/click_outside.js";
-	import { fade } from "svelte/transition";
+	import { fade, fly } from "svelte/transition";
 
 	// On mount, set the sort type and date format to the user's preferences in the db
 	$: startingSort = $userPref.sort;
@@ -31,32 +32,41 @@
 		userSpots.set([]);
 		updateSpotsInDatabase();
 		handleCloseModals();
+		setAlertMessage("All spots cleared.");
 	}
 
 	// Update display name
 	let displayNameModal = false;
 	let newDisplayName = "";
 	function updateDisplayName(newName) {
+		if (newName.length < 1) {
+			errorMessage = "Display name can't be blank.";
+			return;
+		}
 		authHandlers.updateDisplayName(newName);
+		newDisplayName = "";
 		handleCloseModals();
 	}
 
 	// Update password
 	let updatePasswordModal = false;
+	let currentPassword = "";
 	let newPassword1 = "";
 	let newPassword2 = "";
-	function updatePassword(pass1, pass2) {
-		if (pass1 !== pass2) {
+	function updatePassword(currPass, newPass1, newPass2) {
+		if (newPass1 !== newPass2) {
 			console.log("Passwords do not match");
 			errorMessage = "Passwords do not match.";
 			return;
-		} else if (pass1.length < 6) {
+		} else if (newPass1.length < 6) {
 			console.log("password too short");
 			errorMessage = "Password must be at least 6 characters long.";
 			return;
 		} else {
-			// authHandlers.updatePassword(pass1);
-			console.log("Updating password.");
+			authHandlers.updatePassword(currPass, newPass1);
+			currentPassword = "";
+			newPassword1 = "";
+			newPassword2 = "";
 			handleCloseModals();
 		}
 	}
@@ -207,26 +217,36 @@
 					<p>Enter a new password:</p>
 					<input
 						type="password"
+						placeholder="Current Password"
+						bind:value={currentPassword}
+						class="txt-inp"
+						required
+					/>
+					<input
+						type="password"
 						placeholder="New Password"
 						bind:value={newPassword1}
 						class="txt-inp"
+						required
 					/>
 					<input
 						type="password"
 						bind:value={newPassword2}
 						placeholder="Confirm New Password"
 						class="txt-inp"
+						required
 					/>
 					<div>
 						<IconButton
 							svg={"edit"}
 							innerText={"Update"}
 							className={"btn-green"}
-							callback={() => updatePassword(newPassword1, newPassword2)}
+							callback={() => updatePassword(currentPassword, newPassword1, newPassword2)}
 						/>
 						<button
 							on:click={() => {
 								handleCloseModals();
+								currentPassword = "";
 								newPassword1 = "";
 								newPassword2 = "";
 							}}>Cancel</button
@@ -251,6 +271,11 @@
 					<p class="error">{errorMessage}</p>
 				{/if}
 			</div>
+		</div>
+	{/if}
+	{#if $alertMessage.length > 0}
+		<div transition:fly={{ duration: 400, y: 10 }} class="srfc alert">
+			<p>{$alertMessage}</p>
 		</div>
 	{/if}
 </main>
@@ -384,6 +409,17 @@
 
 	div.modal div button:hover {
 		cursor: pointer;
+	}
+
+	/* Alert */
+	div.alert {
+		width: clamp(15rem, 20rem, 90%);
+		text-align: center;
+		position: absolute;
+		top: 2rem;
+		left: 50%;
+		transform: translateX(-50%);
+		padding: 1rem;
 	}
 
 	@media screen and (min-width: 768px) {
