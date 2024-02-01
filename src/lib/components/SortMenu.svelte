@@ -136,10 +136,10 @@
 	.more-button {
 		position: relative;
 		z-index: 101;
-		padding: 2rem 1rem;
+		padding: 2rem 0.75rem;
 		border-radius: 0 0.75rem 0.75rem 0;
 		border-left: none;
-		box-shadow: 5px 0 0.25rem rgba(0, 0, 0, 0.5);
+		box-shadow: 2px 0 0.25rem rgba(0, 0, 0, 0.5);
 	}
 
 	.more-button:focus,
@@ -202,6 +202,10 @@
 	}
 
 	@media screen and (max-width: 768px) {
+		.more-button {
+			padding: 2rem 0.5rem;
+		}
+
 		.more-menu {
 			bottom: 11rem;
 		}
