@@ -1,5 +1,5 @@
 import { auth, db } from "$lib/firebase/firebase.js";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { userSpots, activeSpot, userPref } from "$lib/stores/userDataStore.js";
 import { get } from "svelte/store";
 
@@ -74,5 +74,15 @@ export async function updateSpotsInDatabase() {
 		await updateDoc(docRef, { spots: currentUserSpots });
 	} else {
 		console.log("No user signed in");
+	}
+}
+
+export async function deleteUserData() {
+	const user = auth.currentUser;
+	try {
+		await deleteDoc(doc(db, "users", user.uid));
+		console.log("Document successfully deleted!");
+	} catch (error) {
+		console.error(error);
 	}
 }

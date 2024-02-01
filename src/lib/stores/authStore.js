@@ -82,6 +82,7 @@ export const authHandlers = {
 			.then(() => {
 				deleteUser(user)
 					.then(() => {
+						console.log("User deleted.");
 						goto("/");
 					})
 					.catch((error) => {

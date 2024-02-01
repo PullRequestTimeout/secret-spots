@@ -75,8 +75,8 @@
 	let deleteAccountModal = false;
 	function deleteAccount() {
 		console.log("deleting account");
-		// deleteUserData();
-		authHandlers.deleteAccount();
+		deleteUserData();
+		authHandlers.deleteAccount(currentPassword);
 	}
 
 	function handleCloseModals() {
@@ -255,8 +255,16 @@
 				{/if}
 				{#if deleteAccountModal}
 					<h3>Delete Account</h3>
-					<p>Are you sure you want to delete your account?</p>
 					<p>This action cannot be undone.</p>
+					<p>Input password to confirm:</p>
+
+					<input
+						type="password"
+						placeholder="Password"
+						bind:value={currentPassword}
+						class="txt-inp"
+						required
+					/>
 					<div>
 						<IconButton
 							svg={"trash"}
