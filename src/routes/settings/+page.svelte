@@ -4,8 +4,13 @@
 	import IconButton from "$lib/components/IconButton.svelte";
 	import Chalk from "./Chalk.svelte";
 	import { authHandlers, authStore } from "$lib/stores/authStore.js";
-	import { userPref } from "$lib/stores/userDataStore.js";
-	import { getUserData, updateUserPrefInDatabase } from "$lib/firebase/db.js";
+	import { userPref, userSpots } from "$lib/stores/userDataStore.js";
+	import {
+		getUserData,
+		updateUserPrefInDatabase,
+		updateSpotsInDatabase,
+		deleteUserData
+	} from "$lib/firebase/db.js";
 	import { onMount } from "svelte";
 	import { clickOutside } from "$lib/utils/click_outside.js";
 	import { fade } from "svelte/transition";
@@ -23,9 +28,9 @@
 	// Clear all spots
 	let clearSpotsModal = false;
 	function clearAllSpots() {
-		// userSpots.set([]);
-		// updateUserSpotsInDatabase();
-		console.log("clearing all spots");
+		userSpots.set([]);
+		updateSpotsInDatabase();
+		handleCloseModals();
 	}
 
 	// Update display name
@@ -41,24 +46,27 @@
 	let newPassword1 = "";
 	let newPassword2 = "";
 	function updatePassword(pass1, pass2) {
-		if (newPassword1 !== newPassword2) {
+		if (pass1 !== pass2) {
 			console.log("Passwords do not match");
+			errorMessage = "Passwords do not match.";
 			return;
-		} else if (newPassword1.length < 6) {
+		} else if (pass1.length < 6) {
 			console.log("password too short");
+			errorMessage = "Password must be at least 6 characters long.";
 			return;
 		} else {
-			authHandlers.updatePassword(newPassword1);
+			// authHandlers.updatePassword(pass1);
+			console.log("Updating password.");
 			handleCloseModals();
 		}
-
-		console.log("updating password");
 	}
 
 	// Delete account
 	let deleteAccountModal = false;
 	function deleteAccount() {
 		console.log("deleting account");
+		// deleteUserData();
+		authHandlers.deleteAccount();
 	}
 
 	function handleCloseModals() {
@@ -66,6 +74,7 @@
 		displayNameModal = false;
 		updatePasswordModal = false;
 		deleteAccountModal = false;
+		errorMessage = "";
 	}
 </script>
 
@@ -202,15 +211,26 @@
 						bind:value={newPassword1}
 						class="txt-inp"
 					/>
-					<input bind:value={newPassword2} placeholder="Confirm New Password" class="txt-inp" />
+					<input
+						type="password"
+						bind:value={newPassword2}
+						placeholder="Confirm New Password"
+						class="txt-inp"
+					/>
 					<div>
 						<IconButton
 							svg={"edit"}
 							innerText={"Update"}
 							className={"btn-green"}
-							callback={updatePassword}
+							callback={() => updatePassword(newPassword1, newPassword2)}
 						/>
-						<button on:click={handleCloseModals}>Cancel</button>
+						<button
+							on:click={() => {
+								handleCloseModals();
+								newPassword1 = "";
+								newPassword2 = "";
+							}}>Cancel</button
+						>
 					</div>
 				{/if}
 				{#if deleteAccountModal}
