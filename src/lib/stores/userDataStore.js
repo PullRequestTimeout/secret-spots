@@ -19,7 +19,6 @@ export const userPref = writable({
 });
 
 // This is used to display the spots in the SpotsList component in the preferred order that the user has set in their settings.
-// export const sortedUserSpots = writable([]);
 export const sortedUserSpots = derived([userSpots, userPref], ([$userSpots, $userPref]) => {
 	const currentSortedSpots = getCurrentSortingFunction($userSpots, $userPref.sort);
 	return currentSortedSpots;
