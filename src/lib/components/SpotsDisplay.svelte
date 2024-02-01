@@ -1,10 +1,10 @@
 <script>
-	import { userSpots, activeSpot, userPref } from "$lib/stores/userDataStore.js";
+	import { userSpots, sortedUserSpots, activeSpot, userPref } from "$lib/stores/userDataStore.js";
+	import { updateSpotsInDatabase } from "$lib/firebase/db.js";
 	import { fade } from "svelte/transition";
 	import { clickOutside } from "$lib/utils/click_outside.js";
 	import Icon from "$lib/components/Icon.svelte";
 	import IconButton from "$lib/components/IconButton.svelte";
-	import Loading from "$lib/components/Loading.svelte";
 	import DatePicker from "$lib/components/DatePicker.svelte";
 	import StarRating from "$lib/components/StarRating.svelte";
 
@@ -16,11 +16,6 @@
 		journalEntries = $userSpots.find((x) => x.spotName === $activeSpot).journalEntries;
 		rating = $userSpots.find((x) => x.spotName === $activeSpot).starRating;
 	}
-
-	// Recieves the date from the DatePicker component
-	let d;
-	let m;
-	let y;
 
 	let map = true;
 	let error = "";
@@ -53,6 +48,11 @@
 
 	let newJournalEntryModal = false;
 	let newJournalEntry = "";
+
+	// Recieves the date from the DatePicker component
+	let d;
+	let m;
+	let y;
 	$: newJournalEntryDate = { d, m, y };
 	function handleCloseJournal() {
 		error = "";
@@ -102,12 +102,24 @@
 
 	// Find the spot with the activeSpot store value and delete it
 	function deleteSpot(spotName) {
+		// Removes the spot that matches the activeSpot store value
 		userSpots.update((spotList) => {
 			const updatedSpotList = spotList.filter((spot) => spot.spotName !== spotName);
 			return updatedSpotList;
 		});
+
+		// Set the activeSpot store value to the first spot in the sortedUserSpots store value
+		let firstSortedSpot = $userSpots.length > 0 ? $sortedUserSpots[0].spotName : "";
+		activeSpot.set(firstSortedSpot);
+
+		// If you are deleting the final spot, run the updateSpotsInDatabase function.
+		// This triggers the update when the reactive variable in the +layout wont
+		if ($userSpots.length === 0) {
+			updateSpotsInDatabase();
+		}
+
+		// Close the modal
 		handleCloseDeleteSpot();
-		activeSpot.set($userSpots[0].spotName);
 	}
 </script>
 
