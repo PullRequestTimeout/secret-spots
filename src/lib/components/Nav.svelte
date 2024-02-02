@@ -28,7 +28,7 @@
 		</button>
 		{#if menuOpen}
 			<ul class="srfc" transition:fade={{ duration: 200 }}>
-				{#if !$authStore.uid || $authStore.emailVerified == false}
+				{#if !$authStore.uid}
 					<li>
 						<a on:click={handleMenu} href="/login"
 							><Icon name={"login"} color={"--clr-dark-green"} />Login</a
