@@ -10,3 +10,6 @@ export function setAlertMessage(message) {
 		alertMessage.set("");
 	}, 2000);
 }
+
+// Loading state
+export const loading = writable(false);
