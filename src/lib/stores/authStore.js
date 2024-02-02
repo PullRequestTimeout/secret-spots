@@ -12,6 +12,7 @@ import { writable } from "svelte/store";
 import { auth, db } from "$lib/firebase/firebase";
 import { goto } from "$app/navigation";
 import { setAlertMessage } from "$lib/stores/uiStore.js";
+import { userSpots } from "$lib/stores/userDataStore.js";
 
 export const authStore = writable({
 	uid: null,
@@ -32,8 +33,21 @@ export const authHandlers = {
 		await signInWithEmailAndPassword(auth, email, password);
 	},
 
-	logout: async () => {
-		await signOut(auth);
+	logout: () => {
+		signOut(auth)
+			.then(() => {
+				authStore.update((store) => {
+					store.uid = null;
+					store.displayName = null;
+					store.email = null;
+					store.emailVerified = false;
+					return store;
+				});
+				userSpots.set([]);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 	},
 
 	// Need to implement reset password route
@@ -41,7 +55,7 @@ export const authHandlers = {
 	//     await sendPasswordResetEmail(auth, email);
 	// }
 
-	updateDisplayName: async (displayName) => {
+	updateDisplayName: (displayName) => {
 		const user = auth.currentUser;
 		updateProfile(user, { displayName: displayName })
 			.then(() => {
@@ -57,7 +71,7 @@ export const authHandlers = {
 			});
 	},
 
-	updatePassword: async (currPass, newPass) => {
+	updatePassword: (currPass, newPass) => {
 		const user = auth.currentUser;
 		const credential = EmailAuthProvider.credential(user.email, currPass);
 		reauthenticateWithCredential(user, credential)
@@ -71,11 +85,12 @@ export const authHandlers = {
 					});
 			})
 			.catch((error) => {
+				setAlertMessage(error.message);
 				console.error(error);
 			});
 	},
 
-	deleteAccount: async (currPass) => {
+	deleteAccount: (currPass) => {
 		const user = auth.currentUser;
 		const credential = EmailAuthProvider.credential(user.email, currPass);
 		reauthenticateWithCredential(user, credential)
@@ -87,10 +102,12 @@ export const authHandlers = {
 					})
 					.catch((error) => {
 						console.error(error);
+						setAlertMessage(error.message);
 					});
 			})
 			.catch((error) => {
 				console.error(error);
+				setAlertMessage(error.message);
 			});
 	}
 };
