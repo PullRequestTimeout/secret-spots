@@ -140,10 +140,10 @@
 			<p>Or</p>
 			<form>
 				<label>
-					<input type="text" placeholder="Longtitude" bind:value={long} class="txt-inp" />
+					<input type="text" placeholder="Latitude" bind:value={lat} class="txt-inp" />
 				</label>
 				<label>
-					<input type="text" placeholder="Latitude" bind:value={lat} class="txt-inp" />
+					<input type="text" placeholder="Longtitude" bind:value={long} class="txt-inp" />
 				</label>
 			</form>
 			{#if loadLoc}
