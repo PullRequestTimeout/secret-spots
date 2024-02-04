@@ -281,11 +281,6 @@
 			</div>
 		</div>
 	{/if}
-	{#if $alertMessage.length > 0}
-		<div transition:fly={{ duration: 400, y: 10 }} class="srfc alert">
-			<p>{$alertMessage}</p>
-		</div>
-	{/if}
 </main>
 
 <style>
@@ -417,17 +412,6 @@
 
 	div.modal div button:hover {
 		cursor: pointer;
-	}
-
-	/* Alert */
-	div.alert {
-		width: clamp(15rem, 20rem, 90%);
-		text-align: center;
-		position: absolute;
-		top: 2rem;
-		left: 50%;
-		transform: translateX(-50%);
-		padding: 1rem;
 	}
 
 	@media screen and (min-width: 768px) {
