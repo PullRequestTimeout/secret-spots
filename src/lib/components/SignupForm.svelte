@@ -1,6 +1,7 @@
 <script>
 	import { authHandlers } from "$lib/stores/authStore";
 	import IconLink from "$lib/components/IconLink.svelte";
+	import { setAlertMessage } from "$lib/stores/uiStore.js";
 	import { updateProfile, sendEmailVerification } from "firebase/auth";
 	import { auth } from "$lib/firebase/firebase";
 
@@ -8,10 +9,16 @@
 	let email = "";
 	let password = "";
 	let confirmPass = "";
-	let error = false;
 	let authenticating = false;
-	let errorMessage = "";
 
+	// Resend email verification
+	$: resendEmail = false;
+	// auth.currentUser.emailVerified
+	// $: if (auth.currentUser && !auth.currentUser.emailVerified) {
+	// 	resendEmail = true;
+	// }
+
+	// Shows sent email confirmation
 	let emailSent = false;
 
 	async function handleSignup() {
@@ -20,20 +27,17 @@
 		}
 
 		if (!fname) {
-			error = true;
-			errorMessage = "A first name is required.";
+			setAlertMessage("A first name is required.", 2);
 			return;
 		}
 
 		if (!email || !password) {
-			error = true;
-			errorMessage = "An email and password are required.";
+			setAlertMessage("An email and password are required.", 2);
 			return;
 		}
 
 		if (confirmPass != password) {
-			error = true;
-			errorMessage = "Your passwords do not match.";
+			setAlertMessage("Your passwords do not match.", 2);
 			return;
 		}
 
@@ -43,41 +47,52 @@
 			// sign up
 			await authHandlers.signup(email, password);
 			await updateProfile(auth.currentUser, { displayName: fname });
-			console.log("Sign up.");
+			console.log("New sign up.");
 			try {
 				// send email verification
 				await sendEmailVerification(auth.currentUser);
 				console.log("email sent to " + email);
 				emailSent = true;
 			} catch (err) {
-				error = true;
-				errorMessage = "There was a problem sending a verification email.";
+				setAlertMessage("There was a problem sending a verification email.");
 				console.log(err.toString());
 				authenticating = false;
 			}
 		} catch (err) {
-			error = true;
-
 			let errorReason = err.toString();
 			if (errorReason.includes("auth/email-already-in-use")) {
-				errorMessage = "Email already in use.";
+				setAlertMessage("Email already in use.");
 			} else {
-				errorMessage = "Oops. Something went wrong.";
+				setAlertMessage("Oops. Something went wrong.");
 				console.log(err.toString());
 			}
 
 			authenticating = false;
 		}
 	}
+
+	// async function handleResendEmail() {
+	// 	if (!!email) {
+	// 		authenticating = true;
+	// 		try {
+	// 			// send email verification
+	// 			await sendEmailVerification(auth.currentUser);
+	// 			console.log("email sent to " + email);
+	// 			emailSent = true;
+	// 		} catch (err) {
+	// 			setAlertMessage("There was a problem sending a verification email.", 2);
+	// 			authenticating = false;
+	// 		}
+	// 	} else {
+	// 		setAlertMessage("Please enter an email address.", 2);
+	// 	}
+	// }
 </script>
 
 <div class="registerContainer srfc">
 	<form>
-		<h3>Register</h3>
-		{#if error}
-			<p class="error">{errorMessage}</p>
-		{/if}
-		{#if !emailSent}
+		{#if !emailSent && !resendEmail}
+			<h3>Register</h3>
 			<label>
 				<!-- svelte-ignore a11y-autofocus -->
 				<input
@@ -129,16 +144,49 @@
 				{/if}
 			</button>
 			<p>Already have an account? <a href="/login">Login</a></p>
+			<p>Or</p>
+			<p>
+				<button
+					on:click={() => {
+						resendEmail = true;
+						email = "";
+					}}
+					class="resend-email">Resend</button
+				> verification email
+			</p>
+			<!-- {:else if resendEmail}
+			<h3>Resend Email</h3>
+			<label>
+				<input
+					bind:value={email}
+					name="email"
+					type="email"
+					placeholder="Email"
+					autocomplete="off"
+					required
+				/>
+			</label>
+			<div class="resend-buttons">
+				<button on:click={handleResendEmail} class="btn btn-red">
+					{#if authenticating}
+						Loading...
+					{:else}
+						Submit
+					{/if}
+				</button>
+				<button
+					on:click={() => {
+						resendEmail = false;
+						email = "";
+					}}
+					class="resend-email">Cancel</button
+				>
+			</div> -->
 		{:else if emailSent && email}
 			<br />
 			<p>A verification email has been sent to {email}</p>
 			<br />
-			<IconLink
-				url={"/login"}
-				svg={"/icons/login_icon.svg"}
-				innerText={"Login"}
-				className={"btn-red"}
-			/>
+			<IconLink url={"/login"} svg={"login"} innerText={"Login"} className={"btn-red"} />
 		{/if}
 	</form>
 </div>
@@ -150,6 +198,10 @@
 	}
 
 	.registerContainer p {
+		text-align: center;
+	}
+
+	h3 {
 		text-align: center;
 	}
 
@@ -183,7 +235,23 @@
 	}
 
 	.registerContainer a,
-	.registerContainer a:visited {
+	.registerContainer a:visited,
+	.resend-email {
 		color: var(--clr-red);
+		font-weight: bold;
+	}
+
+	.resend-email {
+		border: none;
+		background: none;
+		font-size: 1rem;
+		padding: 0;
+		margin: 0;
+		text-decoration: underline;
+	}
+
+	.resend-buttons {
+		display: flex;
+		gap: 1rem;
 	}
 </style>
