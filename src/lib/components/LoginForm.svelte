@@ -127,5 +127,6 @@
 	.loginContainer a,
 	.loginContainer a:visited {
 		color: var(--clr-red);
+		font-weight: bold;
 	}
 </style>
