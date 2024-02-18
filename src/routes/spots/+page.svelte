@@ -1,5 +1,4 @@
 <script>
-	import { auth } from "$lib/firebase/firebase";
 	import { onMount } from "svelte";
 	import Loading from "$lib/components/Loading.svelte";
 	import IconButton from "$lib/components/IconButton.svelte";
@@ -8,6 +7,7 @@
 	import SpotsDashboard from "$lib/components/SpotsDashboard.svelte";
 	import Icon from "$lib/components/Icon.svelte";
 	import { userSpots } from "$lib/stores/userDataStore.js";
+	import { authStore } from "$lib/stores/authStore.js";
 
 	// Returns new spot from the NewSpot component
 	let addSpot;
@@ -15,20 +15,12 @@
 		console.log(addSpot);
 	}
 
+	// Needs to be refactored out into the loading component and loading store
 	let loading = true;
-	let displayName = "";
+	$: displayName = $authStore.displayName;
 
 	onMount(() => {
-		// Gets initial auth state and then sets an observer for changes
-		// This isn't quite true actually, onmount only runs once on component mount or in this case when the page is first loaded.
-		// Display name should actually be set from the $authstore, which needs to be set on login
-		// Auth store should be set on login, and can also go in main layout for t
-		auth.onAuthStateChanged(() => {
-			if (auth.currentUser) {
-				displayName = auth.currentUser.displayName;
-			}
-			loading = false;
-		});
+		loading = false;
 	});
 
 	let isOpen = false;
@@ -49,7 +41,9 @@
 					<Icon name="add" size="32" />
 				</button>
 			{:else}
-				<h2>Welcome, {displayName}!</h2>
+				{#if displayName}
+					<h2>Welcome, {displayName}!</h2>
+				{/if}
 				<p>Add a spot to get started</p>
 				<IconButton
 					svg={"add"}
