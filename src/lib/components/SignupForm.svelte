@@ -250,8 +250,8 @@
 		text-decoration: underline;
 	}
 
-	.resend-buttons {
+	/* .resend-buttons {
 		display: flex;
 		gap: 1rem;
-	}
+	} */
 </style>
