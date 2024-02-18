@@ -1,15 +1,23 @@
 import { writable } from "svelte/store";
 
-// Settings error message
+// Alert message and setter function ----------------------
 export const alertMessage = writable("");
 
-// Briefly display an alert message on settings page
-export function setAlertMessage(message) {
+// Briefly display an alert for 3 seconds if seconds param is not provided
+export function setAlertMessage(message, seconds) {
 	alertMessage.set(message);
 	setTimeout(() => {
 		alertMessage.set("");
-	}, 2000);
+	}, ifSeconds());
+
+	function ifSeconds() {
+		if (seconds) {
+			return seconds * 1000;
+		} else {
+			return 3000;
+		}
+	}
 }
 
-// Loading state
+// Loading state ------------------------------------------
 export const loading = writable(false);
