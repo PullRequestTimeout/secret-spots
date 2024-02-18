@@ -43,12 +43,13 @@
 				return;
 			}
 
-			if (user && auth.currentUser.emailVerified === false) {
-				goto("/register");
-				setAlertMessage("Please verify your email address to continue.");
-			}
+			// if (user && auth.currentUser.emailVerified === false) {
+			// 	goto("/register");
+			// 	setAlertMessage("Verification email has been re-sent. Please verify your email address to be able to login.", 10);
+			// }
 
-			if (user && auth.currentUser.emailVerified === true) {
+			// if (user && auth.currentUser.emailVerified === true) {
+			if (user) {
 				authStore.update(() => {
 					return {
 						uid: auth.currentUser.uid,
