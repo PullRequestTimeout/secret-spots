@@ -5,6 +5,7 @@
 	import { clickOutside } from "$lib/utils/click_outside.js";
 	import IconSelector from "$lib/components/IconSelector.svelte";
 	import { userSpots, activeSpot } from "$lib/stores/userDataStore.js";
+	import { setAlertMessage } from "$lib/stores/uiStore.js";
 
 	export let isOpen;
 	export let spot = null;
@@ -101,6 +102,7 @@
 			userSpots.update((objects) => {
 				return [...objects, spot];
 			});
+			setAlertMessage("New spot added.");
 		}
 
 		// Updates active spot store so the most recently added spot is active after adding.
