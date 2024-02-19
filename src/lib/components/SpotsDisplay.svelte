@@ -8,6 +8,7 @@
 	import DatePicker from "$lib/components/DatePicker.svelte";
 	import StarRating from "$lib/components/StarRating.svelte";
 	import Map from "$lib/components/Map.svelte";
+	import { setAlertMessage } from "$lib/stores/uiStore.js";
 
 	// Spot Info
 	let rating;
@@ -51,8 +52,9 @@
 				});
 				return updatedSpotList;
 			});
+			setAlertMessage("Description updated.");
+			handleCloseDescription();
 		}
-		handleCloseDescription();
 	}
 
 	let newJournalEntryModal = false;
@@ -87,6 +89,7 @@
 				});
 				return updatedSpotList;
 			});
+			setAlertMessage("Journal entry added.");
 			handleCloseJournal();
 		}
 	}
@@ -126,6 +129,8 @@
 		if ($userSpots.length === 0) {
 			updateSpotsInDatabase();
 		}
+
+		setAlertMessage("Spot deleted.");
 
 		// Close the modal
 		handleCloseDeleteSpot();
