@@ -7,14 +7,23 @@
 	import IconButton from "$lib/components/IconButton.svelte";
 	import DatePicker from "$lib/components/DatePicker.svelte";
 	import StarRating from "$lib/components/StarRating.svelte";
+	import Map from "$lib/components/Map.svelte";
 
+	// Spot Info
 	let rating;
 	let description = "";
 	let journalEntries = [];
+
+	// Spot lat and long
+	let lat = 0;
+	let long = 0;
+
 	$: if ($userSpots.length > 0 && $activeSpot) {
 		description = $userSpots.find((x) => x.spotName === $activeSpot).description;
 		journalEntries = $userSpots.find((x) => x.spotName === $activeSpot).journalEntries;
 		rating = $userSpots.find((x) => x.spotName === $activeSpot).starRating;
+		lat = $userSpots.find((x) => x.spotName === $activeSpot).lat;
+		long = $userSpots.find((x) => x.spotName === $activeSpot).long;
 	}
 
 	let map = true;
@@ -141,9 +150,12 @@
 		>
 	</div>
 	<h3 class="spot-name">{$activeSpot}</h3>
+	<!-- This is calling the map every time map is active, it should be opacity based instead to minimise API calls -->
 	{#if map}
 		<div transition:fade={{ duration: 200 }} class="display-map">
-			<img src="/map.jpg" alt="Map" />
+			{#key $activeSpot}
+				<Map {lat} {long} name={$activeSpot} />
+			{/key}
 		</div>
 	{/if}
 	{#if !map}
@@ -328,11 +340,11 @@
 	}
 
 	/* Test for dev */
-	div.display-map img {
+	/* div.display-map img {
 		object-fit: cover;
 		width: 100%;
 		height: 100%;
-	}
+	} */
 
 	div.display-info {
 		position: absolute;
