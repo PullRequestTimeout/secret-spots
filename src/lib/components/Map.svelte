@@ -1,4 +1,5 @@
 <script>
+	import { Loader } from "@googlemaps/js-api-loader";
 	import { setAlertMessage } from "$lib/stores/uiStore.js";
 	import { onMount } from "svelte";
 
@@ -20,8 +21,15 @@
 		disableDefaultUI: true
 	};
 
+	const loader = new Loader({
+		apiKey: import.meta.env.VITE_MAP_API_KEY,
+		version: "weekly"
+	});
+
 	async function initMap() {
 		try {
+			// This is a workaround to avoid the error "google is not defined"
+			loader.load();
 			const { Map } = await google.maps.importLibrary("maps");
 			const map = new Map(mapElement, mapOptions);
 
