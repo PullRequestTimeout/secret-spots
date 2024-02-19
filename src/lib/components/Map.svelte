@@ -1,6 +1,7 @@
 <script>
 	import { Loader } from "@googlemaps/js-api-loader";
 	import { setAlertMessage } from "$lib/stores/uiStore.js";
+	import { userPref } from "$lib/stores/userDataStore.js";
 	import { onMount } from "svelte";
 
 	// Props
@@ -39,7 +40,45 @@
 				title: name
 			});
 			const styles = {
-				default: [],
+				default: [
+					{
+						featureType: "poi.business",
+						stylers: [{ visibility: "off" }]
+					},
+					{
+						featureType: "transit",
+						stylers: [{ visibility: "off" }]
+					},
+					{
+						featureType: "poi.school",
+						stylers: [{ visibility: "off" }]
+					},
+					{
+						featureType: "poi.attraction",
+						stylers: [{ visibility: "off" }]
+					},
+					{
+						featureType: "poi.government",
+						stylers: [{ visibility: "off" }]
+					},
+					{
+						featureType: "poi.medical",
+						stylers: [{ visibility: "off" }]
+					},
+					{
+						featureType: "poi.place_of_worship",
+						stylers: [{ visibility: "off" }]
+					},
+					{
+						featureType: "poi.sports_complex",
+						stylers: [{ visibility: "off" }]
+					},
+					{
+						featureType: "poi.park",
+						elementType: "labels",
+						stylers: [{ visibility: "off" }]
+					}
+				],
 				retro: [
 					{ elementType: "geometry", stylers: [{ color: "#ebe3cd" }] },
 					{ elementType: "labels.text.fill", stylers: [{ color: "#523735" }] },
@@ -155,18 +194,42 @@
 					},
 					{
 						featureType: "transit",
-						elementType: "labels.icon",
 						stylers: [{ visibility: "off" }]
 					},
 					{
 						featureType: "poi.school",
-						elementType: "labels.icon",
 						stylers: [{ visibility: "off" }]
 					},
-					{}
+					{
+						featureType: "poi.attraction",
+						stylers: [{ visibility: "off" }]
+					},
+					{
+						featureType: "poi.government",
+						stylers: [{ visibility: "off" }]
+					},
+					{
+						featureType: "poi.medical",
+						stylers: [{ visibility: "off" }]
+					},
+					{
+						featureType: "poi.place_of_worship",
+						stylers: [{ visibility: "off" }]
+					},
+					{
+						featureType: "poi.sports_complex",
+						stylers: [{ visibility: "off" }]
+					},
+					{
+						featureType: "poi.park",
+						elementType: "labels",
+						stylers: [{ visibility: "off" }]
+					}
 				]
 			};
-			map.setOptions({ styles: styles.retro });
+
+			const mapStyle = $userPref.map;
+			map.setOptions({ styles: styles[mapStyle] });
 		} catch (error) {
 			setAlertMessage("Error loading map.", 3);
 			console.error(error);

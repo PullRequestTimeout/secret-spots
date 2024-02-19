@@ -5,7 +5,7 @@
 	import Chalk from "./Chalk.svelte";
 	import { authHandlers, authStore } from "$lib/stores/authStore.js";
 	import { userPref, userSpots } from "$lib/stores/userDataStore.js";
-	import { setAlertMessage, alertMessage } from "$lib/stores/uiStore.js";
+	import { setAlertMessage } from "$lib/stores/uiStore.js";
 	import {
 		getUserData,
 		updateUserPrefInDatabase,
@@ -19,6 +19,7 @@
 	// On mount, set the sort type and date format to the user's preferences in the db
 	$: startingSort = $userPref.sort;
 	$: startingDate = $userPref.date;
+	$: startingMap = $userPref.map;
 	onMount(() => {
 		getUserData();
 	});
@@ -111,6 +112,7 @@
 				callback={(val) => {
 					userPref.update((prev) => ({ ...prev, sort: val }));
 					updateUserPrefInDatabase();
+					setAlertMessage("Preferences updated.");
 				}}
 			/>
 		</div>
@@ -126,6 +128,22 @@
 				callback={(val) => {
 					userPref.update((prev) => ({ ...prev, date: val }));
 					updateUserPrefInDatabase();
+					setAlertMessage("Preferences updated.");
+				}}
+			/>
+		</div>
+		<div class="settings-item">
+			<p>Map Style:</p>
+			<DropDown
+				inputs={[
+					{ display: "Default", value: "default" },
+					{ display: "Retro", value: "retro" }
+				]}
+				startingValue={startingMap}
+				callback={(val) => {
+					userPref.update((prev) => ({ ...prev, map: val }));
+					updateUserPrefInDatabase();
+					setAlertMessage("Preferences updated.");
 				}}
 			/>
 		</div>

@@ -15,7 +15,8 @@ export const activeSpot = writable("");
 // User Settings Object
 export const userPref = writable({
 	date: "ymd", // Can be "ymd", "dmy", or "mdy". Although why anyone would use mdy is beyond me.
-	sort: "default" // Can be "default", "recent", "alphabetical", "icon", "closest", "highRating", or "lowRating".
+	sort: "default", // Can be "default", "recent", "alphabetical", "icon", "closest", "highRating", or "lowRating".
+	map: "retro" // Can be "retro" or "default".
 });
 
 // This is used to display the spots in the SpotsList component in the preferred order that the user has set in their settings.
