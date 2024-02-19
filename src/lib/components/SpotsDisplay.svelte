@@ -335,6 +335,9 @@
 		top: 4rem;
 		color: var(--clr-dark-green);
 		z-index: 10;
+		text-shadow: 0 0 0.2rem var(--clr-white), 0 0 0.4rem var(--clr-white),
+			0 0 0.6rem var(--clr-white), 0 0 0.8rem var(--clr-white), 0 0 1rem var(--clr-white),
+			0 0 1.2rem var(--clr-white);
 	}
 
 	div.display-map {
@@ -343,13 +346,6 @@
 		overflow: hidden;
 		background-color: var(--clr-off-white);
 	}
-
-	/* Test for dev */
-	/* div.display-map img {
-		object-fit: cover;
-		width: 100%;
-		height: 100%;
-	} */
 
 	div.display-info {
 		position: absolute;
