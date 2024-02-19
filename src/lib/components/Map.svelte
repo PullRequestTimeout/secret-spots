@@ -161,6 +161,7 @@
 			map.setOptions({ styles: styles.retro });
 		} catch (error) {
 			setAlertMessage("Error loading map.", 3);
+			console.error(error);
 		}
 	}
 
