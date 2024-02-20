@@ -26,6 +26,12 @@
 	--bx-shdw: 0 2px 0.2rem rgba(0, 0, 0, 0.25);
 }
 
+@media screen and (max-width: 768px) {
+	:root {
+		--spc-footer-height: 4rem;
+	}
+}
+
 /* Globals */
 
 html {
@@ -133,4 +139,24 @@ button {
 	padding: 0.5rem;
 	border: 2px solid var(--clr-dark-green);
 	border-radius: var(--spc-corner-radius);
+}
+
+/* Google maps link removal */
+
+a[href^="http://maps.google.com/maps"]
+{
+	display: none !important;
+}
+a[href^="https://maps.google.com/maps"]
+{
+	display: none !important;
+}
+
+.gmnoprint a,
+.gmnoprint span,
+.gm-style-cc {
+	display: none;
+}
+.gmnoprint div {
+	background: none !important;
 }

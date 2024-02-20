@@ -106,6 +106,7 @@
 		z-index: 50;
 		left: 0;
 		bottom: 4rem;
+		transition: 0.2s;
 	}
 
 	.more-menu__slider {
@@ -207,7 +208,7 @@
 		}
 
 		.more-menu {
-			bottom: 11rem;
+			bottom: 8rem;
 		}
 
 		.sort-options,
