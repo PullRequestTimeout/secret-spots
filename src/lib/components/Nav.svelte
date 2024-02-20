@@ -148,8 +148,8 @@
 
 	header nav ul {
 		position: absolute;
-		right: 2rem;
-		top: 6rem;
+		right: 1rem;
+		top: 5rem;
 		padding: 2rem 2rem 2rem 1.5rem;
 		display: flex;
 		flex-direction: column;
@@ -177,6 +177,11 @@
 	@media screen and (min-width: 768px) {
 		header h1 {
 			font-size: 2rem;
+		}
+
+		header nav ul {
+			right: 2rem;
+			top: 6rem;
 		}
 	}
 </style>
