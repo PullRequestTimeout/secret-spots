@@ -12,6 +12,14 @@
 	// Map position
 	let position = { lat: lat, lng: long };
 
+	// Bounding box
+	let bounds = {
+		north: position.lat + 0.02,
+		south: position.lat - 0.02,
+		east: position.lng + 0.02,
+		west: position.lng - 0.02
+	};
+
 	// Map element
 	let mapElement;
 
@@ -19,7 +27,11 @@
 	const mapOptions = {
 		center: position,
 		zoom: 15,
-		disableDefaultUI: true
+		disableDefaultUI: true,
+		restriction: {
+			latLngBounds: bounds,
+			strictBounds: false
+		}
 	};
 
 	const loader = new Loader({
