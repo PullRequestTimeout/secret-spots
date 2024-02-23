@@ -2,7 +2,6 @@ import { auth, db } from "$lib/firebase/firebase.js";
 import { doc, getDoc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { userSpots, activeSpot, userPref } from "$lib/stores/userDataStore.js";
 import { get } from "svelte/store";
-import { loading } from "$lib/stores/uiStore.js";
 
 //TODO: Refine this a little more. There's a lot of repeated variables.
 
