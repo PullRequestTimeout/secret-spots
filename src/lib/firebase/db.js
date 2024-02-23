@@ -2,6 +2,7 @@ import { auth, db } from "$lib/firebase/firebase.js";
 import { doc, getDoc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { userSpots, activeSpot, userPref } from "$lib/stores/userDataStore.js";
 import { get } from "svelte/store";
+import { loading } from "$lib/stores/uiStore.js";
 
 //TODO: Refine this a little more. There's a lot of repeated variables.
 
@@ -14,6 +15,7 @@ export async function getUserData() {
 		// Load spots array into the UI
 		userSpots.set(docSnap.data().spots);
 		activeSpot.set(docSnap.data().spots[0].spotName);
+		console.log("User spots loaded.");
 	} else if (docSnap.exists() && docSnap.data().spots.length == 0) {
 		console.log("This user has no spots saved!");
 	} else {
@@ -25,6 +27,8 @@ export async function getUserData() {
 	if (docSnap.exists()) {
 		userPref.set(docSnap.data().settings);
 	}
+
+	loading.set(false);
 }
 
 export async function checkUser() {
@@ -47,6 +51,9 @@ export async function checkUser() {
 			settings: defaultSettings
 		};
 		await setDoc(userRef, userDataForDb);
+
+		// Should be the final loading state if no user, load ui
+		loading.set(false);
 	} else {
 		console.log("Fetching user data.");
 		getUserData();

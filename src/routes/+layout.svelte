@@ -2,6 +2,7 @@
 	import { auth } from "$lib/firebase/firebase.js";
 	import { authStore } from "$lib/stores/authStore.js";
 	import { userSpots } from "$lib/stores/userDataStore.js";
+	import { loading } from "$lib/stores/uiStore.js";
 	import { setAlertMessage } from "$lib/stores/uiStore.js";
 
 	// Svelte methods
@@ -14,9 +15,13 @@
 	import Nav from "$lib/components/Nav.svelte";
 	import Footer from "$lib/components/Footer.svelte";
 	import CloudContainer from "$lib/components/CloudContainer.svelte";
+	import Loader from "$lib/components/Loader.svelte";
 
 	// Just used to grab the current url for the key
 	export let data;
+
+	// Loading state
+	loading.set(true);
 
 	// The only routes that don't require auth, add more to array if necessary
 	const nonAuthRoutes = ["/", "/login", "/register"];
@@ -59,8 +64,11 @@
 					};
 				});
 				goto("/spots");
+				setAlertMessage(`Welcome back, ${auth.currentUser.displayName}!`);
+				console.log("User is logged in");
 			}
 		});
+		// loading.set(false);
 		return unsubscribe;
 	});
 </script>
@@ -69,6 +77,9 @@
 <Nav />
 {#key data.url}
 	<div transition:fade={{ delay: 300, duration: 200 }} class="mainContainer">
+		{#if $loading}
+			<Loader />
+		{/if}
 		<slot />
 	</div>
 {/key}
