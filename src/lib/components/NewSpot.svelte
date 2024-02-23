@@ -1,6 +1,6 @@
 <script>
 	import IconButton from "$lib/components/IconButton.svelte";
-	import Loading from "$lib/components/Loading.svelte";
+	import Loader from "$lib/components/Loader.svelte";
 	import { fade } from "svelte/transition";
 	import { clickOutside } from "$lib/utils/click_outside.js";
 	import IconSelector from "$lib/components/IconSelector.svelte";
@@ -149,7 +149,7 @@
 				</label>
 			</form>
 			{#if loadLoc}
-				<Loading />
+				<Loader />
 			{:else}
 				<div>
 					<IconButton
