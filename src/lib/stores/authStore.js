@@ -9,10 +9,11 @@ import {
 	updatePassword
 } from "firebase/auth";
 import { writable } from "svelte/store";
-import { auth, db } from "$lib/firebase/firebase";
+import { auth } from "$lib/firebase/firebase.js";
 import { goto } from "$app/navigation";
 import { setAlertMessage } from "$lib/stores/uiStore.js";
 import { userSpots } from "$lib/stores/userDataStore.js";
+import { deleteUserData } from "$lib/firebase/db.js";
 
 export const authStore = writable({
 	uid: null,
@@ -47,6 +48,7 @@ export const authHandlers = {
 			})
 			.catch((error) => {
 				console.error(error);
+				setAlertMessage("There was an error logging out. Try again.");
 			});
 	},
 
@@ -67,7 +69,8 @@ export const authHandlers = {
 				});
 			})
 			.catch((error) => {
-				setAlertMessage(error.message);
+				console.error(error);
+				setAlertMessage("There was an error updating your display name.");
 			});
 	},
 
@@ -81,11 +84,11 @@ export const authHandlers = {
 						setAlertMessage("Password updated!");
 					})
 					.catch((error) => {
-						setAlertMessage(error.message);
+						setAlertMessage("There was an error updating your password.");
 					});
 			})
 			.catch((error) => {
-				setAlertMessage(error.message);
+				setAlertMessage("There was an error reauthenticating your account.");
 				console.error(error);
 			});
 	},
@@ -95,19 +98,26 @@ export const authHandlers = {
 		const credential = EmailAuthProvider.credential(user.email, currPass);
 		reauthenticateWithCredential(user, credential)
 			.then(() => {
-				deleteUser(user)
+				deleteUserData(user)
 					.then(() => {
-						console.log("User deleted.");
-						goto("/");
+						deleteUser(user)
+							.then(() => {
+								setAlertMessage("Account and user data deleted.");
+								goto("/");
+							})
+							.catch((error) => {
+								console.error(error);
+								setAlertMessage("There was an error deleting your account.");
+							});
 					})
 					.catch((error) => {
 						console.error(error);
-						setAlertMessage(error.message);
+						setAlertMessage("There was an error deleting your user data.");
 					});
 			})
 			.catch((error) => {
 				console.error(error);
-				setAlertMessage(error.message);
+				setAlertMessage("There was an error reauthenticating your account.");
 			});
 	}
 };
