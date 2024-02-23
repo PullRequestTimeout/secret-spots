@@ -1,15 +1,25 @@
-<div class="dot-spinner">
-	<div class="dot-spinner__dot" />
-	<div class="dot-spinner__dot" />
-	<div class="dot-spinner__dot" />
-	<div class="dot-spinner__dot" />
-	<div class="dot-spinner__dot" />
-	<div class="dot-spinner__dot" />
-	<div class="dot-spinner__dot" />
-	<div class="dot-spinner__dot" />
+<div class="container">
+	<div class="dot-spinner">
+		<div class="dot-spinner__dot" />
+		<div class="dot-spinner__dot" />
+		<div class="dot-spinner__dot" />
+		<div class="dot-spinner__dot" />
+		<div class="dot-spinner__dot" />
+		<div class="dot-spinner__dot" />
+		<div class="dot-spinner__dot" />
+		<div class="dot-spinner__dot" />
+	</div>
 </div>
 
 <style>
+	.container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		width: 100%;
+	}
+
 	.dot-spinner {
 		--uib-size: 2.8rem;
 		--uib-speed: 0.9s;
