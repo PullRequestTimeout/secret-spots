@@ -177,6 +177,7 @@ function sortByClosest(spots) {
 // **Tested**
 // Sort by recently added. Default array is from earliest added to latest added, so reverse it.
 function sortByRecentlyAdded(spots) {
-	const reversed = spots.toReversed();
+	const spotsCopy = spots.slice();
+	const reversed = spotsCopy.reverse();
 	return reversed;
 }
