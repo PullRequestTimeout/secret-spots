@@ -3,6 +3,8 @@
 	import { clickOutside } from "$lib/utils/click_outside.js";
 	import Icon from "$lib/components/Icon.svelte";
 	import { userPref, searchTerm } from "$lib/stores/userDataStore.js";
+	import { updateUserPrefInDatabase } from "$lib/firebase/db.js";
+	import { setAlertMessage } from "$lib/stores/uiStore.js";
 
 	let menuOpen = false;
 	let sortOptions = false;
@@ -40,6 +42,8 @@
 		userPref.update((pref) => {
 			return { ...pref, sort: sortType };
 		});
+		updateUserPrefInDatabase();
+		setAlertMessage("Preferences updated.");
 	}
 </script>
 
