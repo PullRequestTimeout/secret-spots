@@ -1,6 +1,6 @@
 import { auth, db } from "$lib/firebase/firebase.js";
 import { doc, getDoc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
-import { userSpots, activeSpot, userPref } from "$lib/stores/userDataStore.js";
+import { userSpots, sortedUserSpots, activeSpot, userPref } from "$lib/stores/userDataStore.js";
 import { get } from "svelte/store";
 
 //TODO: Refine this a little more. There's a lot of repeated variables.
@@ -14,7 +14,14 @@ export async function getUserData() {
 	if (docSnap.exists() && docSnap.data().spots.length > 0) {
 		// Load spots array into the UI
 		userSpots.set(docSnap.data().spots);
-		activeSpot.set(docSnap.data().spots[0].spotName);
+
+		// On load, set the active spot to the first spot by user
+		const sortedSpots = await get(sortedUserSpots);
+		if (sortedSpots.length > 0) {
+			activeSpot.set(sortedSpots[0].spotName);
+		} else {
+			activeSpot.set(docSnap.data().spots[0].spotName); // Just in case 🤷‍♂️
+		}
 	}
 
 	// Load user preferences into the UI
