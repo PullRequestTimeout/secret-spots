@@ -68,7 +68,7 @@
 				console.log("User is logged in");
 			}
 		});
-		// loading.set(false);
+		loading.set(false);
 		return unsubscribe;
 	});
 </script>
