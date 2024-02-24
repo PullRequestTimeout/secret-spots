@@ -174,7 +174,7 @@
 					><Icon name="edit" size="16" /></button
 				>
 			</div>
-			{#if description === undefined || null}
+			{#if !description}
 				<p>There doesn't seem to be a description for this spot. Add one with the pencil icon.</p>
 			{:else}
 				<p>{description}</p>
