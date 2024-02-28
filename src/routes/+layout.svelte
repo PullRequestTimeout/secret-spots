@@ -20,6 +20,8 @@
 	// Just used to grab the current url for the key
 	export let data;
 
+	let innerHeight = 0;
+
 	// Loading state
 	loading.set(true);
 
@@ -73,10 +75,16 @@
 	});
 </script>
 
+<svelte:window bind:innerHeight />
+
 <Alert />
 <Nav />
 {#key data.url}
-	<div transition:fade={{ delay: 300, duration: 200 }} class="mainContainer">
+	<div
+		transition:fade={{ delay: 300, duration: 200 }}
+		class="mainContainer"
+		style="--window-height: {innerHeight}px"
+	>
 		{#if $loading}
 			<Loader />
 		{/if}
@@ -84,7 +92,7 @@
 	</div>
 {/key}
 <Footer />
-<div class="cloudContainer">
+<div class="cloudContainer" style="--window-height: {innerHeight}px">
 	<CloudContainer />
 </div>
 
@@ -96,9 +104,7 @@
 		position: fixed;
 		top: var(--spc-header-height);
 		height: calc(100vh - var(--spc-footer-height));
-		height: calc(100dvh - var(--spc-footer-height));
-		height: calc(100vmin - var(--spc-footer-height));
-		height: -webkit-fill-available;
+		height: calc(var(--window-height) - var(--spc-footer-height));
 		width: 100%;
 	}
 
