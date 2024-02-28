@@ -89,11 +89,16 @@
 </div>
 
 <style>
+	/* If this BS doesn't work to fix webkit's issues, fuck it, we're doing javascript for height */
+
 	.mainContainer,
 	.cloudContainer {
 		position: fixed;
 		top: var(--spc-header-height);
 		height: calc(100vh - var(--spc-footer-height));
+		height: calc(100dvh - var(--spc-footer-height));
+		height: calc(100vmin - var(--spc-footer-height));
+		height: -webkit-fill-available;
 		width: 100%;
 	}
 
