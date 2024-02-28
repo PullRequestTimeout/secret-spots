@@ -158,9 +158,11 @@
 	<!-- This is calling the map every time map is active, it should be opacity based instead to minimise API calls -->
 	{#if map}
 		<div transition:fade={{ duration: 200 }} class="display-map">
-			{#key $activeSpot}
-				<Map {lat} {long} name={$activeSpot} />
-			{/key}
+			{#if $activeSpot}
+				{#key $activeSpot}
+					<Map {lat} {long} name={$activeSpot} />
+				{/key}
+			{/if}
 		</div>
 	{/if}
 	{#if !map}
