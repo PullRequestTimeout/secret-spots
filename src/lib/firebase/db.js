@@ -11,22 +11,23 @@ export async function getUserData() {
 	const docRef = doc(db, "users", user.uid);
 	const docSnap = await getDoc(docRef);
 
+	// Load user preferences into the UI
+	if (docSnap.exists()) {
+		userPref.set(docSnap.data().settings);
+	}
+
+	// Load user spots into the UI
 	if (docSnap.exists() && docSnap.data().spots.length > 0) {
 		// Load spots array into the UI
 		userSpots.set(docSnap.data().spots);
 
 		// On load, set the active spot to the first spot by user
-		const sortedSpots = await get(sortedUserSpots);
+		const sortedSpots = get(sortedUserSpots);
 		if (sortedSpots.length > 0) {
 			activeSpot.set(sortedSpots[0].spotName);
 		} else {
 			activeSpot.set(docSnap.data().spots[0].spotName); // Just in case 🤷‍♂️
 		}
-	}
-
-	// Load user preferences into the UI
-	if (docSnap.exists()) {
-		userPref.set(docSnap.data().settings);
 	}
 }
 
