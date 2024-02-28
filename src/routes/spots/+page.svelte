@@ -1,10 +1,19 @@
 <script>
+	// Auth
+	import { auth } from "$lib/firebase/firebase.js";
+	import { onAuthStateChanged } from "firebase/auth";
+
+	// DB
+	import { checkUser } from "$lib/firebase/db.js";
+
 	// Stores
 	import { userSpots } from "$lib/stores/userDataStore.js";
 	import { authStore } from "$lib/stores/authStore.js";
+	import { loading } from "$lib/stores/uiStore.js";
 
 	// Svelte
 	import { fade } from "svelte/transition";
+	import { onMount } from "svelte";
 
 	// Components
 	import IconButton from "$lib/components/IconButton.svelte";
@@ -17,6 +26,16 @@
 	function handleOpen() {
 		isOpen = !isOpen;
 	}
+
+	onMount(() =>
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				checkUser().then(() => {
+					loading.set(false);
+				});
+			}
+		})
+	);
 </script>
 
 <main>
