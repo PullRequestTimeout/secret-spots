@@ -84,8 +84,8 @@
 			}
 			// Schema for spot in the DB
 			spot = {
-				lat: lat,
-				long: long,
+				lat: Number(lat),
+				long: Number(long),
 				spotName: spotName,
 				iconName: iconName,
 				starRating: starRating,
