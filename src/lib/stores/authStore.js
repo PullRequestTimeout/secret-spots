@@ -14,6 +14,7 @@ import { goto } from "$app/navigation";
 import { setAlertMessage } from "$lib/stores/uiStore.js";
 import { userSpots } from "$lib/stores/userDataStore.js";
 import { deleteUserData } from "$lib/firebase/db.js";
+import { loading } from "$lib/stores/uiStore.js";
 
 export const authStore = writable({
 	uid: null,
@@ -35,6 +36,8 @@ export const authHandlers = {
 	},
 
 	logout: () => {
+		loading.set(true);
+
 		signOut(auth)
 			.then(() => {
 				authStore.update((store) => {
@@ -45,10 +48,12 @@ export const authHandlers = {
 					return store;
 				});
 				userSpots.set([]);
+				loading.set(false);
 			})
 			.catch((error) => {
 				console.error(error);
 				setAlertMessage("There was an error logging out. Try again.");
+				loading.set(false);
 			});
 	},
 

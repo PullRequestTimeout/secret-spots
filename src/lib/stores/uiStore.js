@@ -21,3 +21,9 @@ export function setAlertMessage(message, seconds) {
 
 // Loading state ------------------------------------------
 export const loading = writable(false);
+
+export function finishLoading() {
+	setTimeout(() => {
+		loading.set(false);
+	}, 500);
+}

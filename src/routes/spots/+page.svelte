@@ -30,9 +30,7 @@
 	onMount(() =>
 		onAuthStateChanged(auth, (user) => {
 			if (user) {
-				checkUser().then(() => {
-					loading.set(false);
-				});
+				checkUser();
 			}
 		})
 	);

@@ -2,7 +2,7 @@
 	import { auth } from "$lib/firebase/firebase.js";
 	import { authStore } from "$lib/stores/authStore.js";
 	import { userSpots } from "$lib/stores/userDataStore.js";
-	import { loading } from "$lib/stores/uiStore.js";
+	import { loading, finishLoading } from "$lib/stores/uiStore.js";
 	import { setAlertMessage } from "$lib/stores/uiStore.js";
 
 	// Svelte methods
@@ -41,12 +41,14 @@
 					};
 				});
 				userSpots.set([]);
+				finishLoading();
 			}
 
 			// Route protection for auth routes. Needs to be more robust. Move to load function?
 			const currentPath = window.location.pathname;
 			if (!user && !nonAuthRoutes.includes(currentPath)) {
 				goto("/");
+				finishLoading();
 				return;
 			}
 
@@ -68,9 +70,9 @@
 				goto("/spots");
 				setAlertMessage(`Welcome back, ${auth.currentUser.displayName}!`);
 				console.log("User is logged in");
+				finishLoading();
 			}
 		});
-		loading.set(false);
 		return unsubscribe;
 	});
 </script>
