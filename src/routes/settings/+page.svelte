@@ -90,7 +90,11 @@
 </script>
 
 <main>
-	<h2 class="main-title">Welcome, {$authStore.displayName}</h2>
+	{#if $authStore.displayName}
+		<h2 class="main-title">Welcome, {$authStore.displayName}</h2>
+	{:else}
+		<h2 class="main-title">Welcome!</h2>
+	{/if}
 	<section>
 		<div class="settings-heading">
 			<h2>Settings</h2>

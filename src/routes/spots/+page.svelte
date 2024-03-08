@@ -46,6 +46,8 @@
 		{:else}
 			{#if $authStore.displayName}
 				<h2>Welcome, {$authStore.displayName}!</h2>
+			{:else}
+				<h2>Welcome!</h2>
 			{/if}
 			<p>Add a spot to get started</p>
 			<IconButton svg={"add"} innerText={"Add Spot"} className={"btn-red"} callback={handleOpen} />
