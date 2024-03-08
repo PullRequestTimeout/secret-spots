@@ -104,7 +104,7 @@ export const authHandlers = {
 		const credential = EmailAuthProvider.credential(user.email, currPass);
 		reauthenticateWithCredential(user, credential)
 			.then(() => {
-				deleteUserData(user)
+				deleteUserData()
 					.then(() => {
 						deleteUser(user)
 							.then(() => {
