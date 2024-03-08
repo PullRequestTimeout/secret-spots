@@ -55,6 +55,7 @@
 			// if (user && auth.currentUser.emailVerified === false) {
 			// 	goto("/register");
 			// 	setAlertMessage("Verification email has been re-sent. Please verify your email address to be able to login.", 10);
+			//  sendEmailVerification();
 			// }
 
 			// if (user && auth.currentUser.emailVerified === true) {
@@ -67,8 +68,6 @@
 						emailVerified: auth.currentUser.emailVerified
 					};
 				});
-				// console.log("On mount, main layout:", $authStore);
-				console.log("On first mount, auth:", auth.currentUser.displayName);
 				goto("/spots");
 				if (auth.currentUser.displayName) {
 					setAlertMessage(`Welcome back, ${auth.currentUser.displayName}!`);
