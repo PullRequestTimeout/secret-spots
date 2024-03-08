@@ -90,7 +90,7 @@
 </script>
 
 <div class="registerContainer srfc">
-	<form>
+	<form on:submit|preventDefault={handleSignup}>
 		{#if !emailSent && !resendEmail}
 			<h3>Register</h3>
 			<label>
@@ -136,7 +136,7 @@
 				/>
 			</label>
 
-			<button on:click={handleSignup} class="btn btn-red">
+			<button type="submit" class="btn btn-red">
 				{#if authenticating}
 					Loading...
 				{:else}

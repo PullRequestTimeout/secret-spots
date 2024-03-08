@@ -24,10 +24,8 @@
 			await authHandlers.login(email, password);
 			if (auth.currentUser.emailVerified) {
 				console.log("Verified");
-				goto("/spots");
+				// goto("/spots");
 			} else {
-				// Removes query params from url, TODO: try and figure out the SS best practice
-				window.history.pushState({}, document.title, "/login");
 				error = true;
 				authenticating = false;
 				errorMessage =
@@ -54,7 +52,7 @@
 </script>
 
 <div class="loginContainer srfc">
-	<form>
+	<form on:submit|preventDefault={handleLogin}>
 		<h3>Login</h3>
 		{#if error}
 			<p class="error">{errorMessage}</p>
@@ -74,7 +72,7 @@
 			<input bind:value={password} name="password" type="password" placeholder="Password" />
 		</label>
 
-		<button on:click={handleLogin} class="btn btn-red">
+		<button type="submit" class="btn btn-red">
 			{#if authenticating}
 				Loading...
 			{:else}
