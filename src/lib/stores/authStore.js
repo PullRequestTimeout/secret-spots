@@ -89,6 +89,7 @@ export const authHandlers = {
 						setAlertMessage("Password updated!");
 					})
 					.catch((error) => {
+						console.error(error);
 						setAlertMessage("There was an error updating your password.");
 					});
 			})
