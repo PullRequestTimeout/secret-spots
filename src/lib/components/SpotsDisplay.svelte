@@ -332,6 +332,7 @@
 
 	h3.spot-name {
 		width: 100%;
+		padding: 0 0.5rem;
 		text-align: center;
 		position: absolute;
 		top: 4rem;
