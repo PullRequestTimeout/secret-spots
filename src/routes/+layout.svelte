@@ -67,8 +67,12 @@
 						emailVerified: auth.currentUser.emailVerified
 					};
 				});
+				// console.log("On mount, main layout:", $authStore);
+				console.log("On first mount, auth:", auth.currentUser.displayName);
 				goto("/spots");
-				setAlertMessage(`Welcome back, ${auth.currentUser.displayName}!`);
+				if (auth.currentUser.displayName) {
+					setAlertMessage(`Welcome back, ${auth.currentUser.displayName}!`);
+				}
 				console.log("User is logged in");
 				finishLoading();
 			}
