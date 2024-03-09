@@ -29,8 +29,23 @@ export const authStore = writable({
 // https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth
 
 export const authHandlers = {
-	signup: async (email, password) => {
-		await createUserWithEmailAndPassword(auth, email, password);
+	signup: async (email, password, fname) => {
+		try {
+			await createUserWithEmailAndPassword(auth, email, password);
+			await updateProfile(auth.currentUser, { displayName: fname });
+		} catch (err) {
+			let errorReason = err.toString();
+			if (errorReason.includes("auth/email-already-in-use")) {
+				setAlertMessage("This email is already in use.");
+			} else if (errorReason.includes("auth/invalid-email")) {
+				setAlertMessage("This doesn't seem to be a valid email.");
+			} else if (errorReason.includes("auth/weak-password")) {
+				setAlertMessage("Your password is too weak.");
+			} else {
+				setAlertMessage("Oops. Something went wrong.");
+				console.error(err);
+			}
+		}
 	},
 
 	login: async (email, password) => {
@@ -90,7 +105,7 @@ export const authHandlers = {
 			.then(() => {
 				signOut(auth).then(() => {
 					goto("/login");
-					setAlertMessage("Please verify email to continue.", 5);
+					setAlertMessage("Please verify email to continue.", 10);
 				});
 			})
 			.catch((error) => {
