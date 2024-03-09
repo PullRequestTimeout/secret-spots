@@ -1,6 +1,6 @@
 <script>
 	import { auth } from "$lib/firebase/firebase.js";
-	import { authStore } from "$lib/stores/authStore.js";
+	import { authStore, authHandlers } from "$lib/stores/authStore.js";
 	import { userSpots } from "$lib/stores/userDataStore.js";
 	import { loading, finishLoading } from "$lib/stores/uiStore.js";
 	import { setAlertMessage } from "$lib/stores/uiStore.js";
@@ -52,14 +52,16 @@
 				return;
 			}
 
-			// if (user && auth.currentUser.emailVerified === false) {
-			// 	goto("/register");
-			// 	setAlertMessage("Verification email has been re-sent. Please verify your email address to be able to login.", 10);
-			//  sendEmailVerification();
-			// }
+			// If user is not verified, resend verification email and redirect to login
+			if (user && auth.currentUser.emailVerified === false) {
+				// redirect to login and setAlertMessage occurs in resendEmailVerification
+				authHandlers.resendEmailVerification();
+				finishLoading();
+				return;
+			}
 
-			// if (user && auth.currentUser.emailVerified === true) {
-			if (user) {
+			// If user is verified, set user data in store and redirect to spots
+			if (user && auth.currentUser.emailVerified === true) {
 				authStore.update(() => {
 					return {
 						uid: auth.currentUser.uid,
