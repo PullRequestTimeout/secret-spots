@@ -6,7 +6,9 @@ import {
 	deleteUser,
 	EmailAuthProvider,
 	reauthenticateWithCredential,
-	updatePassword
+	updatePassword,
+	sendPasswordResetEmail,
+	sendEmailVerification
 } from "firebase/auth";
 import { writable } from "svelte/store";
 import { auth } from "$lib/firebase/firebase.js";
@@ -57,10 +59,31 @@ export const authHandlers = {
 			});
 	},
 
-	// Need to implement reset password route
-	// resetPassword: async (email) => {
-	//     await sendPasswordResetEmail(auth, email);
-	// }
+	resetPassword: (email) => {
+		sendPasswordResetEmail(auth, email)
+			.then(() => {
+				setAlertMessage("Password reset email sent.");
+			})
+			.catch((error) => {
+				console.error(error);
+				setAlertMessage("There was an error sending the password reset email.");
+			});
+	},
+
+	resendEmailVerification: () => {
+		const user = auth.currentUser;
+		sendEmailVerification(user)
+			.then(() => {
+				signOut(auth).then(() => {
+					goto("/login");
+					setAlertMessage("Please verify email to continue.", 5);
+				});
+			})
+			.catch((error) => {
+				console.error(error);
+				setAlertMessage("There was an problem sending the email verification.");
+			});
+	},
 
 	updateDisplayName: (displayName) => {
 		const user = auth.currentUser;
