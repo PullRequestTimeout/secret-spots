@@ -26,4 +26,14 @@
 		font-size: 1.2rem;
 		font-weight: bold;
 	}
+
+	@media screen and (min-width: 736px) {
+		div.alert {
+			top: unset;
+			left: unset;
+			transform: unset;
+			bottom: 4rem;
+			right: 4rem;
+		}
+	}
 </style>

@@ -6,7 +6,9 @@ import {
 	deleteUser,
 	EmailAuthProvider,
 	reauthenticateWithCredential,
-	updatePassword
+	updatePassword,
+	sendPasswordResetEmail,
+	sendEmailVerification
 } from "firebase/auth";
 import { writable } from "svelte/store";
 import { auth } from "$lib/firebase/firebase.js";
@@ -27,12 +29,41 @@ export const authStore = writable({
 // https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth
 
 export const authHandlers = {
-	signup: async (email, password) => {
-		await createUserWithEmailAndPassword(auth, email, password);
+	signup: async (email, password, fname) => {
+		try {
+			await createUserWithEmailAndPassword(auth, email, password);
+			await updateProfile(auth.currentUser, { displayName: fname });
+		} catch (err) {
+			let errorReason = err.toString();
+			if (errorReason.includes("auth/email-already-in-use")) {
+				setAlertMessage("This email is already in use.");
+			} else if (errorReason.includes("auth/invalid-email")) {
+				setAlertMessage("This doesn't seem to be a valid email.");
+			} else if (errorReason.includes("auth/weak-password")) {
+				setAlertMessage("Your password is too weak.");
+			} else {
+				setAlertMessage("Oops. Something went wrong.");
+				console.error(err);
+			}
+		}
 	},
 
 	login: async (email, password) => {
-		await signInWithEmailAndPassword(auth, email, password);
+		try {
+			await signInWithEmailAndPassword(auth, email, password);
+		} catch (err) {
+			let errorReason = err.toString();
+			if (errorReason.includes("auth/user-not-found")) {
+				setAlertMessage("There doesn't seem to be an account associated with this email.");
+			} else if (errorReason.includes("auth/invalid-email")) {
+				setAlertMessage("This doesn't seem to be a valid email.");
+			} else if (errorReason.includes("auth/wrong-password")) {
+				setAlertMessage("Your password is incorrect.");
+			} else {
+				setAlertMessage("Oops. Something went wrong.");
+				console.error(err);
+			}
+		}
 	},
 
 	logout: () => {
@@ -57,10 +88,31 @@ export const authHandlers = {
 			});
 	},
 
-	// Need to implement reset password route
-	// resetPassword: async (email) => {
-	//     await sendPasswordResetEmail(auth, email);
-	// }
+	resetPassword: (email) => {
+		sendPasswordResetEmail(auth, email)
+			.then(() => {
+				setAlertMessage("Password reset email sent.");
+			})
+			.catch((error) => {
+				console.error(error);
+				setAlertMessage("There was an error sending the password reset email.");
+			});
+	},
+
+	resendEmailVerification: () => {
+		const user = auth.currentUser;
+		sendEmailVerification(user)
+			.then(() => {
+				signOut(auth).then(() => {
+					goto("/login");
+					setAlertMessage("Please verify email to continue.", 10);
+				});
+			})
+			.catch((error) => {
+				console.error(error);
+				setAlertMessage("There was an problem sending the email verification.");
+			});
+	},
 
 	updateDisplayName: (displayName) => {
 		const user = auth.currentUser;
