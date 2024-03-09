@@ -34,7 +34,21 @@ export const authHandlers = {
 	},
 
 	login: async (email, password) => {
-		await signInWithEmailAndPassword(auth, email, password);
+		try {
+			await signInWithEmailAndPassword(auth, email, password);
+		} catch (err) {
+			let errorReason = err.toString();
+			if (errorReason.includes("auth/user-not-found")) {
+				setAlertMessage("There doesn't seem to be an account associated with this email.");
+			} else if (errorReason.includes("auth/invalid-email")) {
+				setAlertMessage("This doesn't seem to be a valid email.");
+			} else if (errorReason.includes("auth/wrong-password")) {
+				setAlertMessage("Your password is incorrect.");
+			} else {
+				setAlertMessage("Oops. Something went wrong.");
+				console.error(err);
+			}
+		}
 	},
 
 	logout: () => {

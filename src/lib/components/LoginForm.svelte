@@ -1,7 +1,6 @@
 <script>
 	import { authHandlers } from "$lib/stores/authStore.js";
-	// import { goto } from "$app/navigation";
-	import { auth } from "$lib/firebase/firebase";
+	import { setAlertMessage } from "$lib/stores/uiStore.js";
 
 	let email = "";
 	let password = "";
@@ -16,40 +15,12 @@
 			return;
 		}
 		if (!email || !password) {
-			error = true;
-			errorMessage = "An email and password are required.";
+			setAlertMessage("An email and password are required.");
 			return;
 		}
 		authenticating = true;
-
-		try {
-			await authHandlers.login(email, password);
-			if (auth.currentUser.emailVerified) {
-				console.log("Verified");
-				// goto("/spots");
-			} else {
-				error = true;
-				authenticating = false;
-				errorMessage =
-					"Please verify your email. Be sure to check your junk folder if you can't find it in your inbox.";
-			}
-		} catch (err) {
-			error = true;
-
-			let errorReason = err.toString();
-			if (errorReason.includes("auth/user-not-found")) {
-				errorMessage = "There doesn't seem to be an account associated with this email.";
-			} else if (errorReason.includes("auth/invalid-email")) {
-				errorMessage = "This doesn't seem to be a valid email.";
-			} else if (errorReason.includes("auth/wrong-password")) {
-				errorMessage = "Your password is incorrect.";
-			} else {
-				errorMessage = "Oops. Something went wrong.";
-				console.log(err.toString());
-			}
-
-			authenticating = false;
-		}
+		await authHandlers.login(email, password);
+		authenticating = false;
 	}
 </script>
 
