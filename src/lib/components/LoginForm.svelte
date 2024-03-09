@@ -1,6 +1,6 @@
 <script>
 	import { authHandlers } from "$lib/stores/authStore.js";
-	import { goto } from "$app/navigation";
+	// import { goto } from "$app/navigation";
 	import { auth } from "$lib/firebase/firebase";
 
 	let email = "";
@@ -8,6 +8,8 @@
 	let error = false;
 	let authenticating = false;
 	let errorMessage = "";
+
+	let forgotPassword = false;
 
 	async function handleLogin() {
 		if (authenticating) {
@@ -51,54 +53,110 @@
 	}
 </script>
 
-<div class="loginContainer srfc">
-	<form on:submit|preventDefault={handleLogin}>
-		<h3>Login</h3>
-		{#if error}
-			<p class="error">{errorMessage}</p>
-		{/if}
-		<label>
-			<!-- svelte-ignore a11y-autofocus -->
-			<input
-				bind:value={email}
-				name="email"
-				type="email"
-				placeholder="Email"
-				autocomplete="off"
-				autofocus
-			/>
-		</label>
-		<label>
-			<input bind:value={password} name="password" type="password" placeholder="Password" />
-		</label>
-
-		<button type="submit" class="btn btn-red">
-			{#if authenticating}
-				Loading...
-			{:else}
-				Submit
+{#if !forgotPassword}
+	<div class="login-container srfc">
+		<form on:submit|preventDefault={handleLogin}>
+			<h3>Login</h3>
+			{#if error}
+				<p class="error">{errorMessage}</p>
 			{/if}
-		</button>
-		<p>Don't have an account? <a href="/register">Register</a></p>
-	</form>
-</div>
+			<label>
+				<!-- svelte-ignore a11y-autofocus -->
+				<input
+					bind:value={email}
+					name="email"
+					type="email"
+					placeholder="Email"
+					autocomplete="off"
+					autofocus
+				/>
+			</label>
+			<label>
+				<input bind:value={password} name="password" type="password" placeholder="Password" />
+			</label>
+
+			<button type="submit" class="btn btn-red">
+				{#if authenticating}
+					Loading...
+				{:else}
+					Submit
+				{/if}
+			</button>
+		</form>
+		<div class="links">
+			<p>Don't have an account? <a href="/register">Register</a></p>
+			<button
+				on:click={() => {
+					forgotPassword = true;
+				}}
+				class="forgot-password">Forgot your password?</button
+			>
+		</div>
+	</div>
+{:else}
+	<div class="login-container srfc">
+		<form
+			on:submit|preventDefault={() => {
+				authHandlers.resetPassword(email);
+				email = "";
+				forgotPassword = false;
+			}}
+		>
+			<h3>Forgot Password</h3>
+			{#if error}
+				<p class="error">{errorMessage}</p>
+			{/if}
+			<label>
+				<!-- svelte-ignore a11y-autofocus -->
+				<input
+					bind:value={email}
+					name="email"
+					type="email"
+					placeholder="Email"
+					autocomplete="off"
+					autofocus
+				/>
+			</label>
+			<button type="submit" class="btn btn-red">
+				{#if authenticating}
+					Loading...
+				{:else}
+					Submit
+				{/if}
+			</button>
+		</form>
+		<div class="links">
+			<p>
+				Remember your password? <button
+					on:click={() => (forgotPassword = false)}
+					class="forgot-password">Login</button
+				>
+			</p>
+		</div>
+	</div>
+{/if}
 
 <style>
-	.loginContainer {
+	.login-container {
 		width: 20rem;
 		max-width: 90%;
 	}
 
-	.loginContainer p {
+	.login-container p {
 		text-align: center;
 	}
 
-	form {
+	form,
+	.links {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+	}
+
+	form {
 		gap: 0.5rem;
+		margin-bottom: 0.5rem;
 	}
 
 	form input {
@@ -115,6 +173,7 @@
 	form h3 {
 		font-size: 2em;
 		color: var(--clr-dark-green);
+		text-align: center;
 	}
 
 	form input,
@@ -122,9 +181,17 @@
 		font-size: 1.2rem;
 	}
 
-	.loginContainer a,
-	.loginContainer a:visited {
+	button.forgot-password {
+		background: none;
+		border: none;
+		text-decoration: underline;
+	}
+
+	.login-container a,
+	.login-container a:visited,
+	.forgot-password {
 		color: var(--clr-red);
 		font-weight: bold;
+		font-size: 1rem;
 	}
 </style>
