@@ -71,7 +71,7 @@
 					};
 				});
 				goto("/spots");
-				if (auth.currentUser.displayName) {
+				if (auth.currentUser.displayName && $userSpots.length > 0) {
 					setAlertMessage(`Welcome back, ${auth.currentUser.displayName}!`);
 				}
 				console.log("User is logged in");
