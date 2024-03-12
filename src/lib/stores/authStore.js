@@ -1,3 +1,4 @@
+// Firebase
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
@@ -10,13 +11,16 @@ import {
 	sendPasswordResetEmail,
 	sendEmailVerification
 } from "firebase/auth";
-import { writable } from "svelte/store";
 import { auth } from "$lib/firebase/firebase.js";
-import { goto } from "$app/navigation";
-import { setAlertMessage } from "$lib/stores/uiStore.js";
-import { userSpots } from "$lib/stores/userDataStore.js";
 import { deleteUserData } from "$lib/firebase/db.js";
-import { loading } from "$lib/stores/uiStore.js";
+
+// Svelte
+import { writable } from "svelte/store";
+import { goto } from "$app/navigation";
+
+// UI
+import { setAlertMessage, loading } from "$lib/stores/uiStore.js";
+import { userSpots } from "$lib/stores/userDataStore.js";
 
 export const authStore = writable({
 	uid: null,
