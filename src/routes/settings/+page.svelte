@@ -1,25 +1,36 @@
 <script>
-	// import Toggle from "$lib/components/Toggle.svelte";
+	// Components
+	import PasswordInput from "$lib/components/PasswordInput.svelte";
 	import DropDown from "$lib/components/DropDown.svelte";
 	import IconButton from "$lib/components/IconButton.svelte";
 	import Chalk from "./Chalk.svelte";
+
+	// Stores
 	import { authHandlers, authStore } from "$lib/stores/authStore.js";
 	import { userPref, userSpots } from "$lib/stores/userDataStore.js";
 	import { setAlertMessage } from "$lib/stores/uiStore.js";
+
+	// Firebase
 	import {
 		getUserData,
 		updateUserPrefInDatabase,
 		updateSpotsInDatabase,
 		deleteUserData
 	} from "$lib/firebase/db.js";
+
+	// Svelte
 	import { onMount } from "svelte";
+	import { fade } from "svelte/transition";
+
+	// Utils
 	import { clickOutside } from "$lib/utils/click_outside.js";
-	import { fade, fly } from "svelte/transition";
 
 	// On mount, set the sort type and date format to the user's preferences in the db
 	$: startingSort = $userPref.sort;
 	$: startingDate = $userPref.date;
 	$: startingMap = $userPref.map;
+
+	// TODO: getUserData needs to be separated into getUserSpots and getUserPref, and only getUserPref should be called on mount
 	onMount(() => {
 		getUserData();
 	});
@@ -237,27 +248,9 @@
 				{#if updatePasswordModal}
 					<h3>Update Password</h3>
 					<p>Enter a new password:</p>
-					<input
-						type="password"
-						placeholder="Current Password"
-						bind:value={currentPassword}
-						class="txt-inp"
-						required
-					/>
-					<input
-						type="password"
-						placeholder="New Password"
-						bind:value={newPassword1}
-						class="txt-inp"
-						required
-					/>
-					<input
-						type="password"
-						bind:value={newPassword2}
-						placeholder="Confirm New Password"
-						class="txt-inp"
-						required
-					/>
+					<PasswordInput bind:password={currentPassword} placeholder="Current Password" />
+					<PasswordInput bind:password={newPassword1} placeholder="New Password" />
+					<PasswordInput bind:password={newPassword2} placeholder="Confirm New Password" />
 					<div>
 						<IconButton
 							svg={"edit"}
@@ -279,14 +272,7 @@
 					<h3>Delete Account</h3>
 					<p>This action cannot be undone.</p>
 					<p>Input password to confirm:</p>
-
-					<input
-						type="password"
-						placeholder="Password"
-						bind:value={currentPassword}
-						class="txt-inp"
-						required
-					/>
+					<PasswordInput bind:password={currentPassword} />
 					<div>
 						<IconButton
 							svg={"trash"}

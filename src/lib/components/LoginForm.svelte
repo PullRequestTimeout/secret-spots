@@ -2,6 +2,7 @@
 	import { authHandlers } from "$lib/stores/authStore.js";
 	import { setAlertMessage } from "$lib/stores/uiStore.js";
 	import Icon from "$lib/components/Icon.svelte";
+	import PasswordInput from "$lib/components/PasswordInput.svelte";
 
 	let email = "";
 	let password = "";
@@ -23,12 +24,6 @@
 		await authHandlers.login(email, password);
 		authenticating = false;
 	}
-
-	let passwordVisibility = false;
-	$: type = passwordVisibility ? "text" : "password";
-	function passwordInput(e) {
-		password = e.target.value;
-	}
 </script>
 
 {#if !forgotPassword}
@@ -47,25 +42,7 @@
 					autocomplete="off"
 				/>
 			</label>
-			<div class="password-input">
-				<label>
-					<input name="password" {type} placeholder="Password" on:input={passwordInput} />
-				</label>
-				{#if password.length > 0}
-					<button
-						class="password-visibility-button"
-						type="button"
-						tabindex="-1"
-						on:click={() => (passwordVisibility = !passwordVisibility)}
-					>
-						{#if passwordVisibility}
-							<Icon name="hidden" color="--clr-dark-green" size="24" />
-						{:else}
-							<Icon name="visible" color="--clr-dark-green" size="24" />
-						{/if}
-					</button>
-				{/if}
-			</div>
+			<PasswordInput bind:password />
 			<button type="submit" class="btn btn-red">
 				{#if authenticating}
 					Loading...
@@ -168,26 +145,6 @@
 	form input,
 	form button {
 		font-size: 1.2rem;
-	}
-
-	div.password-input {
-		position: relative;
-	}
-
-	button.password-visibility-button {
-		position: absolute;
-		right: 0.5rem;
-		top: 0.55rem;
-		background: none;
-		border: none;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	button.password-visibility-button:focus,
-	button.password-visibility-button:active {
-		outline: none;
 	}
 
 	button.forgot-password {
