@@ -359,20 +359,6 @@
 		overflow-y: auto;
 		scroll-behavior: smooth;
 		padding: 7rem 2rem 4rem 2rem;
-		scrollbar-width: thin;
-		scrollbar-color: var(--clr-darker-green) var(--clr-off-white);
-	}
-
-	div.display-info::-webkit-scrollbar {
-		width: 9px;
-	}
-
-	div.display-info::-webkit-scrollbar-track {
-		background-color: var(--clr-off-white);
-	}
-
-	div.display-info::-webkit-scrollbar-thumb {
-		background-color: var(--clr-darker-green);
 	}
 
 	div.display-info button.btn-rnd {

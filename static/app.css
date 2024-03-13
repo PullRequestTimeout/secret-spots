@@ -42,7 +42,20 @@ html {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
-	/* transition-duration: 200ms; */
+	scrollbar-width: thin;
+	scrollbar-color: var(--clr-darker-green) var(--clr-off-white);
+}
+
+*::-webkit-scrollbar {
+	width: 9px;
+}
+
+*::-webkit-scrollbar-track {
+	background-color: var(--clr-off-white);
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: var(--clr-darker-green);
 }
 
 *:focus {

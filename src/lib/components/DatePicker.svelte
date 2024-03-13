@@ -253,8 +253,6 @@
 		padding: 0.25rem;
 		z-index: 1;
 		overflow: auto;
-		scrollbar-width: thin;
-		scrollbar-color: var(--clr-darker-green) var(--clr-off-white);
 	}
 
 	.date-input__dropdown button {
@@ -263,17 +261,5 @@
 		background-color: transparent;
 		border: none;
 		text-align: left;
-	}
-
-	.date-input__dropdown::-webkit-scrollbar {
-		width: 9px;
-	}
-
-	.date-input__dropdown::-webkit-scrollbar-track {
-		background-color: var(--clr-off-white);
-	}
-
-	.date-input__dropdown::-webkit-scrollbar-thumb {
-		background-color: var(--clr-darker-green);
 	}
 </style>

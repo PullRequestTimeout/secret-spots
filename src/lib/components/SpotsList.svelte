@@ -92,20 +92,6 @@
 			overscroll-behavior-y: none;
 			top: 0;
 			direction: rtl;
-			scrollbar-width: thin;
-			scrollbar-color: var(--clr-darker-green) var(--clr-off-white);
-		}
-
-		div.list-container::-webkit-scrollbar {
-			width: 9px;
-		}
-
-		div.list-container::-webkit-scrollbar-track {
-			background-color: var(--clr-off-white);
-		}
-
-		div.list-container::-webkit-scrollbar-thumb {
-			background-color: var(--clr-darker-green);
 		}
 
 		div.list-slider {

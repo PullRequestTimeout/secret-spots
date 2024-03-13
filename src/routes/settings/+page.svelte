@@ -310,20 +310,6 @@
 		background-color: #eaeaeaad;
 		height: calc(100vh - var(--spc-footer-height));
 		overflow: auto;
-		scrollbar-width: thin;
-		scrollbar-color: var(--clr-darker-green) var(--clr-off-white);
-	}
-
-	main::-webkit-scrollbar {
-		width: 9px;
-	}
-
-	main::-webkit-scrollbar-track {
-		background-color: var(--clr-off-white);
-	}
-
-	main::-webkit-scrollbar-thumb {
-		background-color: var(--clr-darker-green);
 	}
 
 	main .main-title {

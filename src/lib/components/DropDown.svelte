@@ -107,8 +107,6 @@
 		padding: 0.25rem;
 		z-index: 1;
 		overflow: auto;
-		scrollbar-width: thin;
-		scrollbar-color: var(--clr-darker-green) var(--clr-off-white);
 	}
 
 	.dropdown button {
@@ -117,17 +115,5 @@
 		background-color: transparent;
 		border: none;
 		text-align: left;
-	}
-
-	.dropdown::-webkit-scrollbar {
-		width: 9px;
-	}
-
-	.dropdown::-webkit-scrollbar-track {
-		background-color: var(--clr-off-white);
-	}
-
-	.dropdown::-webkit-scrollbar-thumb {
-		background-color: var(--clr-darker-green);
 	}
 </style>
