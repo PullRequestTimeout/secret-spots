@@ -98,9 +98,15 @@
 		deleteAccountModal = false;
 		errorMessage = "";
 	}
+
+	let currentYear = new Date().getFullYear();
+
+	let innerHeight = 0;
 </script>
 
-<main>
+<svelte:window bind:innerHeight />
+
+<main style="--window-height: {innerHeight}px">
 	{#if $authStore.displayName}
 		<h2 class="main-title">Welcome, {$authStore.displayName}</h2>
 	{:else}
@@ -205,6 +211,10 @@
 			/>
 		</div>
 	</section>
+	<section class="credit">
+		<p>Made with ❤️ & ☕</p>
+		<p>© {currentYear} <a href="https://github.com/PullRequestTimeout">Jacob Druery</a></p>
+	</section>
 	{#if clearSpotsModal || displayNameModal || updatePasswordModal || deleteAccountModal}
 		<div class="modal-container">
 			<div
@@ -295,6 +305,7 @@
 	main {
 		background-color: #eaeaeaad;
 		height: calc(100vh - var(--spc-footer-height));
+		height: calc(var(--window-height) - var(--spc-footer-height));
 		overflow: auto;
 	}
 
@@ -314,7 +325,6 @@
 
 	.settings-heading {
 		align-items: center;
-		/* gap: 1rem; */
 	}
 
 	h2,
@@ -373,11 +383,6 @@
 	div.modal h3 {
 		text-align: center;
 	}
-	/* 
-	div.modal h2 {
-		font-size: 1.2rem;
-		color: var(--clr-dark-green);
-	} */
 
 	div.modal p.error {
 		font-size: 1rem;
@@ -406,6 +411,20 @@
 
 	div.modal div button:hover {
 		cursor: pointer;
+	}
+
+	section.credit {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
+
+	section.credit a,
+	section.credit a:visited {
+		color: var(--clr-dark-green);
+		font-weight: bold;
 	}
 
 	@media screen and (min-width: 768px) {
