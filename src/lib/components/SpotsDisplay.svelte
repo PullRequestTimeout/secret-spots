@@ -343,6 +343,10 @@
 			0 0 1.2rem var(--clr-white);
 	}
 
+	h3.spot-name::selection {
+		text-shadow: none;
+	}
+
 	div.display-map {
 		width: 100%;
 		height: 100%;
