@@ -1,17 +1,26 @@
 <script>
+	// Components
 	import IconButton from "$lib/components/IconButton.svelte";
 	import Loader from "$lib/components/Loader.svelte";
-	import { fade } from "svelte/transition";
-	import { clickOutside } from "$lib/utils/click_outside.js";
 	import IconSelector from "$lib/components/IconSelector.svelte";
+
+	// Svlete
+	import { fade } from "svelte/transition";
+
+	// Stores
 	import { userSpots, activeSpot } from "$lib/stores/userDataStore.js";
 	import { setAlertMessage } from "$lib/stores/uiStore.js";
 
+	// Utils
+	import { clickOutside } from "$lib/utils/click_outside.js";
+
+	// Props
 	export let isOpen;
 	export let spot = null;
 
 	let lat = "";
 	let long = "";
+	let coords = "";
 	let spotName = "";
 	let description = "";
 	let iconName;
@@ -22,9 +31,12 @@
 	let err = false;
 	let errorMessage = "";
 
+	// Moves modal to centre of spots display
 	let translate = false;
 	$: if ($userSpots.length > 0) {
 		translate = true;
+	} else {
+		translate = false;
 	}
 
 	function getLocation() {
@@ -33,6 +45,7 @@
 		const success = (pos) => {
 			lat = pos.coords.latitude;
 			long = pos.coords.longitude;
+			coords = `${lat}, ${long}`;
 			clearError();
 			loadLoc = false;
 		};
@@ -46,9 +59,9 @@
 	}
 
 	function handleDetails() {
-		if (!lat || !long) {
+		if (!lat || !long || !coords) {
 			err = true;
-			errorMessage = "Spots need both a latitude and longitude.";
+			errorMessage = "Spots need a set of coordinates.";
 		} else {
 			details = true;
 			clearError();
@@ -61,6 +74,7 @@
 		details = false;
 		lat = "";
 		long = "";
+		coords = "";
 		spotName = "";
 		description = "";
 		iconName = "secret";
@@ -111,6 +125,7 @@
 		}
 	}
 
+	// Spot names are used in all updating functions so should be unique
 	function isSpotNameInUse(desiredName) {
 		let inUse = false;
 		$userSpots.forEach((spot) => {
@@ -119,6 +134,33 @@
 			}
 		});
 		return inUse;
+	}
+
+	function handleCoordsInput(coordsString) {
+		if (isValidCoordinates(coordsString)) {
+			const parsed = parseCoordinates(coordsString);
+			lat = parsed.lat;
+			long = parsed.long;
+			clearError();
+		} else {
+			err = true;
+			errorMessage = "Invalid coordinates";
+		}
+	}
+
+	function isValidCoordinates(coordinates) {
+		const regex =
+			/^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/;
+		return regex.test(coordinates.replace(/[() ]/g, ""));
+	}
+
+	// A function to parse a string of coordinates into a lat and long, stripping parentheses and spaces
+	function parseCoordinates(coordinates) {
+		const parsed = coordinates.replace(/[() ]/g, "").split(",");
+		return {
+			lat: parsed[0],
+			long: parsed[1]
+		};
 	}
 </script>
 
@@ -142,10 +184,13 @@
 			<p>Or</p>
 			<form>
 				<label>
-					<input type="text" placeholder="Latitude" bind:value={lat} class="txt-inp" />
-				</label>
-				<label>
-					<input type="text" placeholder="Longtitude" bind:value={long} class="txt-inp" />
+					<input
+						type="text"
+						placeholder="Coords: eg. 49.19,-118.99"
+						bind:value={coords}
+						class="txt-inp"
+						on:input={() => handleCoordsInput(coords)}
+					/>
 				</label>
 			</form>
 			{#if loadLoc}
