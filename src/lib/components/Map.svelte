@@ -14,10 +14,10 @@
 
 	// Bounding box
 	let bounds = {
-		north: position.lat + 0.02,
-		south: position.lat - 0.02,
-		east: position.lng + 0.02,
-		west: position.lng - 0.02
+		north: position.lat + 0.04,
+		south: position.lat - 0.04,
+		east: position.lng + 0.04,
+		west: position.lng - 0.04
 	};
 
 	// Map element
