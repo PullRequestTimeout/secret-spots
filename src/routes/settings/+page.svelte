@@ -30,9 +30,10 @@
 	$: startingDate = $userPref.date;
 	$: startingMap = $userPref.map;
 
-	// TODO: getUserData needs to be separated into getUserSpots and getUserPref, and only getUserPref should be called on mount
 	onMount(() => {
-		getUserPrefs();
+		if ($userSpots.length < 1) {
+			getUserPrefs();
+		}
 	});
 
 	// Modal error message
