@@ -9,7 +9,7 @@
 	// Stores
 	import { userSpots } from "$lib/stores/userDataStore.js";
 	import { authStore } from "$lib/stores/authStore.js";
-	import { loading } from "$lib/stores/uiStore.js";
+	import { setAlertMessage, finishLoading } from "$lib/stores/uiStore.js";
 
 	// Svelte
 	import { fade } from "svelte/transition";
@@ -28,10 +28,14 @@
 	}
 
 	onMount(() =>
-		onAuthStateChanged(auth, (user) => {
+		onAuthStateChanged(auth, async (user) => {
 			if (user) {
-				checkUser();
+				await checkUser();
 			}
+			if (auth.currentUser.displayName && $userSpots.length > 0) {
+				setAlertMessage(`Welcome back, ${auth.currentUser.displayName}!`);
+			}
+			finishLoading();
 		})
 	);
 </script>

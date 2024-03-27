@@ -3,7 +3,6 @@
 	import { authStore, authHandlers } from "$lib/stores/authStore.js";
 	import { userSpots } from "$lib/stores/userDataStore.js";
 	import { loading, finishLoading } from "$lib/stores/uiStore.js";
-	import { setAlertMessage } from "$lib/stores/uiStore.js";
 
 	// Svelte methods
 	import { goto } from "$app/navigation";
@@ -70,12 +69,8 @@
 						emailVerified: auth.currentUser.emailVerified
 					};
 				});
+				// Loading state is set to false in spots/+page.svelte with finishLoading()
 				goto("/spots");
-				if (auth.currentUser.displayName && $userSpots.length > 0) {
-					setAlertMessage(`Welcome back, ${auth.currentUser.displayName}!`);
-				}
-				console.log("User is logged in");
-				finishLoading();
 			}
 		});
 		return unsubscribe;
