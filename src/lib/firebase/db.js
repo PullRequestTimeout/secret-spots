@@ -5,16 +5,10 @@ import { get } from "svelte/store";
 
 //TODO: Refine this a little more. There's a lot of repeated variables.
 
-export async function getUserData() {
-	console.log("Fetching user data.");
+export async function getUserSpots() {
 	const user = auth.currentUser;
 	const docRef = doc(db, "users", user.uid);
 	const docSnap = await getDoc(docRef);
-
-	// Load user preferences into the UI
-	if (docSnap.exists()) {
-		userPref.set(docSnap.data().settings);
-	}
 
 	// Load user spots into the UI
 	if (docSnap.exists() && docSnap.data().spots.length > 0) {
@@ -28,6 +22,17 @@ export async function getUserData() {
 		} else {
 			activeSpot.set(docSnap.data().spots[0].spotName); // Just in case 🤷‍♂️
 		}
+	}
+}
+
+export async function getUserPrefs() {
+	const user = auth.currentUser;
+	const docRef = doc(db, "users", user.uid);
+	const docSnap = await getDoc(docRef);
+
+	// Load user preferences into the UI
+	if (docSnap.exists()) {
+		userPref.set(docSnap.data().settings);
 	}
 }
 
@@ -50,7 +55,8 @@ export async function checkUser() {
 		};
 		await setDoc(userRef, userDataForDb);
 	} else {
-		getUserData();
+		await getUserPrefs();
+		await getUserSpots();
 	}
 }
 

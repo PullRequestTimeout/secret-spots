@@ -12,7 +12,7 @@
 
 	// Firebase
 	import {
-		getUserData,
+		getUserPrefs,
 		updateUserPrefInDatabase,
 		updateSpotsInDatabase,
 		deleteUserData
@@ -32,7 +32,7 @@
 
 	// TODO: getUserData needs to be separated into getUserSpots and getUserPref, and only getUserPref should be called on mount
 	onMount(() => {
-		getUserData();
+		getUserPrefs();
 	});
 
 	// Modal error message
