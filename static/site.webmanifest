@@ -1,6 +1,7 @@
 {
-    "name": "SecretSpots",
-    "short_name": "SecretSpots",
+    "name": "Secret Spots",
+    "short_name": "Secret Spots",
+    "description": "A webapp to keep track of your favorite spots on your travels.",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
