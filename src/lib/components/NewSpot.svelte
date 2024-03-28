@@ -211,7 +211,13 @@
 			<form>
 				<IconSelector bind:currentIcon={iconName} />
 				<label>
-					<input type="text" placeholder="Spot Name" bind:value={spotName} class="txt-inp" />
+					<input
+						type="text"
+						placeholder="Spot Name"
+						bind:value={spotName}
+						class="txt-inp"
+						autocomplete="off"
+					/>
 				</label>
 				<label>
 					<textarea
