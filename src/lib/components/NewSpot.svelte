@@ -218,7 +218,7 @@
 						bind:value={spotName}
 						class="txt-inp"
 						name="/"
-						autocomplete="none"
+						autocomplete="new-password"
 					/>
 				</label>
 				<label>
