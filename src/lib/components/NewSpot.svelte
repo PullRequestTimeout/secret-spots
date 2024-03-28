@@ -4,7 +4,7 @@
 	import Loader from "$lib/components/Loader.svelte";
 	import IconSelector from "$lib/components/IconSelector.svelte";
 
-	// Svlete
+	// Svelte
 	import { fade } from "svelte/transition";
 
 	// Stores
@@ -208,7 +208,9 @@
 			{/if}
 		{:else if details}
 			<h3>Add Spot Details</h3>
-			<form>
+			<form autocomplete="off">
+				<!-- svelte-ignore a11y-autocomplete-valid -->
+				<input autocomplete="false" name="hidden" type="text" style="display:none;" />
 				<IconSelector bind:currentIcon={iconName} />
 				<label>
 					<input
