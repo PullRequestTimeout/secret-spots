@@ -22,9 +22,9 @@
 	import Icon from "$lib/components/Icon.svelte";
 
 	// NewSpot state
-	let isOpen = false;
-	function handleOpen() {
-		isOpen = !isOpen;
+	let newSpotOpen = false;
+	function handleNewSpotOpen() {
+		newSpotOpen = !newSpotOpen;
 	}
 
 	onMount(() =>
@@ -44,7 +44,7 @@
 	<div transition:fade={{ duration: 200 }}>
 		{#if $userSpots.length > 0}
 			<SpotsDashboard />
-			<button on:click={handleOpen} class="small-add-spot btn btn-rnd btn-red">
+			<button on:click={handleNewSpotOpen} class="small-add-spot btn btn-rnd btn-red">
 				<Icon name="add" size="32" />
 			</button>
 		{:else}
@@ -54,9 +54,14 @@
 				<h2>Welcome!</h2>
 			{/if}
 			<p>Add a spot to get started</p>
-			<IconButton svg={"add"} innerText={"Add Spot"} className={"btn-red"} callback={handleOpen} />
+			<IconButton
+				svg={"add"}
+				innerText={"Add Spot"}
+				className={"btn-red"}
+				callback={handleNewSpotOpen}
+			/>
 		{/if}
-		<NewSpot bind:isOpen />
+		<NewSpot bind:isOpen={newSpotOpen} />
 	</div>
 </main>
 
