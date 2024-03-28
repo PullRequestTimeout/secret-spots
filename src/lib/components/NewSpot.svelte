@@ -208,17 +208,16 @@
 			{/if}
 		{:else if details}
 			<h3>Add Spot Details</h3>
-			<form autocomplete="off">
-				<!-- svelte-ignore a11y-autocomplete-valid -->
-				<input autocomplete="false" name="hidden" type="text" style="display:none;" />
+			<form>
 				<IconSelector bind:currentIcon={iconName} />
 				<label>
+					<!-- svelte-ignore a11y-autocomplete-valid -->
 					<input
 						type="text"
 						placeholder="Spot Name"
 						bind:value={spotName}
 						class="txt-inp"
-						autocomplete="off"
+						autocomplete="none"
 					/>
 				</label>
 				<label>
