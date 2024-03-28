@@ -217,6 +217,7 @@
 						placeholder="Spot Name"
 						bind:value={spotName}
 						class="txt-inp"
+						name="/"
 						autocomplete="none"
 					/>
 				</label>
