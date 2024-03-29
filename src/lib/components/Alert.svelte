@@ -1,10 +1,20 @@
 <script>
 	import { fly } from "svelte/transition";
 	import { alertMessage } from "$lib/stores/uiStore.js";
+	import { clickOutside } from "$lib/utils/click_outside.js";
+
+	function closeAlert() {
+		alertMessage.set("");
+	}
 </script>
 
 {#if !!$alertMessage}
-	<div transition:fly={{ duration: 400, y: 10 }} class="srfc alert">
+	<div
+		transition:fly={{ duration: 400, y: 10 }}
+		use:clickOutside
+		on:outclick={closeAlert}
+		class="srfc alert"
+	>
 		<p>{$alertMessage}</p>
 	</div>
 {/if}
