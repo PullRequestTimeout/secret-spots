@@ -32,9 +32,6 @@
 			if (user) {
 				await checkUser();
 			}
-			if (auth.currentUser.displayName && $userSpots.length > 0) {
-				setAlertMessage(`Welcome back, ${auth.currentUser.displayName}!`);
-			}
 			finishLoading();
 		})
 	);

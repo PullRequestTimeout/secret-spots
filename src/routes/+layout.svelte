@@ -2,7 +2,7 @@
 	import { auth } from "$lib/firebase/firebase.js";
 	import { authStore, authHandlers } from "$lib/stores/authStore.js";
 	import { userSpots } from "$lib/stores/userDataStore.js";
-	import { loading, finishLoading } from "$lib/stores/uiStore.js";
+	import { loading, finishLoading, setAlertMessage } from "$lib/stores/uiStore.js";
 
 	// Svelte methods
 	import { goto } from "$app/navigation";
@@ -69,6 +69,10 @@
 						emailVerified: auth.currentUser.emailVerified
 					};
 				});
+				// Welcome message
+				if (auth.currentUser.displayName) {
+					setAlertMessage(`Welcome back, ${auth.currentUser.displayName}!`);
+				}
 				// Loading state is set to false in spots/+page.svelte with finishLoading()
 				goto("/spots");
 			}
