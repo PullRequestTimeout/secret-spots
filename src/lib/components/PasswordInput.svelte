@@ -13,7 +13,7 @@
 
 <div class="password-input">
 	<label>
-		<input name="password" {type} {placeholder} on:input={passwordInput} />
+		<input name="password" {type} {placeholder} on:input={passwordInput} class="txt-inp" />
 	</label>
 	{#if password.length > 0}
 		<button
@@ -32,18 +32,6 @@
 </div>
 
 <style>
-	input {
-		width: 100%;
-		padding: 0.5rem;
-		border: 2px solid var(--clr-dark-green);
-		border-radius: 0.5rem;
-		font-size: 1.2rem;
-	}
-
-	input:focus {
-		outline: solid var(--clr-dark-green);
-	}
-
 	div.password-input {
 		position: relative;
 	}

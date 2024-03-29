@@ -40,6 +40,7 @@
 					type="email"
 					placeholder="Email"
 					autocomplete="off"
+					class="txt-inp"
 				/>
 			</label>
 			<PasswordInput bind:password />
@@ -81,6 +82,7 @@
 					type="email"
 					placeholder="Email"
 					autocomplete="off"
+					class="txt-inp"
 				/>
 			</label>
 			<button type="submit" class="btn btn-red">
@@ -125,24 +127,12 @@
 		margin-bottom: 0.5rem;
 	}
 
-	form input {
-		width: 100%;
-		padding: 0.5rem;
-		border: 2px solid var(--clr-dark-green);
-		border-radius: 0.5rem;
-	}
-
-	form input:focus {
-		outline: solid var(--clr-dark-green);
-	}
-
 	form h3 {
 		font-size: 2em;
 		color: var(--clr-dark-green);
 		text-align: center;
 	}
 
-	form input,
 	form button {
 		font-size: 1.2rem;
 	}

@@ -74,6 +74,11 @@
 		background-color: var(--clr-white);
 	}
 
+	.dropdown:focus,
+	.dropdown:active {
+		box-shadow: none;
+	}
+
 	.dropdown button {
 		background-color: transparent;
 		width: 2.5rem;

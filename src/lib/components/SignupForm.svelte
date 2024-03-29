@@ -50,6 +50,7 @@
 				bind:value={fname}
 				name="fname"
 				type="text"
+				class="txt-inp"
 				minlength="3"
 				maxlength="20"
 				placeholder="First Name"
@@ -62,6 +63,7 @@
 				bind:value={email}
 				name="email"
 				type="email"
+				class="txt-inp"
 				placeholder="Email"
 				autocomplete="off"
 				required
@@ -102,23 +104,11 @@
 		gap: 0.5rem;
 	}
 
-	form input {
-		width: 100%;
-		padding: 0.5rem;
-		border: 2px solid var(--clr-dark-green);
-		border-radius: 0.5rem;
-	}
-
-	form input:focus {
-		outline: solid var(--clr-dark-green);
-	}
-
 	form h3 {
 		font-size: 2em;
 		color: var(--clr-dark-green);
 	}
 
-	form input,
 	form button {
 		font-size: 1.2rem;
 	}

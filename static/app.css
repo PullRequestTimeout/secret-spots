@@ -154,6 +154,12 @@ button {
 	border-radius: var(--spc-corner-radius);
 }
 
+.txt-inp:focus,
+.txt-inp:active {
+	outline: none;
+	box-shadow: 0 0 0 2px var(--clr-dark-green);
+}
+
 /* Google maps link removal */
 
 a[href^="http://maps.google.com/maps"]
