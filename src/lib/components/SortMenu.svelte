@@ -2,7 +2,7 @@
 	import { fade } from "svelte/transition";
 	import { clickOutside } from "$lib/utils/click_outside.js";
 	import Icon from "$lib/components/Icon.svelte";
-	import { userPref, searchTerm } from "$lib/stores/userDataStore.js";
+	import { userPref, userSpots, searchTerm } from "$lib/stores/userDataStore.js";
 	import { updateUserPrefInDatabase } from "$lib/firebase/db.js";
 	import { setAlertMessage } from "$lib/stores/uiStore.js";
 
@@ -15,11 +15,15 @@
 		searchBar = false;
 	};
 
+	// Clear search filtering when search bar is closed
 	$: if (searchBar === false) {
 		setTimeout(() => {
 			searchTerm.set("");
 		}, 200);
 	}
+
+	// Makes the menu buttons only focusable when the menu is open
+	$: tabIndex = menuOpen ? 0 : -1;
 
 	// Focuses on the search input when the search bar is opened
 	let searchInput;
@@ -47,61 +51,66 @@
 	}
 </script>
 
-<div use:clickOutside on:outclick={closeAll}>
-	<div class="more-menu" class:open={menuOpen}>
-		<div class="more-menu__slider">
+{#if $userSpots.length > 1}
+	<div use:clickOutside on:outclick={closeAll}>
+		<div class="more-menu" class:open={menuOpen}>
+			<div class="more-menu__slider">
+				<button
+					class="btn btn-red btn-rnd"
+					on:click={() => {
+						sortOptions = !sortOptions;
+						if (searchBar) {
+							searchBar = false;
+						}
+					}}
+					tabindex={tabIndex}><Icon name="sort" size="30" /></button
+				>
+				<button
+					class="btn btn-red btn-rnd"
+					on:click={() => {
+						searchBar = !searchBar;
+						if (sortOptions) {
+							sortOptions = false;
+						}
+					}}
+					tabindex={tabIndex}><Icon name="search" size="30" /></button
+				>
+			</div>
 			<button
-				class="btn btn-red btn-rnd"
+				class="btn btn-red more-button"
 				on:click={() => {
-					sortOptions = !sortOptions;
-					if (searchBar) {
-						searchBar = false;
+					menuOpen = !menuOpen;
+					if (sortOptions || searchBar) {
+						closeAll();
 					}
-				}}><Icon name="sort" size="30" /></button
+				}}
 			>
-			<button
-				class="btn btn-red btn-rnd"
-				on:click={() => {
-					searchBar = !searchBar;
-					if (sortOptions) {
-						sortOptions = false;
-					}
-				}}><Icon name="search" size="30" /></button
-			>
+				<div class="more-menu__dots" />
+			</button>
 		</div>
-		<button
-			class="btn btn-red more-button"
-			on:click={() => {
-				menuOpen = !menuOpen;
-				if (sortOptions || searchBar) {
-					closeAll();
-				}
-			}}
-		>
-			<div class="more-menu__dots" />
-		</button>
+		<div class="srfc sort-options" class:open={sortOptions} transition:fade={{ duration: 200 }}>
+			{#each sortTypes as sortType}
+				<button
+					class="btn btn-green"
+					on:click={() => {
+						closeAll();
+						sortTypeButton(sortType.sort);
+					}}
+					tabindex={tabIndex}>{sortType.display}</button
+				>
+			{/each}
+		</div>
+		<div class="srfc search-bar" class:open={searchBar} transition:fade={{ duration: 200 }}>
+			<input
+				type="text"
+				class="txt-inp"
+				bind:this={searchInput}
+				bind:value={$searchTerm}
+				placeholder="Search..."
+			/>
+		</div>
 	</div>
-	<div class="srfc sort-options" class:open={sortOptions} transition:fade={{ duration: 200 }}>
-		{#each sortTypes as sortType}
-			<button
-				class="btn btn-green"
-				on:click={() => {
-					closeAll();
-					sortTypeButton(sortType.sort);
-				}}>{sortType.display}</button
-			>
-		{/each}
-	</div>
-	<div class="srfc search-bar" class:open={searchBar} transition:fade={{ duration: 200 }}>
-		<input
-			type="text"
-			class="txt-inp"
-			bind:this={searchInput}
-			bind:value={$searchTerm}
-			placeholder="Search..."
-		/>
-	</div>
-</div>
+{/if}
 
 <style>
 	.more-menu,
