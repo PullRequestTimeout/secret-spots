@@ -115,8 +115,18 @@ button {
 	background-color: var(--clr-dark-green);
 }
 
+.btn-green:focus {
+	outline: none;
+	background-color: var(--clr-darker-green);
+}
+
 .btn-red {
 	background-color: var(--clr-red);
+}
+
+.btn-red:focus {
+	outline: none;
+	background-color: var(--clr-dark-red);
 }
 
 @media (hover: hover) {

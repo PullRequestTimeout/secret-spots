@@ -166,6 +166,11 @@
 		text-decoration: none;
 	}
 
+	header nav a:focus {
+		outline: none;
+		text-decoration: underline var(--clr-dark-green) 2px;
+	}
+
 	header nav li {
 		list-style: none;
 	}

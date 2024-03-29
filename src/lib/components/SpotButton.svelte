@@ -54,7 +54,7 @@
 <style>
 	.spot-button {
 		border: none;
-		background: var(--clr-green);
+		background-color: var(--clr-green);
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -67,6 +67,7 @@
 
 	.spot-button:focus {
 		outline: none;
+		background-color: var(--clr-dark-red);
 	}
 
 	.spot-button:before {
@@ -86,7 +87,7 @@
 	}
 
 	.spot-button.active {
-		background: var(--clr-red);
+		background-color: var(--clr-red);
 	}
 
 	.spot-button.active:before {
