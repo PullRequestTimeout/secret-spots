@@ -8,9 +8,10 @@
 	export let iconColor = "--clr-white";
 	export let iconSize = "32";
 	export let shadow = false;
+	export let type = "button";
 </script>
 
-<button on:click={callback} class={className + " btn"} class:shadow>
+<button on:click={callback} class={className + " btn"} class:shadow {type}>
 	<Icon name={svg} color={iconColor} size={iconSize} />
 	{innerText}
 </button>
@@ -27,9 +28,4 @@
 	button.shadow {
 		box-shadow: var(--bx-shdw);
 	}
-
-	/* button img {
-		width: 2rem;
-		filter: invert(1);
-	} */
 </style>
