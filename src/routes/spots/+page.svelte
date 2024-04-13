@@ -20,6 +20,7 @@
 	import NewSpot from "$lib/components/NewSpot.svelte";
 	import SpotsDashboard from "$lib/components/SpotsDashboard.svelte";
 	import Icon from "$lib/components/Icon.svelte";
+	import Intro from "$lib/components/Intro.svelte";
 
 	// NewSpot state
 	let newSpotOpen = false;
@@ -59,6 +60,7 @@
 			/>
 		{/if}
 		<NewSpot bind:isOpen={newSpotOpen} />
+		<Intro />
 	</div>
 </main>
 
