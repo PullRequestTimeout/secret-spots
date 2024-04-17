@@ -2,6 +2,7 @@ import { auth, db } from "$lib/firebase/firebase.js";
 import { doc, getDoc, setDoc, updateDoc, deleteDoc } from "firebase/firestore";
 import { userSpots, sortedUserSpots, activeSpot, userPref } from "$lib/stores/userDataStore.js";
 import { get } from "svelte/store";
+import { showIntro } from "$lib/components/Intro.svelte";
 
 //TODO: Refine this a little more. There's a lot of repeated variables.
 
@@ -44,6 +45,8 @@ export async function checkUser() {
 	// If no user document, create one
 	if (!docSnap.exists()) {
 		console.log("Creating new user.");
+		// Show the intro on first login, could be refactored out of the db operations for separation of concerns
+		showIntro.set(true);
 		const userRef = doc(db, "users", user.uid);
 		const defaultSettings = get(userPref);
 		// Schema

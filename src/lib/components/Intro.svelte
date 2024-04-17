@@ -1,35 +1,31 @@
+<script context="module">
+	import { writable } from "svelte/store";
+	export const showIntro = writable(false);
+</script>
+
 <script>
-	import { userPref } from "$lib/stores/userDataStore.js";
-	import { updateUserPrefInDatabase } from "$lib/firebase/db.js";
+	import { fade } from "svelte/transition";
 
+	$: console.log($showIntro);
 	let introPage = 1;
-
 	function closeIntro() {
 		introPage = 1;
-		userPref.update((pref) => {
-			return { ...pref, showIntro: false };
-		});
-		updateUserPrefInDatabase();
+		showIntro.set(false);
 	}
 </script>
 
-{#if $userPref.showIntro}
-	<div class="overlay">
-		<div class="srfc intro">
-			{#if introPage === 1}
+{#if $showIntro}
+	<div class="overlay" transition:fade={{ duration: 200 }}>
+		{#if introPage === 1}
+			<div class="srfc intro">
 				<h2>Welcome to Secret Spots</h2>
 				<p>
 					Secret Spots is an app to keep track of your favourite places you've been while camping,
 					hiking, eating out, or a whole range of other adventures.
 				</p>
 				<p>
-					It's a great way to keep an organised logbook for yourself without advertising them to the
-					public.
-				</p>
-				<p>
-					You can add a description, a star rating, journal entries from various visits to each spot
-					you add. More features currently in development such as adding photos for each spot and
-					sharing spots with other users.
+					It's a great way to keep an organised logbook for yourself without advertising your spots
+					to the public.
 				</p>
 				<button
 					class="btn btn-red"
@@ -37,7 +33,9 @@
 						introPage = 2;
 					}}>Next</button
 				>
-			{:else if introPage === 2}
+			</div>
+		{:else if introPage === 2}
+			<div class="srfc intro">
 				<h2>Install as a PWA</h2>
 				<p>
 					To make the most of Secret Spots, you can install it as a PWA (Progressive Web App) on
@@ -51,17 +49,27 @@
 					To install it, click on the install button in the address bar of your browser or 'Add to
 					Home Screen' in the browser menu.
 				</p>
-				<button
-					class="btn btn-red"
-					on:click={() => {
-						introPage = 3;
-					}}>Next</button
-				>
-			{:else if introPage === 3}
+				<div class="button-group">
+					<button
+						class="btn btn-red"
+						on:click={() => {
+							introPage = 1;
+						}}>Back</button
+					>
+					<button
+						class="btn btn-red"
+						on:click={() => {
+							introPage = 3;
+						}}>Next</button
+					>
+				</div>
+			</div>
+		{:else if introPage === 3}
+			<div class="srfc intro">
 				<h2>Adding a Spot</h2>
 				<p>
 					To add a spot, click on the 'Add Spot' button in main dashboard. Or if you already have
-					spots add, use the button with the plus icon in the top right corner.
+					spots added, use the button with the plus icon in the top right corner.
 				</p>
 				<p>
 					Add a name for the spot, a description, and select an icon to denote the spot catagory.
@@ -70,19 +78,29 @@
 					Once you add more spots, you can use the sorting menu and search bar on the left to find
 					the spot you're looking for.
 				</p>
-				<button class="btn btn-red" on:click={closeIntro}>Ok, got it!</button>
-			{/if}
-		</div>
+				<div class="button-group">
+					<button
+						class="btn btn-red"
+						on:click={() => {
+							introPage = 2;
+						}}>Back</button
+					>
+
+					<button class="btn btn-red" on:click={closeIntro}>Ok, got it!</button>
+				</div>
+			</div>
+		{/if}
 	</div>
 {/if}
 
 <style>
 	.overlay {
 		position: fixed;
+		top: 0;
 		height: 100%;
 		width: 100%;
-		background-color: rgba(0, 0, 0, 0.8);
-		z-index: 100;
+		background-color: rgba(0, 0, 0, 0.5);
+		z-index: 1000;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -106,5 +124,10 @@
 	.intro p,
 	.intro h2 {
 		text-align: center;
+	}
+
+	.button-group {
+		display: flex;
+		gap: 1rem;
 	}
 </style>
