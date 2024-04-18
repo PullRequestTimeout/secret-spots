@@ -114,7 +114,7 @@ export const authHandlers = {
 			})
 			.catch((error) => {
 				console.error(error);
-				setAlertMessage("There was an problem sending the email verification.");
+				setAlertMessage("There was an problem sending the email verification. Try again soon.");
 			});
 	},
 
