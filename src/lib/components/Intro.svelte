@@ -6,6 +6,8 @@
 <script>
 	import { fade } from "svelte/transition";
 
+	let dev = true;
+
 	let introPage = 1;
 	function closeIntro() {
 		introPage = 1;
@@ -13,10 +15,10 @@
 	}
 </script>
 
-{#if $showIntro}
+{#if $showIntro || dev}
 	<div class="overlay" transition:fade={{ duration: 200 }}>
 		{#if introPage === 1}
-			<div class="srfc intro">
+			<div class="srfc intro" transition:fade={{ duration: 200 }}>
 				<h2>Welcome to Secret Spots</h2>
 				<p>
 					Secret Spots is an app to keep track of your favourite places you've been while camping,
@@ -34,7 +36,7 @@
 				>
 			</div>
 		{:else if introPage === 2}
-			<div class="srfc intro">
+			<div class="srfc intro" transition:fade={{ duration: 200 }}>
 				<h2>Install as a PWA</h2>
 				<p>
 					To make the most of Secret Spots, you can install it as a PWA (Progressive Web App) on
@@ -64,7 +66,7 @@
 				</div>
 			</div>
 		{:else if introPage === 3}
-			<div class="srfc intro">
+			<div class="srfc intro" transition:fade={{ duration: 200 }}>
 				<h2>Adding a Spot</h2>
 				<p>
 					To add a spot, click on the 'Add Spot' button in main dashboard. Or if you already have
@@ -106,6 +108,10 @@
 	}
 
 	.intro {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 		opacity: 1;
 		display: flex;
 		flex-direction: column;
