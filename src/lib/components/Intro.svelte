@@ -6,7 +6,6 @@
 <script>
 	import { fade } from "svelte/transition";
 
-	$: console.log($showIntro);
 	let introPage = 1;
 	function closeIntro() {
 		introPage = 1;
