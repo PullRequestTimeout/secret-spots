@@ -6,8 +6,6 @@
 <script>
 	import { fade } from "svelte/transition";
 
-	let dev = true;
-
 	let introPage = 1;
 	function closeIntro() {
 		introPage = 1;
@@ -15,7 +13,7 @@
 	}
 </script>
 
-{#if $showIntro || dev}
+{#if $showIntro}
 	<div class="overlay" transition:fade={{ duration: 200 }}>
 		{#if introPage === 1}
 			<div class="srfc intro" transition:fade={{ duration: 200 }}>
