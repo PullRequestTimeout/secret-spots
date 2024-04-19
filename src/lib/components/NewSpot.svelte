@@ -3,6 +3,7 @@
 	import IconButton from "$lib/components/IconButton.svelte";
 	import Loader from "$lib/components/Loader.svelte";
 	import IconSelector from "$lib/components/IconSelector.svelte";
+	import Tooltip from "$lib/components/Tooltip.svelte";
 
 	// Svelte
 	import { fade } from "svelte/transition";
@@ -182,17 +183,22 @@
 			/>
 
 			<p>Or</p>
-			<form>
-				<label>
-					<input
-						type="text"
-						placeholder="Coords: eg. 49.19,-118.99"
-						bind:value={coords}
-						class="txt-inp"
-						on:input={() => handleCoordsInput(coords)}
-					/>
-				</label>
-			</form>
+			<div class="coords">
+				<form>
+					<label>
+						<input
+							type="text"
+							placeholder="Coords: eg. 49.19,-118.99"
+							bind:value={coords}
+							class="txt-inp"
+							on:input={() => handleCoordsInput(coords)}
+						/>
+					</label>
+				</form>
+				<Tooltip
+					text="Google Maps is a great source of coordinates, however input coordinates must be in the format '49.19, -118.99' for example. Alternate methods to input spots coming soon!"
+				/>
+			</div>
 			{#if loadLoc}
 				<Loader />
 			{:else}
@@ -298,6 +304,12 @@
 		display: flex;
 		align-items: center;
 		gap: 1rem;
+	}
+
+	div.srfc div.coords {
+		align-items: center;
+		gap: 0.25rem;
+		margin-top: 0;
 	}
 
 	div.srfc div button {
