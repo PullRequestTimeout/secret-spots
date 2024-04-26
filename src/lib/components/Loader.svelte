@@ -16,7 +16,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		height: 100%;
+		height: calc(var(--window-height) - var(--spc-footer-height));
 		width: 100%;
 	}
 

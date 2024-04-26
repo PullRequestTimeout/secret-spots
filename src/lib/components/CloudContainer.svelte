@@ -1,45 +1,49 @@
 <script>
 	import Cloud from "$lib/components/Cloud.svelte";
+	import { page } from "$app/stores";
+	import { fade } from "svelte/transition";
 </script>
 
-<div class="cloudCountainer">
-	<div id="cloud-1">
-		<Cloud name="lrg-cloud-2" />
+{#if $page.url.pathname !== "/"}
+	<div class="cloudCountainer" transition:fade={{ delay: 300, duration: 200 }}>
+		<div id="cloud-1">
+			<Cloud name="lrg-cloud-2" />
+		</div>
+		<div id="cloud-2">
+			<Cloud name="sml-cloud-1" />
+		</div>
+		<div id="cloud-3">
+			<Cloud name="med-cloud-3" />
+		</div>
+		<div id="cloud-4">
+			<Cloud name="lrg-cloud-3" />
+		</div>
+		<div id="cloud-5">
+			<Cloud name="lrg-cloud-4" />
+		</div>
+		<div id="cloud-6">
+			<Cloud name="lrg-cloud-5" />
+		</div>
+		<div id="cloud-7">
+			<Cloud name="med-cloud-2" />
+		</div>
+		<div id="cloud-8">
+			<Cloud name="sml-cloud-2" />
+		</div>
+		<div id="cloud-9">
+			<Cloud name="med-cloud-4" />
+		</div>
+		<div id="cloud-10">
+			<Cloud name="sml-cloud-4" />
+		</div>
+		<div id="cloud-11">
+			<Cloud name="sml-cloud-3" />
+		</div>
+		<div id="cloud-12">
+			<Cloud name="med-cloud-1" />
+		</div>
 	</div>
-	<div id="cloud-2">
-		<Cloud name="sml-cloud-1" />
-	</div>
-	<div id="cloud-3">
-		<Cloud name="med-cloud-3" />
-	</div>
-	<div id="cloud-4">
-		<Cloud name="lrg-cloud-3" />
-	</div>
-	<div id="cloud-5">
-		<Cloud name="lrg-cloud-4" />
-	</div>
-	<div id="cloud-6">
-		<Cloud name="lrg-cloud-5" />
-	</div>
-	<div id="cloud-7">
-		<Cloud name="med-cloud-2" />
-	</div>
-	<div id="cloud-8">
-		<Cloud name="sml-cloud-2" />
-	</div>
-	<div id="cloud-9">
-		<Cloud name="med-cloud-4" />
-	</div>
-	<div id="cloud-10">
-		<Cloud name="sml-cloud-4" />
-	</div>
-	<div id="cloud-11">
-		<Cloud name="sml-cloud-3" />
-	</div>
-	<div id="cloud-12">
-		<Cloud name="med-cloud-1" />
-	</div>
-</div>
+{/if}
 
 <style>
 	.cloudCountainer {
@@ -51,6 +55,7 @@
 		justify-content: center;
 		align-items: center;
 		animation: float 10s ease-in-out infinite alternate;
+		height: calc(var(--window-height) - var(--spc-footer-height));
 	}
 
 	.cloudCountainer div {

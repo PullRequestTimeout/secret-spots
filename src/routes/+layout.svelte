@@ -103,14 +103,10 @@
 </div>
 
 <style>
-	/* If this BS doesn't work to fix webkit's issues, fuck it, we're doing javascript for height */
-
 	.mainContainer,
 	.cloudContainer {
 		position: fixed;
 		top: var(--spc-header-height);
-		height: calc(100vh - var(--spc-footer-height));
-		height: calc(var(--window-height) - var(--spc-footer-height));
 		width: 100%;
 	}
 

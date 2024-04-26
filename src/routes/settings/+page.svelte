@@ -105,9 +105,7 @@
 	let innerHeight = 0;
 </script>
 
-<svelte:window bind:innerHeight />
-
-<main style="--window-height: {innerHeight}px">
+<main>
 	{#if $authStore.displayName}
 		<h2 class="main-title">Welcome, {$authStore.displayName}</h2>
 	{:else}

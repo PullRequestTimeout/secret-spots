@@ -8,7 +8,7 @@
 
 <style>
 	main {
-		height: 100%;
+		height: calc(var(--window-height) - var(--spc-footer-height));
 		width: 100%;
 		display: flex;
 		align-items: center;
