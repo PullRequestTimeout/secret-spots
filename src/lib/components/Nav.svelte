@@ -3,18 +3,22 @@
 	import { fade } from "svelte/transition";
 	import { clickOutside } from "$lib/utils/click_outside.js";
 	import Icon from "$lib/components/Icon.svelte";
+	import { page } from "$app/stores";
 
 	let menuOpen = false;
 	function handleMenu() {
 		menuOpen = !menuOpen;
 	}
+
+	const nonAuthRoutes = ["/", "/login", "/register"];
+	$: logoLink = nonAuthRoutes.includes($page.url.pathname) ? "/" : "/spots";
 </script>
 
 <header>
-	<div class="logo">
+	<a href={logoLink} class="logo">
 		<Icon name={"logo"} size={24} />
 		<h1>Secret Spots</h1>
-	</div>
+	</a>
 	<nav
 		use:clickOutside
 		on:outclick={() => {
@@ -75,6 +79,8 @@
 	}
 
 	header .logo {
+		color: var(--clr-white);
+		text-decoration: none;
 		user-select: none;
 		display: flex;
 		align-items: center;
