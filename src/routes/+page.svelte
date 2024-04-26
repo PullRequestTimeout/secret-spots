@@ -1,18 +1,10 @@
 <!-- Home page -->
 
 <script>
-	import { getContext } from "svelte";
 	import IconLink from "$lib/components/IconLink.svelte";
-	function offset() {
-		if (getContext("offset") == null) {
-			return 200;
-		} else {
-			return getContext("offset");
-		}
-	}
 </script>
 
-<main class="welcomeContainer" style="--offset: {`${offset}px`}">
+<main class="welcomeContainer">
 	<h2>Welcome to Secret Spots!</h2>
 	<p>Log in to get started</p>
 	<div>
