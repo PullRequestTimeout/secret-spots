@@ -129,6 +129,10 @@ button {
 	background-color: var(--clr-dark-red);
 }
 
+.shadow {
+	box-shadow: var(--bx-shdw);
+}
+
 @media (hover: hover) {
 	button,
 	.btn:hover {
