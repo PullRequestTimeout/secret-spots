@@ -68,7 +68,7 @@
 <style>
 	header {
 		position: fixed;
-		z-index: 10;
+		z-index: 1000;
 		width: 100%;
 		display: flex;
 		background-color: var(--clr-dark-green);
