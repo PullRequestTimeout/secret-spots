@@ -1,23 +1,27 @@
 <script>
 	import IconLink from "./IconLink.svelte";
+	import { page } from "$app/stores";
+	import { fade } from "svelte/transition";
 </script>
 
-<footer>
-	<IconLink
-		svg={"coffee"}
-		innerText={"Donate"}
-		url={"https://ko-fi.com/pullrequesttimeout"}
-		className="btn-green"
-		responsive
-	/>
-	<IconLink
-		svg={"mail"}
-		innerText={"Contact"}
-		url={"mailto:jacobedruery@gmail.com"}
-		className="btn-green"
-		responsive
-	/>
-</footer>
+{#if $page.url.pathname !== "/"}
+	<footer transition:fade={{ delay: 300, duration: 200 }}>
+		<IconLink
+			svg={"coffee"}
+			innerText={"Donate"}
+			url={"https://ko-fi.com/pullrequesttimeout"}
+			className="btn-green"
+			responsive
+		/>
+		<IconLink
+			svg={"mail"}
+			innerText={"Contact"}
+			url={"mailto:jacobedruery@gmail.com"}
+			className="btn-green"
+			responsive
+		/>
+	</footer>
+{/if}
 
 <style>
 	footer {
