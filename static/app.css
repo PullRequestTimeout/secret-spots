@@ -1,5 +1,24 @@
 /* Font Imports */
-@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,400;0,700;1,400&family=Permanent+Marker&display=swap");
+@font-face {
+	font-family: "Permanent Marker";
+	src: url("fonts/PermanentMarker-Regular.woff") format("woff");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Comic Neue";
+	src: url("fonts/ComicNeue-Regular.woff") format("woff");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Comic Neue";
+	src: url("fonts/ComicNeue-Bold.woff") format("woff");
+	font-weight: 700;
+	font-style: normal;
+}
 
 /* Vars */
 :root {
@@ -76,7 +95,7 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: "Permanent Marker", cursive;
+	font-family: "Permanent Marker", sans-serif;
 }
 
 p,
@@ -85,7 +104,7 @@ li,
 input,
 textarea,
 button {
-	font-family: "Comic Neue", cursive;
+	font-family: "Comic Neue", sans-serif;
 }
 
 /* Utils */
