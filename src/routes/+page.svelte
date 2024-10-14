@@ -4,8 +4,15 @@
 	import IconLink from "$lib/components/IconLink.svelte";
 	import Icon from "$lib/components/Icon.svelte";
 	import ScrollProps from "$lib/components/ScrollProps.svelte";
+	import { setAlertMessage } from "$lib/stores/uiStore.js";
 
 	let year = new Date().getFullYear();
+
+	let emailInput = "";
+	function handleSignUp() {
+		setAlertMessage("Thanks for signing up! We'll keep you updated on new features.");
+		emailInput = "";
+	}
 </script>
 
 <main>
@@ -107,8 +114,13 @@
 		</section>
 		<section class="email-signup">
 			<h2 class="small-title small-title__white">Sign up to stay updated</h2>
-			<form>
-				<input type="email" class="txt-inp email-input shadow" placeholder="Email..." />
+			<form on:submit|preventDefault={handleSignUp}>
+				<input
+					type="email"
+					class="txt-inp email-input shadow"
+					placeholder="Email..."
+					bind:value={emailInput}
+				/>
 				<button type="submit" class="btn btn-red shadow">Sign up</button>
 			</form>
 		</section>
