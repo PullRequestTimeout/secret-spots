@@ -24,7 +24,7 @@
 		width: clamp(15rem, 20rem, 90%);
 		text-align: center;
 		position: absolute;
-		z-index: 1000;
+		z-index: 10000;
 		top: 2rem;
 		left: 50%;
 		transform: translateX(-50%);
