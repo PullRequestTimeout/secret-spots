@@ -215,10 +215,11 @@
 		padding: 2rem;
 		background-color: var(--clr-white);
 		width: 15rem;
+		height: 21rem;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: center;
+		justify-content: space-evenly;
 		gap: 1rem;
 		transition: opacity 0.4s;
 	}
@@ -250,6 +251,7 @@
 
 	.cta-container {
 		gap: 2rem;
+		padding: 2rem;
 	}
 
 	.cta {
@@ -349,6 +351,7 @@
 		.feature-card {
 			padding: 1rem;
 			max-width: 10rem;
+			height: 12rem;
 		}
 
 		.feature-card img {
@@ -382,6 +385,7 @@
 
 		.cta-container {
 			position: relative;
+			padding: 1rem;
 			width: 100%;
 		}
 
